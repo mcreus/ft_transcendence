@@ -2,11 +2,22 @@
 const	canvas = document.getElementById("pongCanvas");
 const	ctx = canvas.getContext("2d");
 
+// Class
+class Paddle {
+  constructor(PosX, PosY, Color) {
+    this.PosX = PosX;
+    this.PosY = PosY;
+    this.Color = Color;
+  }
+};
+
 // Initialiser les positions et vitesses des raquettes et de la balle
 let	paddleHeight = 80;
 let	paddleWidth = 10;
-let	paddle1Y = (canvas.height - paddleHeight) / 2;
-let	paddle2Y = (canvas.height - paddleHeight) / 2;
+let	paddle1 = new Paddle(0, (canvas.height - paddleHeight) / 2, "#090");
+let	paddle2 = new Paddle(canvas.width - paddleWidth, (canvas.height - paddleHeight) / 2, "#900");
+let	paddle3 = new Paddle(150, (canvas.height - paddleHeight)  / 2, "#090");
+let	paddle4 = new Paddle(canvas.width - paddleWidth - 150, (canvas.height - paddleHeight)  / 2, "#900");
 let	ballX = canvas.width / 2;
 let	ballY = canvas.height / 2;
 let	ballSpeedX = 5;
@@ -14,11 +25,25 @@ let	ballSpeedY = 5;
 let	ballRadius = 10;
 let	ballSpeedXMax = 5;
 let	ballSpeedYMax = 5;
+let	multy = true;
+let	rand = Math.random() * (-(paddleHeight + 15) / 2) + ((paddleHeight + 15) / 2);
+let	PosAI3;
+let	dirAI1 = 5;
+
+// Initialiser une map contenant tous les paddle
+const	map_paddles = new Map();
+map_paddles.set(0, paddle1);
+map_paddles.set(1, paddle2);
+if (multy)
+{
+	map_paddles.set(2, paddle3);
+	map_paddles.set(3, paddle4);
+}
 
 // Gérer les mouvements de la raquette avec la souris
 function handleMouse(event) {
 	let	mouseY = event.clientY - canvas.getBoundingClientRect().top;
-	paddle1Y = mouseY - paddleHeight / 2;
+	paddle1.PosY = mouseY - paddleHeight / 2;
 }
 
 // Fonction principale du jeu
@@ -26,23 +51,23 @@ function updateGame() {
 	// Déplacer la balle
 	ballX += ballSpeedX;
 	ballY += ballSpeedY;
+	PosAI3 = ballY + rand;
 
 	// Rebondir sur les bords verticaux
 	if (ballY < 0 + ballRadius || ballY > canvas.height - ballRadius)
 		ballSpeedY = -ballSpeedY;
 
-	// Rebondir sur la raquette gauche
-	if (ballX - ballRadius < paddleWidth && ballY > paddle1Y && ballY < paddle1Y + paddleHeight)
+	// Rebondir sur toutes les raquettes
+	for (let i = 0; i < map_paddles.size; i++)
 	{
-		ballSpeedY = -(paddle1Y + paddleHeight / 2 - ballY) / 8;
-		ballSpeedX = -ballSpeedX;
-	}
-
-	// Rebondir sur la raquette droite
-	if (ballX + ballRadius > canvas.width - paddleWidth && ballY > paddle2Y && ballY < paddle2Y + paddleHeight)
-	{
-		ballSpeedY = -(paddle2Y + paddleHeight / 2 - ballY) / 8;
-		ballSpeedX = -ballSpeedX;
+		if ((ballX > map_paddles.get(i).PosX - ballRadius && ballX < map_paddles.get(i).PosX + paddleWidth + ballRadius) && 
+			(ballY > map_paddles.get(i).PosY - ballRadius && ballY < map_paddles.get(i).PosY + paddleHeight + ballRadius))
+		{
+			ballSpeedX = -ballSpeedX;
+			ballSpeedY = -(map_paddles.get(i).PosY + paddleHeight / 2 - ballY) / 8;
+			rand = Math.random() * (paddleHeight + 20) - ((paddleHeight + 20) / 2);
+			console.log(rand);
+		}
 	}
 	if (ballSpeedY > ballSpeedYMax)
 		ballSpeedY = ballSpeedYMax;
@@ -56,14 +81,22 @@ function updateGame() {
 		ballY = canvas.height / 2;
 		ballSpeedX = -ballSpeedX;
 	}
-
+	// Securite pour que la balle ne rentre pas dans les murs
+	if (ballY - ballRadius < 0)
+		ballY = ballRadius;
+	else if (ballY + ballRadius > canvas.height)
+		ballY = canvas.height - ballRadius;
 	// Déplacer la raquette droite en suivant la balle
 	/*let paddle2YCenter = paddle2Y + paddleHeight / 2;
 	if (paddle2YCenter < ballY - 35)
 		paddle2Y += 5;
 	else if (paddle2YCenter > ballY + 35)
 		paddle2Y -= 5;*/
-	paddle2Y = ballY - paddleHeight / 2;
+	//if (
+	AIlvl1(paddle3);
+	AIlvl2(paddle4);
+	AIlvl3(paddle2);
+	AIlvlCheat(paddle1);
 	
 }
 
@@ -72,13 +105,13 @@ function drawGame() {
 	// Effacer le canevas
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-	// Dessiner la raquette gauche
-	ctx.fillStyle = "#000";
-	ctx.fillRect(0, paddle1Y, paddleWidth, paddleHeight);
-
-	// Dessiner la raquette droite
-	ctx.fillStyle = "#000";
-	ctx.fillRect(canvas.width - paddleWidth, paddle2Y, paddleWidth, paddleHeight);
+	// Dessiner toutes les raquettes
+	for (let i = 0; i < map_paddles.size; i++)
+	{
+		//console.log(map_paddles[i]);
+		ctx.fillStyle = map_paddles.get(i).Color;
+		ctx.fillRect(map_paddles.get(i).PosX, map_paddles.get(i).PosY, paddleWidth, paddleHeight);
+	}
 
 	// Dessiner la balle
 	ctx.beginPath();
@@ -93,6 +126,36 @@ function gameLoop() {
 	updateGame();
 	drawGame();
 	requestAnimationFrame(gameLoop);
+}
+
+function AIlvl1(AI)
+{
+	if (AI.PosY + dirAI1 < 0 || AI.PosY + paddleHeight + dirAI1 > canvas.height)
+		dirAI1 = -dirAI1;
+	AI.PosY += dirAI1;
+}
+
+function AIlvl3(AI)
+{
+	if (AI.PosY < PosAI3)
+		AI.PosY += 5;
+	else if (AI.PosY > PosAI3)
+		AI.PosY -= 5;
+}
+
+function AIlvlCheat(AI)
+{
+	AI.PosY = ballY - paddleHeight / 2;
+}
+
+function AIlvl2(AI)
+{
+	//if (
+	let paddleCenter = AI.PosY + paddleHeight / 2;
+	if (paddleCenter < ballY - 40)
+		AI.PosY += 3;
+	else if (paddleCenter > ballY + 40)
+		AI.PosY -= 3;
 }
 
 // Écouter les mouvements de la souris
