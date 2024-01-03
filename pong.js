@@ -25,10 +25,14 @@ let	ballSpeedY = 5;
 let	ballRadius = 10;
 let	ballSpeedXMax = 5;
 let	ballSpeedYMax = 5;
-let	multy = true;
-let	rand = Math.random() * (-(paddleHeight + 15) / 2) + ((paddleHeight + 15) / 2);
+let	multy = false;
+let	rand = Math.random() * (paddleHeight + 20) - ((paddleHeight + 20) / 2);
 let	PosAI3;
 let	dirAI1 = 5;
+let	scoreL = 0;
+let	scoreR = 0;
+const	divLeft = document.getElementById('scoreLeft');
+const	divRight = document.getElementById('scoreRight');
 
 // Initialiser une map contenant tous les paddle
 const	map_paddles = new Map();
@@ -76,10 +80,16 @@ function updateGame() {
 
 	// Si la balle atteint l'extrémité gauche ou droite, réinitialiser sa position
 	if (ballX < 0 + ballRadius || ballX > canvas.width - ballRadius) {
-		console.log(ballX);
+		if (ballX < 0 + ballRadius)
+			scoreR++;
+		else
+			scoreL++;
 		ballX = canvas.width / 2;
 		ballY = canvas.height / 2;
 		ballSpeedX = -ballSpeedX;
+		divLeft.textContent = scoreL;
+		divRight.textContent = scoreR;
+		rand = Math.random() * (paddleHeight + 20) - ((paddleHeight + 20) / 2);
 	}
 	// Securite pour que la balle ne rentre pas dans les murs
 	if (ballY - ballRadius < 0)
@@ -129,9 +139,11 @@ function AIlvl1(AI)
 
 function AIlvl3(AI)
 {
-	if (AI.PosY < PosAI3)
+	if (PosAI3 - ballRadius < AI.PosY + paddleHeight / 2 && AI.PosY + paddleHeight / 2 < PosAI3 + ballRadius)
+		return ;
+	if (AI.PosY + paddleHeight / 2 < PosAI3 + ballRadius)
 		AI.PosY += 5;
-	else if (AI.PosY > PosAI3)
+	else if (AI.PosY + paddleHeight / 2 > PosAI3 - ballRadius)
 		AI.PosY -= 5;
 }
 
@@ -144,9 +156,9 @@ function AIlvl2(AI)
 {
 	//if (
 	let paddleCenter = AI.PosY + paddleHeight / 2;
-	if (paddleCenter < ballY - 40)
+	if (paddleCenter < ballY - paddleHeight / 2)
 		AI.PosY += 3;
-	else if (paddleCenter > ballY + 40)
+	else if (paddleCenter > ballY + paddleHeight / 2)
 		AI.PosY -= 3;
 }
 

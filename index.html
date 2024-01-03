@@ -1,20 +1,37 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pong Game</title>
-  <style>
-    canvas {
-      border: 1px solid #000;
-      display: block;
-      margin: 20px auto;
-    }
-  </style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Pong Game</title>
+	<style>
+		canvas {
+			border: 1px solid #000;
+			display: block;
+			margin: 20px auto;
+		}
+		.center {
+			margin-left: auto;
+			margin-right: auto;
+		}
+	</style>
 </head>
 <body>
 
 <canvas id="pongCanvas" width="800" height="400"></canvas>
+<table id="scores" width="600" height="100" class="center">
+	<thead>
+		<tr>
+			<th colspan="2" style="font-size:300%">Scores</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td id="scoreLeft" style="text-align:center; color:green; font-size:160%">0</td>
+			<td id="scoreRight" style="text-align:center; color:red; font-size:160%">0</td>
+		</tr>
+	</tbody>
+</table>
 
 <script src="pong.js"></script>
 
