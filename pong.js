@@ -86,13 +86,6 @@ function updateGame() {
 		ballY = ballRadius;
 	else if (ballY + ballRadius > canvas.height)
 		ballY = canvas.height - ballRadius;
-	// Déplacer la raquette droite en suivant la balle
-	/*let paddle2YCenter = paddle2Y + paddleHeight / 2;
-	if (paddle2YCenter < ballY - 35)
-		paddle2Y += 5;
-	else if (paddle2YCenter > ballY + 35)
-		paddle2Y -= 5;*/
-	//if (
 	AIlvl1(paddle3);
 	AIlvl2(paddle4);
 	AIlvl3(paddle2);
@@ -108,7 +101,6 @@ function drawGame() {
 	// Dessiner toutes les raquettes
 	for (let i = 0; i < map_paddles.size; i++)
 	{
-		//console.log(map_paddles[i]);
 		ctx.fillStyle = map_paddles.get(i).Color;
 		ctx.fillRect(map_paddles.get(i).PosX, map_paddles.get(i).PosY, paddleWidth, paddleHeight);
 	}
