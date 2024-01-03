@@ -1,6 +1,10 @@
+import { manualPlayerController, setCanvas } from "./manualPlayer.js";
+
 // Récupérer le canevas et son contexte
 const	canvas = document.getElementById("pongCanvas");
 const	ctx = canvas.getContext("2d");
+
+setCanvas(canvas);
 
 // Class
 class Paddle {
@@ -127,6 +131,7 @@ function drawGame() {
 function gameLoop() {
 	updateGame();
 	drawGame();
+	manualPlayerController();
 	requestAnimationFrame(gameLoop);
 }
 
@@ -167,3 +172,5 @@ canvas.addEventListener("mousemove", handleMouse);
 
 // Lancer la boucle de jeu
 gameLoop();
+
+manuelPlayerControler();
