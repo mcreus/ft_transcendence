@@ -1,14 +1,14 @@
-// propriétés du joueur manuel
+// joueur manuel
 const manualPlayer = {
     width: 10,
-    height: 60,
-    x: 0,  // Position initiale à droite
+    height: 80,
+    x: 0, 
     y: 0,
-    color: "#F00",  // Couleur rouge
+    color: "#000",  // Couleur noire
     speed: 5,
 };
 
-// gestion des touches du clavier
+// touches du clavier
 const keyState = {};
 
 let canvas;
@@ -19,7 +19,7 @@ function setCanvas(c) {
     ctx = canvas.getContext("2d");
 }
 
-// fonction de mise à jour de l'état des touches
+// mise à jour de l'état des touches
 function handleKeydown(event) {
     keyState[event.key] = true;
 }
@@ -28,7 +28,7 @@ function handleKeyup(event) {
     keyState[event.key] = false;
 }
 
-// attacher les gestionnaires d'événements pour les touches du clavier
+// gestionnaires d'événements pour les touches du clavier
 document.addEventListener("keydown", handleKeydown);
 document.addEventListener("keyup", handleKeyup);
 
@@ -40,8 +40,6 @@ function drawManualPlayer() {
 
 // Mise à jour de la position du joueur manuel
 function updateManualPlayer() {
-    // Mettez à jour la position du joueur manuel en fonction des commandes de l'utilisateur
-    // Utilisez les touches "ArrowUp" et "ArrowDown" pour déplacer le joueur
 
     // Touche flèche vers le haut
     if (keyState["ArrowUp"] && manualPlayer.y > 0) {
@@ -60,5 +58,4 @@ function manualPlayerController() {
     updateManualPlayer();
 }
 
-// Exporter des fonctions ou des objets nécessaires pour votre application principale
 export { manualPlayerController, setCanvas };
