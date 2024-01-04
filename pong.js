@@ -1,27 +1,25 @@
-import { manualPlayerController, setCanvas } from "./manualPlayer.js";
-
 // Récupérer le canevas et son contexte
 const	canvas = document.getElementById("pongCanvas");
 const	ctx = canvas.getContext("2d");
 
-setCanvas(canvas);
-
 // Class
 class Paddle {
-  constructor(PosX, PosY, Color) {
+  constructor(PosX, PosY, Color, Player) {
     this.PosX = PosX;
     this.PosY = PosY;
     this.Color = Color;
+    this.Player = Player;
+    this.Height = 80;
   }
 };
 
 // Initialiser les positions et vitesses des raquettes et de la balle
 let	paddleHeight = 80;
 let	paddleWidth = 10;
-let	paddle1 = new Paddle(0, (canvas.height - paddleHeight) / 2, "#090");
-let	paddle2 = new Paddle(canvas.width - paddleWidth, (canvas.height - paddleHeight) / 2, "#900");
-let	paddle3 = new Paddle(150, (canvas.height - paddleHeight)  / 2, "#090");
-let	paddle4 = new Paddle(canvas.width - paddleWidth - 150, (canvas.height - paddleHeight)  / 2, "#900");
+let	paddle1 = new Paddle(0, (canvas.height - paddleHeight) / 2, "#090", true);
+let	paddle2 = new Paddle(canvas.width - paddleWidth, (canvas.height - paddleHeight) / 2, "#900", false);
+let	paddle3 = new Paddle(150, (canvas.height - paddleHeight)  / 2, "#090", false);
+let	paddle4 = new Paddle(canvas.width - paddleWidth - 150, (canvas.height - paddleHeight)  / 2, "#900", false);
 let	ballX = canvas.width / 2;
 let	ballY = canvas.height / 2;
 let	ballSpeedX = 5;
@@ -32,7 +30,6 @@ let	ballSpeedYMax = 5;
 let	multy = false;
 let	rand = Math.random() * (paddleHeight + 20) - ((paddleHeight + 20) / 2);
 let	PosAI3;
-let	dirAI1 = 5;
 let	scoreL = 0;
 let	scoreR = 0;
 const	divLeft = document.getElementById('scoreLeft');
@@ -46,12 +43,6 @@ if (multy)
 {
 	map_paddles.set(2, paddle3);
 	map_paddles.set(3, paddle4);
-}
-
-// Gérer les mouvements de la raquette avec la souris
-function handleMouse(event) {
-	let	mouseY = event.clientY - canvas.getBoundingClientRect().top;
-	paddle1.PosY = mouseY - paddleHeight / 2;
 }
 
 // Fonction principale du jeu
@@ -100,10 +91,10 @@ function updateGame() {
 		ballY = ballRadius;
 	else if (ballY + ballRadius > canvas.height)
 		ballY = canvas.height - ballRadius;
-	AIlvl1(paddle3);
-	AIlvl2(paddle4);
-	AIlvl3(paddle2);
-	AIlvlCheat(paddle1);
+	SelectAI(paddle3, 1);
+	SelectAI(paddle4, 2);
+	SelectAI(paddle2, 3);
+	//SelectAI(paddle1, 4);
 	
 }
 
@@ -131,46 +122,13 @@ function drawGame() {
 function gameLoop() {
 	updateGame();
 	drawGame();
-	manualPlayerController();
 	requestAnimationFrame(gameLoop);
+	for (let i = 0; i < map_paddles.size; i++)
+	{
+		if (map_paddles.get(i).Player)
+			updateManualPlayer(map_paddles.get(i));
+	}
 }
-
-function AIlvl1(AI)
-{
-	if (AI.PosY + dirAI1 < 0 || AI.PosY + paddleHeight + dirAI1 > canvas.height)
-		dirAI1 = -dirAI1;
-	AI.PosY += dirAI1;
-}
-
-function AIlvl3(AI)
-{
-	if (PosAI3 - ballRadius < AI.PosY + paddleHeight / 2 && AI.PosY + paddleHeight / 2 < PosAI3 + ballRadius)
-		return ;
-	if (AI.PosY + paddleHeight / 2 < PosAI3 + ballRadius)
-		AI.PosY += 5;
-	else if (AI.PosY + paddleHeight / 2 > PosAI3 - ballRadius)
-		AI.PosY -= 5;
-}
-
-function AIlvlCheat(AI)
-{
-	AI.PosY = ballY - paddleHeight / 2;
-}
-
-function AIlvl2(AI)
-{
-	//if (
-	let paddleCenter = AI.PosY + paddleHeight / 2;
-	if (paddleCenter < ballY - paddleHeight / 2)
-		AI.PosY += 3;
-	else if (paddleCenter > ballY + paddleHeight / 2)
-		AI.PosY -= 3;
-}
-
-// Écouter les mouvements de la souris
-canvas.addEventListener("mousemove", handleMouse);
 
 // Lancer la boucle de jeu
 gameLoop();
-
-manuelPlayerControler();

@@ -2,7 +2,8 @@ FROM nginx:latest
 
 COPY index.html /usr/share/nginx/html/
 COPY pong.js /usr/share/nginx/html/
-COPY manualPlayer.js /usr/share/nginx/html/
+COPY ManualPlayer.js /usr/share/nginx/html/
+COPY AI.js /usr/share/nginx/html/
 
 EXPOSE 80
 
