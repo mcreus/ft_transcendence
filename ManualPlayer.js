@@ -19,14 +19,8 @@ document.addEventListener("keyup", handleKeyup);
 
 // Mise à jour de la position du joueur manuel
 function updateManualPlayer(Player) {
-
-    // Touche flèche vers le haut
-    if (keyState["ArrowUp"] && Player.PosY > 0) {
+    if (keyState["ArrowUp"] && Player.PosY > 0)
         Player.PosY -= PlayerSpeed;
-    }
-
-    // Touche flèche vers le bas
-    if (keyState["ArrowDown"] && Player.PosY + Player.Height < canvas.height) {
+    if (keyState["ArrowDown"] && Player.PosY + Player.Height < canvas.height)
         Player.PosY += PlayerSpeed;
-    }
 }

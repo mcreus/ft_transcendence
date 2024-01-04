@@ -16,7 +16,7 @@ class Paddle {
 // Initialiser les positions et vitesses des raquettes et de la balle
 let	paddleHeight = 80;
 let	paddleWidth = 10;
-let	paddle1 = new Paddle(0, (canvas.height - paddleHeight) / 2, "#090", true);
+let	paddle1 = new Paddle(0, (canvas.height - paddleHeight) / 2, "#090", false);
 let	paddle2 = new Paddle(canvas.width - paddleWidth, (canvas.height - paddleHeight) / 2, "#900", false);
 let	paddle3 = new Paddle(150, (canvas.height - paddleHeight)  / 2, "#090", false);
 let	paddle4 = new Paddle(canvas.width - paddleWidth - 150, (canvas.height - paddleHeight)  / 2, "#900", false);
@@ -27,7 +27,7 @@ let	ballSpeedY = 5;
 let	ballRadius = 10;
 let	ballSpeedXMax = 5;
 let	ballSpeedYMax = 5;
-let	multy = false;
+let	multy = true;
 let	rand = Math.random() * (paddleHeight + 20) - ((paddleHeight + 20) / 2);
 let	PosAI3;
 let	scoreL = 0;
@@ -62,7 +62,10 @@ function updateGame() {
 		if ((ballX > map_paddles.get(i).PosX - ballRadius && ballX < map_paddles.get(i).PosX + paddleWidth + ballRadius) && 
 			(ballY > map_paddles.get(i).PosY - ballRadius && ballY < map_paddles.get(i).PosY + paddleHeight + ballRadius))
 		{
-			ballSpeedX = -ballSpeedX;
+			if (ballX < map_paddles.get(i).PosX)
+				ballSpeedX = -5;
+			else if (ballX > map_paddles.get(i).PosX)
+				ballSpeedX = 5;
 			ballSpeedY = -(map_paddles.get(i).PosY + paddleHeight / 2 - ballY) / 8;
 			rand = Math.random() * (paddleHeight + 20) - ((paddleHeight + 20) / 2);
 			console.log(rand);
@@ -94,7 +97,7 @@ function updateGame() {
 	SelectAI(paddle3, 1);
 	SelectAI(paddle4, 2);
 	SelectAI(paddle2, 3);
-	//SelectAI(paddle1, 4);
+	SelectAI(paddle1, 4);
 	
 }
 
