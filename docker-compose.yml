@@ -1,10 +1,25 @@
 version: '3'
 
 services:
-  nginx:
+  modsecurity:
     build:
       context: .
       dockerfile: Dockerfile
+    image: vshn/modsecurity:3.1
+    container_name: modsecurity
+    volumes:
+      - ./modsecurity/modsecurity.conf:/etc/nginx/modsecurity/modsecurity.conf
+
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile_nginx
+    image: nginx
+    container_name: nginx
+    depends_on:
+      - modsecurity
     ports:
       - "8080:80"
-    restart: always
+    volumes:
+      - ./nginx/html:/usr/share/nginx/html
+      - ./nginx/conf:/etc/nginx
