@@ -27,7 +27,7 @@ let	ballSpeedY = 5;
 let	ballRadius = 10;
 let	ballSpeedXMax = 5;
 let	ballSpeedYMax = 5;
-let	multy = true;
+let	multy = false;
 let	rand = Math.random() * (paddleHeight + 20) - ((paddleHeight + 20) / 2);
 let	PosAI3;
 let	scoreL = 0;
@@ -79,9 +79,19 @@ function updateGame() {
 	// Si la balle atteint l'extrémité gauche ou droite, réinitialiser sa position
 	if (ballX < 0 + ballRadius || ballX > canvas.width - ballRadius) {
 		if (ballX < 0 + ballRadius)
+		{
 			scoreR++;
+			if (scoreR <= 10 && scoreR != 0)
+				document.getElementById("scoreRight" + scoreR).style.backgroundColor = "red";
+			console.log("scoreRight" + scoreR);
+		}
 		else
+		{
 			scoreL++;
+			if (scoreR <= 10 && scoreR != 0)
+				document.getElementById("scoreLeft" + scoreL).style.backgroundColor = "green";
+			console.log("scoreLeft" + scoreL);
+		}
 		ballX = canvas.width / 2;
 		ballY = canvas.height / 2;
 		ballSpeedX = -ballSpeedX;
@@ -97,15 +107,42 @@ function updateGame() {
 	SelectAI(paddle3, 1);
 	SelectAI(paddle4, 2);
 	SelectAI(paddle2, 3);
-	SelectAI(paddle1, 4);
+	SelectAI(paddle1, 1);
 	
+}
+
+function drawEnv()
+{
+	let space = 4;
+	let height = 4;
+	let width = 2;
+	let color = "#000";
+	let radius = 100;
+	let angle = 0.04;
+	
+	//draw middle circle
+	for (let i = 0; i < Math.PI * 2; i += Math.PI * angle)
+	{
+		ctx.beginPath();
+		ctx.arc(canvas.width / 2, canvas.height / 2, radius, i + angle / 2, i + angle / 2 + Math.PI * angle / 2);
+		ctx.fillStyle = "black";
+		ctx.stroke();
+		ctx.closePath();
+	}
+
+	//draw middle line
+	for (let i = 0; i < canvas.height / (space + height); i++)
+	{
+		ctx.fillStyle = color;
+		ctx.fillRect(canvas.width / 2 - width / 2, i * (space + height) + height / 2, width, height);
+	}
 }
 
 // Fonction pour dessiner les éléments du jeu
 function drawGame() {
-	// Effacer le canevas
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+	drawEnv();
 	// Dessiner toutes les raquettes
 	for (let i = 0; i < map_paddles.size; i++)
 	{
