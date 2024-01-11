@@ -1,6 +1,6 @@
 // Récupérer le canevas et son contexte
-const	canvas = document.getElementById("pongCanvas");
-const	ctx = canvas.getContext("2d");
+let	canvas;
+let	ctx;
 
 // Class
 class Paddle {
@@ -13,149 +13,127 @@ class Paddle {
   }
 };
 
+class Ball {
+  constructor(PosX, PosY, Color, Radius, Speed) {
+    this.PosX = PosX;
+    this.PosY = PosY;
+    this.Color = Color;
+    this.Radius = Radius;
+    this.ballSpeedX = 5;
+    this.ballSpeedY = 5;
+    this.speed = Speed;
+    this.ballSpeedXMax = 5;
+    this.ballSpeedYMax = 5;
+  }
+};
+
+class GameManager {
+  constructor() {
+    this.map_paddles = new Map();
+    this.map_balls = new Map();
+    this.nb_balls = 0;
+    this.nb_paddles = 0;
+    this.scoreL = 0;
+    this.scoreR = 0;
+    this.paddleHeight = 80;
+    this.paddleWidth = 10;
+    this.ballRadius = 10;
+    this.scoreWin = 25;
+    this.time = 60 * 4.5;
+  }
+};
 // Initialiser les positions et vitesses des raquettes et de la balle
-let	paddleHeight = 80;
-let	paddleWidth = 10;
-let	paddle1 = new Paddle(0, (canvas.height - paddleHeight) / 2, "#090", false);
-let	paddle2 = new Paddle(canvas.width - paddleWidth, (canvas.height - paddleHeight) / 2, "#900", false);
-let	paddle3 = new Paddle(150, (canvas.height - paddleHeight)  / 2, "#090", false);
-let	paddle4 = new Paddle(canvas.width - paddleWidth - 150, (canvas.height - paddleHeight)  / 2, "#900", false);
-let	ballX = canvas.width / 2;
-let	ballY = canvas.height / 2;
-let	ballSpeedX = 5;
-let	ballSpeedY = 5;
-let	ballRadius = 10;
-let	ballSpeedXMax = 5;
-let	ballSpeedYMax = 5;
 let	multy = false;
-let	rand = Math.random() * (paddleHeight + 20) - ((paddleHeight + 20) / 2);
 let	PosAI3;
-let	scoreL = 0;
-let	scoreR = 0;
-const	divLeft = document.getElementById('scoreLeft');
-const	divRight = document.getElementById('scoreRight');
+let	game = new GameManager();
+let	rand = Math.random() * (game.paddleHeight + 20) - ((game.paddleHeight + 20) / 2);
 
 // Initialiser une map contenant tous les paddle
-const	map_paddles = new Map();
-map_paddles.set(0, paddle1);
-map_paddles.set(1, paddle2);
-if (multy)
+
+function init()
 {
-	map_paddles.set(2, paddle3);
-	map_paddles.set(3, paddle4);
+	//Generate Page
+	GenerateGame();
+	canvas = document.getElementById("pongCanvas");
+	ctx = canvas.getContext("2d");
+	let	paddle1 = new Paddle(0, (canvas.height - game.paddleHeight) / 2, "#090", false);
+	let	paddle2 = new Paddle(canvas.width - game.paddleWidth, (canvas.height - game.paddleHeight) / 2, "#900", false);
+	let	paddle3 = new Paddle(150, (canvas.height - game.paddleHeight)  / 2, "#090", false);
+	let	paddle4 = new Paddle(canvas.width - game.paddleWidth - 150, (canvas.height - game.paddleHeight)  / 2, "#900", false);
+	let	ball1 = new Ball(canvas.width / 2, canvas.height / 2, "#000", game.ballRadius, 1);
+	
+	//Paddles
+	game.map_paddles.set(game.nb_paddles++, paddle1);
+	game.map_paddles.set(game.nb_paddles++, paddle2);
+	if (multy)
+	{
+		game.map_paddles.set(game.nb_paddles++, paddle3);
+		game.map_paddles.set(game.nb_paddles++, paddle4);
+	}
+	
+	//Balls
+	game.map_balls.set(game.nb_balls++, ball1);
+	
+}
+
+function updateBySec()
+{
+	game.time--;
+	let	timer = document.getElementById("timer");
+	let	minutes = game.time / 60;
+	let	secondes = game.time % 60;
+	if (game.time < 0)
+	{
+		timer.innerText = " + " + Math.floor(-minutes) + ":" + -secondes;
+		if (Math.abs(secondes) < 10)
+			timer.innerText = " + " + Math.floor(-minutes) + ":0" + -secondes;
+	}
+	else
+	{
+		timer.innerText = Math.floor(minutes) + ":" + secondes;
+		if (secondes < 10)
+			timer.innerText = Math.floor(minutes) + ":0" + secondes;
+	}
 }
 
 // Fonction principale du jeu
 function updateGame() {
-	// Déplacer la balle
-	ballX += ballSpeedX;
-	ballY += ballSpeedY;
-	PosAI3 = ballY + rand;
-
-	// Rebondir sur les bords verticaux
-	if (ballY < 0 + ballRadius || ballY > canvas.height - ballRadius)
-		ballSpeedY = -ballSpeedY;
-
-	// Rebondir sur toutes les raquettes
-	for (let i = 0; i < map_paddles.size; i++)
+	//Each balls
+	for (let i = 0; i < game.map_balls.size; i++)
 	{
-		if ((ballX > map_paddles.get(i).PosX - ballRadius && ballX < map_paddles.get(i).PosX + paddleWidth + ballRadius) && 
-			(ballY > map_paddles.get(i).PosY - ballRadius && ballY < map_paddles.get(i).PosY + paddleHeight + ballRadius))
-		{
-			if (ballX < map_paddles.get(i).PosX)
-				ballSpeedX = -5;
-			else if (ballX > map_paddles.get(i).PosX)
-				ballSpeedX = 5;
-			ballSpeedY = -(map_paddles.get(i).PosY + paddleHeight / 2 - ballY) / 8;
-			rand = Math.random() * (paddleHeight + 20) - ((paddleHeight + 20) / 2);
-			console.log(rand);
-		}
-	}
-	if (ballSpeedY > ballSpeedYMax)
-		ballSpeedY = ballSpeedYMax;
-	else if (ballSpeedY < -ballSpeedYMax)
-		ballSpeedY = -ballSpeedYMax;
+		let ball = game.map_balls.get(i);
+		ball.PosX += ball.ballSpeedX;
+		ball.PosY += ball.ballSpeedY;
+		PosAI3 = ball.PosY + rand;
+		
+		// Rebondir sur les bords verticaux
+		if (ball.PosY < 0 + ball.Radius || ball.PosY > canvas.height - ball.Radius)
+			ball.ballSpeedY = -ball.ballSpeedY;
 
-	// Si la balle atteint l'extrémité gauche ou droite, réinitialiser sa position
-	if (ballX < 0 + ballRadius || ballX > canvas.width - ballRadius) {
-		if (ballX < 0 + ballRadius)
-		{
-			scoreR++;
-			if (scoreR <= 10 && scoreR != 0)
-				document.getElementById("scoreRight" + scoreR).style.backgroundColor = "red";
-			console.log("scoreRight" + scoreR);
-		}
-		else
-		{
-			scoreL++;
-			if (scoreR <= 10 && scoreR != 0)
-				document.getElementById("scoreLeft" + scoreL).style.backgroundColor = "green";
-			console.log("scoreLeft" + scoreL);
-		}
-		ballX = canvas.width / 2;
-		ballY = canvas.height / 2;
-		ballSpeedX = -ballSpeedX;
-		divLeft.textContent = scoreL;
-		divRight.textContent = scoreR;
-		rand = Math.random() * (paddleHeight + 20) - ((paddleHeight + 20) / 2);
+		// Rebondir sur toutes les raquettes
+		collisionPaddles(ball);
+		// Si la balle atteint l'extrémité gauche ou droite, réinitialiser sa position
+		goal(ball);
+		
+		// Securite pour que la balle ne rentre pas dans les murs
+		if (ball.ballSpeedY > ball.ballSpeedYMax)
+			ball.ballSpeedY = ball.ballSpeedYMax;
+		else if (ball.ballSpeedY < -ball.ballSpeedYMax)
+			ball.ballSpeedY = -ball.ballSpeedYMax;
+		if (ball.PosY - ball.Radius < 0)
+			ball.PosY = ball.Radius;
+		else if (ball.PosY + ball.Radius > canvas.height)
+			ball.PosY = canvas.height - ball.Radius;
 	}
-	// Securite pour que la balle ne rentre pas dans les murs
-	if (ballY - ballRadius < 0)
-		ballY = ballRadius;
-	else if (ballY + ballRadius > canvas.height)
-		ballY = canvas.height - ballRadius;
-	SelectAI(paddle3, 1);
-	SelectAI(paddle4, 2);
-	SelectAI(paddle2, 3);
-	SelectAI(paddle1, 1);
+	SelectAI(game.map_paddles.get(0), 1);
+	//updateManualPlayer(game.map_paddles.get(0));
+	SelectAI(game.map_paddles.get(1), 1);
+	if (multy)
+	{
+		SelectAI(game.map_paddles.get(2), 1);
+		SelectAI(game.map_paddles.get(3), 1);
+	}
 	
-}
-
-function drawEnv()
-{
-	let space = 4;
-	let height = 4;
-	let width = 2;
-	let color = "#000";
-	let radius = 100;
-	let angle = 0.04;
-	
-	//draw middle circle
-	for (let i = 0; i < Math.PI * 2; i += Math.PI * angle)
-	{
-		ctx.beginPath();
-		ctx.arc(canvas.width / 2, canvas.height / 2, radius, i + angle / 2, i + angle / 2 + Math.PI * angle / 2);
-		ctx.fillStyle = "black";
-		ctx.stroke();
-		ctx.closePath();
-	}
-
-	//draw middle line
-	for (let i = 0; i < canvas.height / (space + height); i++)
-	{
-		ctx.fillStyle = color;
-		ctx.fillRect(canvas.width / 2 - width / 2, i * (space + height) + height / 2, width, height);
-	}
-}
-
-// Fonction pour dessiner les éléments du jeu
-function drawGame() {
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-	drawEnv();
-	// Dessiner toutes les raquettes
-	for (let i = 0; i < map_paddles.size; i++)
-	{
-		ctx.fillStyle = map_paddles.get(i).Color;
-		ctx.fillRect(map_paddles.get(i).PosX, map_paddles.get(i).PosY, paddleWidth, paddleHeight);
-	}
-
-	// Dessiner la balle
-	ctx.beginPath();
-	ctx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
-	ctx.fillStyle = "#000";
-	ctx.fill();
-	ctx.closePath();
 }
 
 // Fonction principale de mise à jour et de dessin du jeu
@@ -163,12 +141,16 @@ function gameLoop() {
 	updateGame();
 	drawGame();
 	requestAnimationFrame(gameLoop);
-	for (let i = 0; i < map_paddles.size; i++)
+	for (let i = 0; i < game.map_paddles.size; i++)
 	{
-		if (map_paddles.get(i).Player)
-			updateManualPlayer(map_paddles.get(i));
+		if (game.map_paddles.get(i).Player)
+			updateManualPlayer(game.map_paddles.get(i));
 	}
 }
 
+//init game
+init();
 // Lancer la boucle de jeu
 gameLoop();
+//Boucle toutes les secondes
+setInterval(updateBySec, 1000);
