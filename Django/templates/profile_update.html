@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mise à jour du Profil</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h2>Mise à jour du Profil</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Mettre à jour</button>
+    </form>
+</body>
+</html>
+
