@@ -1,3 +1,15 @@
+//Bouton "Jouer" pour afficher le pong
+document.addEventListener('DOMContentLoaded', function() {
+    var boutonPlay = document.getElementById('boutonPlay');
+    var jeuContainer = document.getElementById('jeuContainer');
+    boutonPlay.addEventListener('click', function() {
+        // Cache le bouton 'Play'
+        this.style.display = 'none';
+        titreSite.style.display = 'none';
+        init();
+    });
+});
+
 function GenerateGame()
 {
 	let	minutes = game.time / 60;
@@ -5,7 +17,7 @@ function GenerateGame()
 	let	time_begin = Math.floor(minutes) + ":" + secondes;
 	if (secondes < 10)
 		time_begin = Math.floor(minutes) + ":0" + secondes;
-	let	body = document.getElementById("body");
+	let	body = document.getElementById("pageGame");
 	body.insertAdjacentHTML("afterbegin", '\
 	<div id="timer" height="900" style="text-align:center; font-size:300%">' + time_begin + '</div>\
 		<canvas id="pongCanvas" width="800" height="400"></canvas>\

@@ -18,7 +18,8 @@ function AIlvl2(AI)
 
 function AIlvl3(AI)
 {
-	if (PosAI3 - ballRadius < AI.PosY + game.paddleHeight / 2 && AI.PosY + game.paddleHeight / 2 < PosAI3 + ballRadius)
+	let	ball = game.map_balls.get(0);
+	if (PosAI3 - ball.ballRadius < AI.PosY + game.paddleHeight / 2 && AI.PosY + game.paddleHeight / 2 < PosAI3 + ball.ballRadius)
 		return ;
 	if (AI.PosY + game.paddleHeight / 2 < PosAI3 + ballRadius)
 		AI.PosY += 5;
@@ -28,7 +29,8 @@ function AIlvl3(AI)
 
 function AIlvlCheat(AI)
 {
-	AI.PosY = ballY - game.paddleHeight / 2;
+	let	ball = game.map_balls.get(0);
+	AI.PosY = ball.PosY - game.paddleHeight / 2;
 }
 
 function SelectAI(AI, lvl)
