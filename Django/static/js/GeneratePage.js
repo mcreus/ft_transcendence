@@ -6,9 +6,9 @@ document.addEventListener('DOMContentLoaded', function() {
     boutonPlay.addEventListener('click', function() {
 
         // Cache le bouton 'Play'
-        this.style.display = 'none';
-        titreSite.style.display = 'none';
-        
+        //this.style.display = 'none';
+        //titreSite.style.display = 'none';
+        document.getElementById('main').innerHTML = '';
         init();
     });
 });

@@ -19,31 +19,32 @@
 	</style>
 </head>
 <body id="body">
-<div id="pageAccuueil"></div>
 
-<div class="centre-content">
-	<h1 id="titreSite">PongHub</h1>
-	<button id="boutonPlay">Jouer</button>
-</div>
 
 <div id="profilContainer" class="profil-container">
 	<span id="pseudoJoueur">PseudoJoueur</span>
     <img id="profilImage" src="../static/images/no_image.png" alt="Image de Profil"/>
 </div>
 
-<button onclick="loadForm('signup')">Inscription</button>
-<button onclick="loadForm('login')">Connexion</button>
+<div id="main">
 
-<div id="signupContainer" style="display:none;">
-    
+	<div class="centre-content">
+		<h1 id="titreSite">PongHub</h1>
+		<button id="boutonPlay">Jouer</button>
+	</div>
+
+
+<button onclick="navigateTo('signup')">Inscription</button>
+<button onclick="navigateTo('login')">Connexion</button>
 </div>
 
-<div id="loginContainer" style="display:none;">
-    
+<div id="signupContainer" style="display:none;"> 
+</div>
+
+<div id="loginContainer" style="display:none;">  
 </div>
 
 <div id="profileUpdateContainer" style="display:none;">
-    
 </div>
 
 <div id="pageGame"></div>
@@ -54,6 +55,22 @@
 <script type="text/javascript" src="../static/js/Draw.js"></script>
 <script type="text/javascript" src="../static/js/GeneratePage.js"></script>
 <script type="text/javascript" src="../static/js/pong.js"></script>
+
+<script>
+	function navigateTo(view) {
+		// Masquer toutes les sections
+		document.getElementById('main').innerHTML = '';
+
+		loadForm(`${view}`)
+		// Charger le contenu de la vue spécifiée
+	// 	fetch(`${view}.html`)
+	// 		.then(response => response.text())
+	// 		.then(data => {
+	// 			document.getElementById('content').innerHTML = data;
+	// 		});
+	 }
+
+</script>
 
 </body>
 </html>
