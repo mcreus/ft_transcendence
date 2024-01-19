@@ -13,12 +13,11 @@ function navigateTo(view) {
 			// Masquer toutes les sections
 	document.getElementById('main').innerHTML = '';
 				// Charger les autres vues
-	fetch(`/${view}/`)
+	fetch(`/${view}`)
 		.then(response => response.text())
 		.then(data => {
 			document.getElementById('main').innerHTML = data;
 	});
-			
 }
 
 function GenerateGame(game)
@@ -29,7 +28,7 @@ function GenerateGame(game)
 	let	time_begin = Math.floor(minutes) + ":" + secondes;
 	if (secondes < 10)
 		time_begin = Math.floor(minutes) + ":0" + secondes;
-	let	body = document.getElementById("pageGame");
+	let	body = document.getElementById("main");
 	body.insertAdjacentHTML("afterbegin", '\
 	<div id="timer" height="900" style="text-align:center; font-size:300%">' + time_begin + '</div>\
 		<canvas id="pongCanvas" width="800" height="400"></canvas>\
