@@ -1,0 +1,9 @@
+<h2>Connexion</h2>
+<form id="loginForm" method="post">
+    <p>{{ message }}</p>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="button" id="loginButton" onclick="submitForm()">Se connecter</button>
+</form>
+
+
