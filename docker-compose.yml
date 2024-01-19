@@ -14,7 +14,6 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./site:/usr/share/nginx/html:ro
       - ./configurations/nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
       - modsecurity
@@ -43,6 +42,17 @@ services:
       - "4040:4040"
     depends_on:
       - nginx
+    networks:
+      - webnet
+
+  django:
+    image: "django:latest"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./django:/Django
+    environment:
+      - DJANGO_SECRET_KEY="kci85y=g6br0-e-hv7498q_vzz9ngh=+@l2t$hr&bxvzftk_$)"
     networks:
       - webnet
 
