@@ -31,7 +31,7 @@
 
 	<div class="centre-content">
 		<h1 id="titreSite">PongHub</h1>
-		<button id="boutonPlay">Jouer</button>
+		<button onclick="navigateTo('salon')" class="boutonPlay">Pong</button>
 	</div>
 
 
@@ -45,22 +45,7 @@
 <script type="text/javascript" src="../static/js/Collision.js"></script>
 <script type="text/javascript" src="../static/js/Draw.js"></script>
 <script type="text/javascript" src="../static/js/GeneratePage.js"></script>
-<script type="text/javascript" src="../static/js/pong.js"></script>
+<script type="text/javascript" src="../static/js/Pong.js"></script>
 <script type="text/javascript" src="../static/js/Login.js"></script>
-	<script>
-		function navigateTo(view) {
-			// Masquer toutes les sections
-			document.getElementById('main').innerHTML = '';
-
-		
-				// Charger les autres vues
-				fetch(`/${view}/`)
-					.then(response => response.text())
-					.then(data => {
-						document.getElementById('main').innerHTML = data;
-					});
-			
-		}
-	</script>
 </body>
 </html>

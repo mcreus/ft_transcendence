@@ -1,4 +1,4 @@
-function collisionPaddles(ball)
+function collisionPaddles(game, ball)
 {
 	for (let i = 0; i < game.map_paddles.size; i++)
 	{
@@ -6,17 +6,19 @@ function collisionPaddles(ball)
 			(ball.PosY > game.map_paddles.get(i).PosY - ball.Radius && ball.PosY < game.map_paddles.get(i).PosY + game.paddleHeight + ball.Radius))
 		{
 			if (ball.PosX < game.map_paddles.get(i).PosX)
-				ball.ballSpeedX = -5;
+				ball.ballSpeedX = -1;
 			else if (ball.PosX > game.map_paddles.get(i).PosX)
-				ball.ballSpeedX = 5;
-			ball.ballSpeedY = -(game.map_paddles.get(i).PosY + game.paddleHeight / 2 - ball.PosY) / 8;
+				ball.ballSpeedX = 1;
+			ball.ballSpeedY = -(game.map_paddles.get(i).PosY + game.paddleHeight / 2 - ball.PosY) / (game.paddleHeight / 3);
 			rand = Math.random() * (game.paddleHeight + 20) - ((game.paddleHeight + 20) / 2);
-			//console.log(rand);
+			ball.speed += 0.3;
+			if (ball.speed > game.ballSpeedMax)
+				ball.speed = game.ballSpeedMax;
 		}
 	}
 }
 
-function goal(ball)
+function goal(game, ball)
 {
 	if (ball.PosX < 0 + ball.Radius || ball.PosX > canvas.width - ball.Radius)
 	{
@@ -32,9 +34,12 @@ function goal(ball)
 			if (game.scoreL <= game.scoreWin && game.scoreL != 0)
 				document.getElementById("scoreLeft" + game.scoreL).style.backgroundColor = "green";
 		}
+		if (game.scoreL >= game.scoreWin || game.scoreR >= game.scoreWin)
+			game.finished = true;
 		ball.PosX = canvas.width / 2;
 		ball.PosY = canvas.height / 2;
 		ball.ballSpeedX = -ball.ballSpeedX;
+		ball.speed = game.ballSpeedInit;
 		document.getElementById('scoreLeft').textContent = game.scoreL;
 		document.getElementById('scoreRight').textContent = game.scoreR;
 		rand = Math.random() * (game.paddleHeight + 20) - ((game.paddleHeight + 20) / 2);

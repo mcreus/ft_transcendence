@@ -1,20 +1,29 @@
 //Bouton "Jouer" pour afficher le pong
-document.addEventListener('DOMContentLoaded', function() {
+/*document.addEventListener('DOMContentLoaded', function() {
     var boutonPlay = document.getElementById('boutonPlay');
     var jeuContainer = document.getElementById('jeuContainer');
 
     boutonPlay.addEventListener('click', function() {
-
-        // Cache le bouton 'Play'
-        //this.style.display = 'none';
-        //titreSite.style.display = 'none';
         document.getElementById('main').innerHTML = '';
         init();
     });
-});
+});*/
 
-function GenerateGame()
+function navigateTo(view) {
+			// Masquer toutes les sections
+	document.getElementById('main').innerHTML = '';
+				// Charger les autres vues
+	fetch(`/${view}/`)
+		.then(response => response.text())
+		.then(data => {
+			document.getElementById('main').innerHTML = data;
+	});
+			
+}
+
+function GenerateGame(game)
 {
+	document.getElementById('main').innerHTML = '';
 	let	minutes = game.time / 60;
 	let	secondes = game.time % 60;
 	let	time_begin = Math.floor(minutes) + ":" + secondes;

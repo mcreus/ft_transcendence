@@ -27,4 +27,7 @@ def login_view(request):
                 message = 'Identifiants invalides.'
     
     return render(request, 'login.html', context={'form': form, 'message': message})
+    
+def salon_view(request):
+    return render(request, 'salon.html')
 
