@@ -1,9 +1,26 @@
+<div id="profilContainer" class="profil-container">
+    {% if user.is_authenticated %}
+        <span id="pseudoJoueur">
+            {{ request.user }}
+            <button onclick="navigateTo('logout')">Se deconnecter</button></p></span>
+    {% else %}
+    <span id="pseudoJoueur">
+        Non connecté
+        <button onclick="navigateTo('login')">Connexion</button></p></span>
+    {% endif %}
+    <img id="profilImage" src="../static/images/no_image.png" alt="Image de Profil"/>
+</div>
+
 <h2>Connexion</h2>
-<form id="loginForm" method="post">
-    <p>{{ message }}</p>
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="button" id="loginButton" onclick="submitForm()">Se connecter</button>
-</form>
+{% if not user.is_authenticated %}
+    <form id="loginForm" method="post">
+        <p>{{ message }}</p>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="button" id="loginButton" onclick="submitForm('login')">Se connecter</button>
+    </form>
+{% else %}
+        <p>{{ request.user }}, vous êtes déjà connecté !</p>
+{% endif %}
 
 
