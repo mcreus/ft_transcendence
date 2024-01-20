@@ -10,14 +10,15 @@
 });*/
 
 function navigateTo(view) {
-			// Masquer toutes les sections
+	// Masquer toutes les sections
 	document.getElementById('main').innerHTML = '';
-				// Charger les autres vues
+	// Charger les autres vues
 	fetch(`/${view}`)
 		.then(response => response.text())
 		.then(data => {
 			document.getElementById('main').innerHTML = data;
-	});
+			window.location.hash = view;
+		});
 }
 
 function GenerateGame(game)

@@ -5,6 +5,7 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script src="https://unpkg.com/page/page.js"></script>
 		<title>PongHub</title>
 		<link rel="stylesheet" href="{% static 'css/mainPage.css' %}">
 		<style>
@@ -50,5 +51,14 @@
 		<script type="text/javascript" src="../static/js/GeneratePage.js"></script>
 		<script type="text/javascript" src="../static/js/Pong.js"></script>
 		<script type="text/javascript" src="../static/js/Login.js"></script>
+		<script>
+			page({ hashbang: true });
+			page('/', () => navigateTo(''));
+			page('/signup', () => navigateTo('signup.html'));
+			page('/login', () => navigateTo('login.html'));
+			window.addEventListener('popstate', () => {
+      			navigateTo(window.location.hash.substring(1));
+			});
+		</script>
 	</body>
 </html>

@@ -19,6 +19,9 @@
         {{ form.as_p }}
         <button type="button" id="loginButton" onclick="submitForm('login')">Se connecter</button>
     </form>
+    
+    <p>Pas encore membre ? 
+    <button onclick="navigateTo('signup')">Inscrivez-vous maintenant</button></p>
 {% else %}
         <p>{{ request.user }}, vous êtes déjà connecté !</p>
 {% endif %}
