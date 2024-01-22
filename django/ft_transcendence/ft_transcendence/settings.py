@@ -128,3 +128,15 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'home.User'
+
+USE_X_FORWARDED_HOST = True
+
+# Indique à Django d'utiliser l'en-tête 'X-Forwarded-Proto' pour déterminer si la requête est sécurisée (via HTTPS)
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'http')
+
+# Autres configurations de sécurité (facultatives mais recommandées pour la production)
+SECURE_SSL_REDIRECT = False
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+ALLOWED_HOSTS = ['*']
