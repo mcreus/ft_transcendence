@@ -22,21 +22,9 @@
 	</head>
 
 	<body id="body">
-		
-
+		{% include 'ruban.html' %}
 		<div id="main">
-			<div id="profilContainer" class="profil-container">
-				{% if user.is_authenticated %}
-					<span id="pseudoJoueur">
-						{{ request.user }}
-						<button onclick="navigateTo('logout')">Se deconnecter</button></p></span>
-				{% else %}
-				<span id="pseudoJoueur">
-					Non connecté
-					<button onclick="navigateTo('login')">Connexion</button></p></span>
-				{% endif %}
-				<img id="profilImage" src="../static/images/no_image.png" alt="Image de Profil"/>
-			</div>
+			
 			<div class="centre-content">
 				<h1 id="titreSite">PongHub</h1>
 				<button onclick="navigateTo('salon')" class="boutonPlay">Pong</button>
@@ -53,9 +41,6 @@
 		<script type="text/javascript" src="../static/js/Login.js"></script>
 		<script>
 			page({ hashbang: true });
-			page('/', () => navigateTo(''));
-			page('/signup', () => navigateTo('signup.html'));
-			page('/login', () => navigateTo('login.html'));
 			window.addEventListener('popstate', () => {
       			navigateTo(window.location.hash.substring(1));
 			});

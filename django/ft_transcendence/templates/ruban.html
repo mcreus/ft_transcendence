@@ -1,0 +1,12 @@
+<div id="profilContainer" class="profil-container">
+    {% if user.is_authenticated %}
+        <span id="pseudoJoueur">
+            {{ request.user }}
+            <button onclick="navigateTo('logout')">Se deconnecter</button></p></span>
+    {% else %}
+    <span id="pseudoJoueur">
+        Non connecté
+        <button onclick="navigateTo('login')">Connexion</button></p></span>
+    {% endif %}
+    <img id="profilImage" src="../static/images/no_image.png" alt="Image de Profil"/>
+</div>
