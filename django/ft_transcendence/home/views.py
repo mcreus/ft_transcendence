@@ -23,7 +23,7 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 message = f'Bonjour, {user.username}! Vous êtes connecté.'
-                return render(request, 'index.html')
+                return render(request, 'profile.html')
             else:
                 message = 'Identifiants invalides.'
     
@@ -47,6 +47,8 @@ def signup_view(request):
             return render(request, 'index.html')
     return render(request, 'signup.html', context={'form': form})
 
+def profile(request):
+    return render(request, 'profile.html')
 
 def salon_view(request):
     return render(request, 'salon.html')
