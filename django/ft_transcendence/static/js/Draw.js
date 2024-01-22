@@ -25,7 +25,7 @@ function drawEnv()
 	}
 }
 
-function drawGame() {
+function drawGame(game) {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	drawEnv();
 	// Dessiner toutes les raquettes

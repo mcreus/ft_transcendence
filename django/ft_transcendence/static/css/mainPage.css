@@ -21,7 +21,7 @@ body {
     margin-top: 50px;
 }
 
-#boutonPlay {
+.boutonPlay {
     padding: 10px 20px;
     font-size: 20px;
     color: white;
@@ -52,6 +52,6 @@ body {
 }
 
 
-#boutonPlay:hover {
+.boutonPlay:hover {
     background-color: #F056b3;
 }

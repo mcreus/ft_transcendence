@@ -1,11 +1,11 @@
 
-function submitForm() {
+function submitForm(view) {
    
     // Récupérer les données du formulaire
-    let formData = new FormData(document.getElementById('loginForm'));
+    let formData = new FormData(document.getElementById(`${view}Form`));
 
     // Effectuer une requête AJAX pour envoyer les données du formulaire
-    fetch('/login/', {
+    fetch(`/${view}/`, {
         method: 'POST',
         body: formData
     })
