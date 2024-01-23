@@ -25,16 +25,12 @@
 
 <body id="body">
 	{% include 'ruban.html' %}
-	<div id="main">
-
+	<div id="main" class="vertical-center">
 		<div class="centre-content">
 			<h1 id="titreSite">PongHub</h1>
-			<button onclick="navigateTo('salon')" class="boutonPlay">Pong</button>
+			<button onclick="goTo('salon')" class="boutonPlay">Pong !</button>
 		</div>
-		<button onclick="goTo('signup')">Inscription</button>
-		<button onclick="goTo('login')">Connexion</button>
 	</div>
-
 	<script type="text/javascript" src="../static/js/AI.js"></script>
 	<script type="text/javascript" src="../static/js/ManualPlayer.js"></script>
 	<script type="text/javascript" src="../static/js/Collision.js"></script>
@@ -53,11 +49,6 @@
 				navigateTo(adjustedHash.substring(1));
 			userNavigation = true; // Réinitialiser pour la prochaine fois
 		});
-
-		function goTo(view) {
-			userNavigation = false; // navigation est déclenchée par le script
-			navigateTo(view);
-		}
 	</script>
 </body>
 

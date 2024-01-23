@@ -12,15 +12,32 @@
 function navigateTo(view) {
 	// Masquer toutes les sections
 	document.getElementById('main').innerHTML = '';
-	document.getElementById('profilContainer').innerHTML = '';
-	console.log('navigateto')
 	// Charger les autres vues
-	fetch(`/${view}`)
-		.then(response => response.text())
-		.then(data => {
-			document.getElementById('main').innerHTML = data;
-			window.location.hash = view;
-		});
+	console.log(view);
+	if (view != "")
+	{
+		fetch(`/${view}`)
+			.then(response => response.text())
+			.then(data => {
+				document.getElementById('main').innerHTML = data;
+				window.location.hash = view;
+			});
+	}
+	else
+	{
+		document.getElementById('body').innerHTML = '';
+		fetch(`/${view}`)
+			.then(response => response.text())
+			.then(data => {
+				document.getElementById('body').innerHTML = data;
+				window.location.hash = view;
+			});
+	}
+}
+
+function goTo(view) {
+	userNavigation = false; // navigation est déclenchée par le script
+	navigateTo(view);
 }
 
 function GenerateGame(game)
