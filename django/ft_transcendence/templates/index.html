@@ -1,49 +1,64 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="fr">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-		<script src="https://unpkg.com/page/page.js"></script>
-		<title>PongHub</title>
-		<link rel="stylesheet" href="{% static 'css/mainPage.css' %}">
-		<style>
-			canvas {
-				border: 1px solid #000;
-				display: block;
-				margin: 20px auto;
-			}
-			.center {
-				margin-left: auto;
-				margin-right: auto;
-			}
-		</style>
-	</head>
 
-	<body id="body">
-		{% include 'ruban.html' %}
-		<div id="main">
-			
-			<div class="centre-content">
-				<h1 id="titreSite">PongHub</h1>
-				<button onclick="navigateTo('salon')" class="boutonPlay">Pong</button>
-			</div>
-			<button onclick="navigateTo('signup')">Inscription</button>
-			<button onclick="navigateTo('login')">Connexion</button>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://unpkg.com/page/page.js"></script>
+	<title>PongHub</title>
+	<link rel="stylesheet" href="{% static 'css/mainPage.css' %}">
+	<style>
+		canvas {
+			border: 1px solid #000;
+			display: block;
+			margin: 20px auto;
+		}
+
+		.center {
+			margin-left: auto;
+			margin-right: auto;
+		}
+	</style>
+</head>
+
+<body id="body">
+	{% include 'ruban.html' %}
+	<div id="main">
+
+		<div class="centre-content">
+			<h1 id="titreSite">PongHub</h1>
+			<button onclick="navigateTo('salon')" class="boutonPlay">Pong</button>
 		</div>
-		<script type="text/javascript" src="../static/js/AI.js"></script>
-		<script type="text/javascript" src="../static/js/ManualPlayer.js"></script>
-		<script type="text/javascript" src="../static/js/Collision.js"></script>
-		<script type="text/javascript" src="../static/js/Draw.js"></script>
-		<script type="text/javascript" src="../static/js/GeneratePage.js"></script>
-		<script type="text/javascript" src="../static/js/Pong.js"></script>
-		<script type="text/javascript" src="../static/js/Login.js"></script>
-		<script>
-			page({ hashbang: true });
-			window.addEventListener('popstate', () => {
-      			navigateTo(window.location.hash.substring(1));
-			});
-		</script>
-	</body>
+		<button onclick="goTo('signup')">Inscription</button>
+		<button onclick="goTo('login')">Connexion</button>
+	</div>
+
+	<script type="text/javascript" src="../static/js/AI.js"></script>
+	<script type="text/javascript" src="../static/js/ManualPlayer.js"></script>
+	<script type="text/javascript" src="../static/js/Collision.js"></script>
+	<script type="text/javascript" src="../static/js/Draw.js"></script>
+	<script type="text/javascript" src="../static/js/GeneratePage.js"></script>
+	<script type="text/javascript" src="../static/js/Pong.js"></script>
+	<script type="text/javascript" src="../static/js/Login.js"></script>
+
+	<script>
+		page({ hashbang: true });
+		var userNavigation = true;
+
+		window.addEventListener('popstate', () => {
+			let adjustedHash = window.location.hash.replace(/^#!#/, '#');
+			if (userNavigation)
+				navigateTo(adjustedHash.substring(1));
+			userNavigation = true; // Réinitialiser pour la prochaine fois
+		});
+
+		function goTo(view) {
+			userNavigation = false; // navigation est déclenchée par le script
+			navigateTo(view);
+		}
+	</script>
+</body>
+
 </html>

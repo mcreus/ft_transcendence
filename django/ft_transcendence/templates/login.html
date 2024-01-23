@@ -10,7 +10,7 @@
     </form>
     
     <p>Pas encore membre ? 
-    <button onclick="navigateTo('signup')">Inscrivez-vous maintenant</button></p>
+    <button onclick="goTo('signup')">Inscrivez-vous maintenant</button></p>
 {% else %}
         <p>{{ request.user }}, vous êtes déjà connecté !</p>
 {% endif %}

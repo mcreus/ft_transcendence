@@ -13,6 +13,7 @@ function navigateTo(view) {
 	// Masquer toutes les sections
 	document.getElementById('main').innerHTML = '';
 	document.getElementById('profilContainer').innerHTML = '';
+	console.log('navigateto')
 	// Charger les autres vues
 	fetch(`/${view}`)
 		.then(response => response.text())
