@@ -20,8 +20,8 @@ function navigateTo(view) {
 			.then(response => response.text())
 			.then(data => {
 				document.getElementById('main').innerHTML = data;
-				history.pushState({ view }, null, `#${view}`);
-				//window.location.hash = view;
+				//history.pushState({ view }, null, `#${view}`);
+				window.location.hash = view;
 			});
 	}
 	else
@@ -31,8 +31,8 @@ function navigateTo(view) {
 			.then(response => response.text())
 			.then(data => {
 				document.getElementById('body').innerHTML = data;
-				history.pushState({ view }, null, `#${view}`);
-				//window.location.hash = view;
+				//history.pushState({ view }, null, `#${view}`);
+				window.location.hash = view;
 			});
 	}
 }

@@ -1,10 +1,24 @@
 <div id="ruban" class="ruban">
-	<left><button class="buttonInvisible" onclick="goTo('')"><img src="../static/images/no_image.png" id="profilImage"/></button></left>
+	<left><button class="buttonInvisible" onclick="goTo('')">
+		<div class="logo">
+			<div class="rect" id="top-orange"></div>
+			<div class="rect" id="bot-orange"></div>
+			<div class="rect" id="top-blue"></div>
+			<div class="rect" id="bot-blue"></div>
+			<div class="ball"></div>
+		</div>
+	</button></left>
 	<right id="profilContainer">
 		{% if user.is_authenticated %}
 			{{ request.user }}
-			<button onclick="goTo('logout')" class="button">Se deconnecter</button>
-			<img id="profilImage" src="../static/images/no_image.png"></img>
+			<div class="dropdown">
+				<img src="../static/images/no_image.png" id="profilImage"/>
+				<div class="dropdown-child">
+					<button onclick="goTo('profile')">Profil</button>
+					<button>Historique</button>
+					<button onclick="goTo('logout')">Deconnexion</button>
+				</div>
+			</div>
 		{% else %}
 			<button onclick="goTo('login')" class="button">Connexion</button></p></span>
 		{% endif %}
