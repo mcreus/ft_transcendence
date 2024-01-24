@@ -44,11 +44,17 @@
 		var userNavigation = true;
 
 		window.addEventListener('popstate', () => {
+			console.log('popstate : ', userNavigation)
 			let adjustedHash = window.location.hash.replace(/^#!#/, '#');
 			if (userNavigation)
 				navigateTo(adjustedHash.substring(1));
 			userNavigation = true; // Réinitialiser pour la prochaine fois
 		});
+		
+		function goTo(view) {
+			userNavigation = false; // navigation est déclenchée par le script
+			navigateTo(view);
+		}
 	</script>
 </body>
 

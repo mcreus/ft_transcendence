@@ -1,4 +1,3 @@
-
 function submitForm(view) {
    
     // Récupérer les données du formulaire
@@ -11,6 +10,6 @@ function submitForm(view) {
     })
         .then(response => response.text())
         .then(data => {
-            document.getElementById('main').innerHTML = data;
+            document.getElementById('body').innerHTML = data;
         });
 }

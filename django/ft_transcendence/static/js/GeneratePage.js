@@ -13,14 +13,15 @@ function navigateTo(view) {
 	// Masquer toutes les sections
 	document.getElementById('main').innerHTML = '';
 	// Charger les autres vues
-	console.log(view);
-	if (view != "")
+	console.log('Navigateto', view);
+	if (view != "" && view != "logout" && view != "login")
 	{
 		fetch(`/${view}`)
 			.then(response => response.text())
 			.then(data => {
 				document.getElementById('main').innerHTML = data;
-				window.location.hash = view;
+				history.pushState({ view }, null, `#${view}`);
+				//window.location.hash = view;
 			});
 	}
 	else
@@ -30,14 +31,10 @@ function navigateTo(view) {
 			.then(response => response.text())
 			.then(data => {
 				document.getElementById('body').innerHTML = data;
-				window.location.hash = view;
+				history.pushState({ view }, null, `#${view}`);
+				//window.location.hash = view;
 			});
 	}
-}
-
-function goTo(view) {
-	userNavigation = false; // navigation est déclenchée par le script
-	navigateTo(view);
 }
 
 function GenerateGame(game)

@@ -1,16 +1,19 @@
-<h2>Connexion</h2>
-{% if not user.is_authenticated %}
-    <form id="loginForm" method="post">
-        <p>{{ message }}</p>
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="button" id="loginButton" onclick="submitForm('login')">Se connecter</button>
-    </form>
-    
-    <p>Pas encore membre ? 
-    <button onclick="goTo('signup')">Inscrivez-vous maintenant</button></p>
-{% else %}
-        <p>{{ request.user }}, vous êtes déjà connecté !</p>
-{% endif %}
+{% include 'ruban.html' %}
+<div id="main" class="vertical-center">
+	<h2>Connexion</h2>
+	{% if not user.is_authenticated %}
+	    <form id="loginForm" method="post">
+		<p>{{ message }}</p>
+		{% csrf_token %}
+		{{ form.as_p }}
+		<button type="button" id="loginButton" onclick="submitForm('login')">Se connecter</button>
+	    </form>
+	    
+	    <p>Pas encore membre ? 
+	    <button onclick="goTo('signup')">Inscrivez-vous maintenant</button></p>
+	{% else %}
+		<p>{{ request.user }}, vous êtes déjà connecté !</p>
+	{% endif %}
+</div>
 
 
