@@ -1,12 +1,26 @@
-<div id="profilContainer" class="profil-container">
-    {% if user.is_authenticated %}
-        <span id="pseudoJoueur">
-            {{ request.user }}
-            <button onclick="navigateTo('logout')">Se deconnecter</button></p></span>
-    {% else %}
-    <span id="pseudoJoueur">
-        Non connecté
-        <button onclick="navigateTo('login')">Connexion</button></p></span>
-    {% endif %}
-    <img id="profilImage" src="../static/images/no_image.png" alt="Image de Profil"/>
+<div id="ruban" class="ruban">
+	<left><button class="buttonInvisible" onclick="goTo('')">
+		<div class="logo">
+			<div class="rect" id="top-orange"></div>
+			<div class="rect" id="bot-orange"></div>
+			<div class="rect" id="top-blue"></div>
+			<div class="rect" id="bot-blue"></div>
+			<div class="ball"></div>
+		</div>
+	</button></left>
+	<right id="profilContainer">
+		{% if user.is_authenticated %}
+			{{ request.user }}
+			<div class="dropdown">
+				<img src="../static/images/no_image.png" id="profilImage"/>
+				<div class="dropdown-child">
+					<button onclick="goTo('profile')">Profil</button>
+					<button>Historique</button>
+					<button onclick="goTo('logout')">Deconnexion</button>
+				</div>
+			</div>
+		{% else %}
+			<button onclick="goTo('login')" class="button">Connexion</button></p></span>
+		{% endif %}
+	</right>
 </div>

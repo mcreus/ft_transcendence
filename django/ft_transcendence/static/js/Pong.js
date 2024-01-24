@@ -114,7 +114,7 @@ class GameManager {
 		delete this;
 		console.log("end game");
 		console.log(game);
-		navigateTo('');
+		goTo('');
 		return ;
 	}
 	if (new Date().getTime() / 1000 - game.interval >= 1)

@@ -22,19 +22,15 @@ def login_view(request):
             )
             if user is not None:
                 login(request, user)
-                message = f'Bonjour, {user.username}! Vous êtes connecté.'
-                return render(request, 'profile.html')
+                return render(request, 'index.html')
             else:
                 message = 'Identifiants invalides.'
     
     return render(request, 'login.html', context={'form': form, 'message': message})
 
 def logout_view(request):
-    
     logout(request)
-    form = LoginForm()
-    message = ''
-    return render(request, 'login.html', context={'form': form, 'message': message})
+    return render(request, 'index.html')
 
 def signup_view(request):
     form = forms.SignupForm()
