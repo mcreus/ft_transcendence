@@ -49,3 +49,5 @@ def profile(request):
 def salon_view(request):
     return render(request, 'salon.html')
 
+def local_view(request):
+    return render(request, 'local.html')

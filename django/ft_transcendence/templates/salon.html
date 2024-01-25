@@ -1,13 +1,10 @@
-<h2>Salon</h2>
-<label for="time-select">Time:</label>
-
-<select name="time" id="time-select">
-  <option value="0.5">0:30</option>
-  <option value="1">1:00</option>
-  <option value="1.5">1:30</option>
-  <option value="2">2</option>
-  <option value="2.5">2:30</option>
-  <option value="3">3</option>
-  <option value="5">5</option>
-</select>
-<button id="boutonPlay" onclick="init()">Jouer</button>
+<div class="centre-content">
+	{% if user.is_authenticated %}
+		<button onclick="goTo('')" class="buttonClassique">Partie rapide</button>
+		<button onclick="goTo('')" class="buttonClassique">Tournois</button>
+	{% else %}
+		<button class="buttonInactive">Partie rapide</button>
+		<button class="buttonInactive">Tournois</button>
+	{% endif %}
+	<button onclick="goTo('local')" class="buttonClassique">Partie local</button>
+</div>

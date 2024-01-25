@@ -44,7 +44,7 @@ class GameManager {
     this.paddleHeight = 80;
     this.paddleWidth = 10;
     this.ballRadius = 10;
-    this.scoreWin = 1;
+    this.scoreWin = 10;
     this.time = 60 * n_time;
     this.ballSpeedInit = 5;
     this.ballSpeedMax = 10;
@@ -89,7 +89,7 @@ class GameManager {
 		return ;
 	this.time--;
 	if (this.time % 30 == 0 && this.multyBalls)
-		this.map_balls.set(this.nb_balls++, new Ball(canvas.width / 2, canvas.height / 2, "#000", this.ballRadius, this.ballSpeedInit));
+		this.map_balls.set(this.nb_balls++, new Ball(canvas.width / 2, canvas.height / 2, "white", this.ballRadius, this.ballSpeedInit));
 	let	timer = document.getElementById("timer");
 	let	minutes = this.time / 60;
 	let	secondes = this.time % 60;
@@ -144,11 +144,11 @@ function init()
 	GenerateGame(game);
 	canvas = document.getElementById("pongCanvas");
 	ctx = canvas.getContext("2d");
-	let	paddle1 = new Paddle(0, (canvas.height - game.paddleHeight) / 2, "#090", false);
-	let	paddle2 = new Paddle(canvas.width - game.paddleWidth, (canvas.height - game.paddleHeight) / 2, "#900", false);
-	let	paddle3 = new Paddle(150, (canvas.height - game.paddleHeight)  / 2, "#090", false);
-	let	paddle4 = new Paddle(canvas.width - game.paddleWidth - 150, (canvas.height - game.paddleHeight)  / 2, "#900", false);
-	let	ball1 = new Ball(canvas.width / 2, canvas.height / 2, "#000", game.ballRadius, game.ballSpeedInit);
+	let	paddle1 = new Paddle(0, (canvas.height - game.paddleHeight) / 2, "rgba(0,176,176,1)", false);
+	let	paddle2 = new Paddle(canvas.width - game.paddleWidth, (canvas.height - game.paddleHeight) / 2, "rgba(255,154,0,1)", false);
+	let	paddle3 = new Paddle(150, (canvas.height - game.paddleHeight)  / 2, "rgba(0,176,176,1)", false);
+	let	paddle4 = new Paddle(canvas.width - game.paddleWidth - 150, (canvas.height - game.paddleHeight)  / 2, "rgba(255,154,0,1)", false);
+	let	ball1 = new Ball(canvas.width / 2, canvas.height / 2, "white", game.ballRadius, game.ballSpeedInit);
 
 	//Paddles
 	game.map_paddles.set(game.nb_paddles++, paddle1);

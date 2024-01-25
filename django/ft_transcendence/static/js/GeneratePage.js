@@ -57,8 +57,8 @@ function GenerateGame(game)
 		</thead>\
 		<tbody>\
 			<tr>\
-				<td colspan="' + game.scoreWin + '" id="scoreLeft" width="50%" style="text-align:center; color:green; font-size:160%">0</td>\
-				<td colspan="' + game.scoreWin + '" id="scoreRight" width="50%" style="text-align:center; color:red; font-size:160%">0</td>\
+				<td colspan="' + game.scoreWin + '" id="scoreLeft" width="50%" style="text-align:center; color:rgba(0,176,176,1); font-size:160%">0</td>\
+				<td colspan="' + game.scoreWin + '" id="scoreRight" width="50%" style="text-align:center; color:rgba(255,154,0,1); font-size:160%">0</td>\
 			</tr>\
 			<tr id="scoring"></tr>\
 		</tbody>\
@@ -67,7 +67,7 @@ function GenerateGame(game)
 	let	scoring = document.getElementById("scoring");
 	for (let i = 1; i <= game.scoreWin; i++)
 	{
-		scoring.insertAdjacentHTML("afterbegin", '<td id=scoreLeft' + i +' height="10" width="10" style="background-color:rgba(0,0,0,0.2)" ></td>');
-		scoring.insertAdjacentHTML("beforeend", '<td id=scoreRight' + i +' height="10" width="10" style="background-color:rgba(0,0,0,0.2)"></td>');
+		scoring.insertAdjacentHTML("afterbegin", '<td id=scoreLeft' + i +' height="10" width="10" style="background-color:rgba(255,255,255,0.2)" ></td>');
+		scoring.insertAdjacentHTML("beforeend", '<td id=scoreRight' + i +' height="10" width="10" style="background-color:rgba(255,255,255,0.2)"></td>');
 	}
 }
