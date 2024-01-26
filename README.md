@@ -25,4 +25,4 @@ Majeurs :
 - (Clavardage en direct (live chat).)
   
 Mineurs :
-- Option de personnalisation du jeu.
+- Option de personnalisation du jeu. (OK)
