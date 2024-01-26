@@ -67,7 +67,30 @@ function GenerateGame(game)
 	let	scoring = document.getElementById("scoring");
 	for (let i = 1; i <= game.scoreWin; i++)
 	{
-		scoring.insertAdjacentHTML("afterbegin", '<td id=scoreLeft' + i +' height="10" width="10" style="background-color:rgba(255,255,255,0.2)" ></td>');
-		scoring.insertAdjacentHTML("beforeend", '<td id=scoreRight' + i +' height="10" width="10" style="background-color:rgba(255,255,255,0.2)"></td>');
+		scoring.insertAdjacentHTML("afterbegin", '<td id=scoreLeft' + i +' height="10" width="10" style="background-color:rgba(80,80,80,0.8)" ></td>');
+		scoring.insertAdjacentHTML("beforeend", '<td id=scoreRight' + i +' height="10" width="10" style="background-color:rgba(80,80,80,0.8)"></td>');
+	}
+}
+
+function ModifParam()
+{
+	let	div = document.getElementById("pos");
+	let	team = 1;
+	div.innerHTML= '';
+	console.log(div);
+	if (document.getElementById("Nb_player").value == 4)
+		team = 2;
+	for (let i = 1; i <= document.getElementById("Nb_player").value; i++)
+	{
+		let color = "sous-player-blue";
+		if (i > team)
+			color = "sous-player-orange";
+		div.insertAdjacentHTML("beforeend", '<div class="' + color +'" for="player_' + i + '">Player ' + i + '<select id="player_' + i + '">\
+			<option value="0">Joueur</option>\
+			<option value="1">AI 1</option>\
+			<option value="2">AI 2</option>\
+			<option value="3">Ai 3</option>\
+			<option value="4">AI 4</option>\
+		</select></div>');
 	}
 }

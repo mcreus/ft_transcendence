@@ -1,13 +1,48 @@
-<h2>Configuration de la partie</h2>
-<label for="time-select">Time:</label>
+<div id="Config" class="config-content">
+	<h2>Configuration de la partie</h2>
+	<div for="time-select">Time:
+		<select name="time" id="time-select">
+			<option value="0.5">0:30</option>
+			<option value="1">1:00</option>
+			<option value="1.5">1:30</option>
+			<option value="2">2</option>
+			<option value="2.5">2:30</option>
+			<option value="3">3</option>
+			<option value="5">5</option>
+		</select>
+	</div>
+	<div for="Nb_player">Nombre de joueurs:
+		<select id="Nb_player" onchange="ModifParam()">
+			<option value="2">2</option>
+			<option value="4">4</option>
+		</select>
+	</div>
+	<div>Nombre de points gagnant
+		<input id="Nb_point" type="number" min="1" max ="50" value="5"></input>
+	</div>
+	<div>Multiples balles
+		<input id="Multy_ball" type="checkbox"></input>
+	</div>
+</div>
+<div id="pos" class="player-content">
+	<div class="sous-player-blue">Player 1
+		<select id="player_1">
+			<option value="0">Joueur</option>
+			<option value="1">AI 1</option>
+			<option value="2">AI 2</option>
+			<option value="3">Ai 3</option>
+			<option value="4">AI 4</option>
+		</select>
+	</div>
+	<div class="sous-player-orange">Player 2
+		<select id="player_2">
+			<option value="0">Joueur</option>
+			<option value="1">AI 1</option>
+			<option value="2">AI 2</option>
+			<option value="3">Ai 3</option>
+			<option value="4">AI 4</option>
+		</select>
+	</div>
+</div>
 
-<select name="time" id="time-select">
-	<option value="0.5">0:30</option>
-	<option value="1">1:00</option>
-	<option value="1.5">1:30</option>
-	<option value="2">2</option>
-	<option value="2.5">2:30</option>
-	<option value="3">3</option>
-	<option value="5">5</option>
-</select>
-<button id="boutonPlay" onclick="init()">Jouer</button>
+<button class="boutonPlay" onclick="init()">Start !</button>

@@ -3,8 +3,8 @@
 		<button onclick="goTo('')" class="buttonClassique">Partie rapide</button>
 		<button onclick="goTo('')" class="buttonClassique">Tournois</button>
 	{% else %}
-		<button class="buttonInactive">Partie rapide</button>
-		<button class="buttonInactive">Tournois</button>
+		<button class="buttonInactive" title="Nécessite d'être connecté.">Partie rapide</button>
+		<button class="buttonInactive" title="Nécessite d'être connecté.">Tournois</button>
 	{% endif %}
 	<button onclick="goTo('local')" class="buttonClassique">Partie local</button>
 </div>
