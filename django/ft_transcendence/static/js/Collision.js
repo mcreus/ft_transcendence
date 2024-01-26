@@ -26,13 +26,13 @@ function goal(game, ball)
 		{
 			game.scoreR++;
 			if (game.scoreR <= game.scoreWin && game.scoreR != 0)
-				document.getElementById("scoreRight" + game.scoreR).style.backgroundColor = "red";
+				document.getElementById("scoreRight" + game.scoreR).style.backgroundColor = "rgba(255,154,0,1)";
 		}
 		else
 		{
 			game.scoreL++;
 			if (game.scoreL <= game.scoreWin && game.scoreL != 0)
-				document.getElementById("scoreLeft" + game.scoreL).style.backgroundColor = "green";
+				document.getElementById("scoreLeft" + game.scoreL).style.backgroundColor = "rgba(0,176,176,1)";
 		}
 		if (game.scoreL >= game.scoreWin || game.scoreR >= game.scoreWin)
 			game.finished = true;

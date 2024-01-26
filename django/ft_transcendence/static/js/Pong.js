@@ -10,6 +10,9 @@ class Paddle {
     this.Color = Color;
     this.Player = Player;
     this.Height = 80;
+    this.Speed = 5;
+    this.KeyUp = "ArrowUp";
+    this.KeyDown = "ArrowDown";
   }
 };
 
@@ -34,9 +37,12 @@ class Ball {
 };
 
 class GameManager {
-  constructor(n_time) {
+  constructor(n_time, n_point, n_player, multy_ball) {
     this.map_paddles = new Map();
     this.map_balls = new Map();
+    this.scoreWin = n_point;
+    this.time = 60 * n_time;
+    this.nb_player = n_player;
     this.nb_balls = 0;
     this.nb_paddles = 0;
     this.scoreL = 0;
@@ -44,12 +50,9 @@ class GameManager {
     this.paddleHeight = 80;
     this.paddleWidth = 10;
     this.ballRadius = 10;
-    this.scoreWin = 1;
-    this.time = 60 * n_time;
     this.ballSpeedInit = 5;
     this.ballSpeedMax = 10;
-    this.finished = false;
-    this.multyBalls = true;
+    this.multyBalls = multy_ball;
     this.interval = new Date().getTime() / 1000;;
   }
   updateGame() {
@@ -74,14 +77,14 @@ class GameManager {
 			ball.PosY = canvas.height - ball.Radius;
 	}
 	//SelectAI(this, this.map_paddles.get(0), 4);
-	updateManualPlayer(this.map_paddles.get(0));
-	SelectAI(this, this.map_paddles.get(1), 4);
-	if (multy)
+	for (let i = 1; i <= this.nb_player; i++)
 	{
-		SelectAI(this, this.map_paddles.get(2), 1);
-		SelectAI(this, this.map_paddles.get(3), 1);
+		//console.log(this.map_paddles.get(i - 1).Player);
+		if (this.map_paddles.get(i - 1).Player == 0)
+			updateManualPlayer(this.map_paddles.get(i - 1));
+		else
+			SelectAI(this, this.map_paddles.get(i - 1), this.map_paddles.get(i - 1).Player);
 	}
-	
   }
   updateBySec()
   {
@@ -89,7 +92,7 @@ class GameManager {
 		return ;
 	this.time--;
 	if (this.time % 30 == 0 && this.multyBalls)
-		this.map_balls.set(this.nb_balls++, new Ball(canvas.width / 2, canvas.height / 2, "#000", this.ballRadius, this.ballSpeedInit));
+		this.map_balls.set(this.nb_balls++, new Ball(canvas.width / 2, canvas.height / 2, "white", this.ballRadius, this.ballSpeedInit));
 	let	timer = document.getElementById("timer");
 	let	minutes = this.time / 60;
 	let	secondes = this.time % 60;
@@ -131,7 +134,6 @@ class GameManager {
   }
 };
 // Initialiser les positions et vitesses des raquettes et de la balle
-let	multy = false;
 let	PosAI3;
 let	rand;
 
@@ -139,21 +141,49 @@ let	rand;
 function init()
 {
 	//Generate Page
-	let	game = new GameManager(document.getElementById("time-select").value);
+	if (checkParam())
+		return ;
+	let nb_point = document.getElementById("Nb_point").value;
+	let nb_player = document.getElementById("Nb_player").value;
+	let time = document.getElementById("time-select").value;
+	console.log(document.getElementById("Multy_ball").checked);
+	let multy_ball = document.getElementById("Multy_ball").checked;
+	let game = new GameManager(time, nb_point, nb_player, multy_ball);
+	let player1 = document.getElementById("player_1").value;
+	let player2 = document.getElementById("player_2").value;
+	let player3 = 1;
+	let player4 = 1;
+	let paddle1;
+	let paddle2;
+	let paddle3;
+	let paddle4;
+	if (nb_player > 2)
+	{
+		player3 = document.getElementById("player_3").value;
+		player4 = document.getElementById("player_4").value;
+	}
 	rand = Math.random() * (game.paddleHeight + 20) - ((game.paddleHeight + 20) / 2);
 	GenerateGame(game);
 	canvas = document.getElementById("pongCanvas");
 	ctx = canvas.getContext("2d");
-	let	paddle1 = new Paddle(0, (canvas.height - game.paddleHeight) / 2, "#090", false);
-	let	paddle2 = new Paddle(canvas.width - game.paddleWidth, (canvas.height - game.paddleHeight) / 2, "#900", false);
-	let	paddle3 = new Paddle(150, (canvas.height - game.paddleHeight)  / 2, "#090", false);
-	let	paddle4 = new Paddle(canvas.width - game.paddleWidth - 150, (canvas.height - game.paddleHeight)  / 2, "#900", false);
-	let	ball1 = new Ball(canvas.width / 2, canvas.height / 2, "#000", game.ballRadius, game.ballSpeedInit);
+	if (game.nb_player > 2)
+	{
+		paddle1 = new Paddle(0, (canvas.height - game.paddleHeight) / 2, "rgba(0,176,176,1)", player1);
+		paddle2 = new Paddle(150, (canvas.height - game.paddleHeight)  / 2, "rgba(0,176,176,1)", player2);
+		paddle3 = new Paddle(canvas.width - game.paddleWidth, (canvas.height - game.paddleHeight) / 2, "rgba(255,154,0,1)", player3);
+		paddle4 = new Paddle(canvas.width - game.paddleWidth - 150, (canvas.height - game.paddleHeight)  / 2, "rgba(255,154,0,1)", player4);
+	}
+	else
+	{
+		paddle1 = new Paddle(0, (canvas.height - game.paddleHeight) / 2, "rgba(0,176,176,1)", player1);
+		paddle2 = new Paddle(canvas.width - game.paddleWidth, (canvas.height - game.paddleHeight) / 2, "rgba(255,154,0,1)", player2);
+	}
+	let	ball1 = new Ball(canvas.width / 2, canvas.height / 2, "white", game.ballRadius, game.ballSpeedInit);
 
 	//Paddles
 	game.map_paddles.set(game.nb_paddles++, paddle1);
 	game.map_paddles.set(game.nb_paddles++, paddle2);
-	if (multy)
+	if (game.nb_player > 2)
 	{
 		game.map_paddles.set(game.nb_paddles++, paddle3);
 		game.map_paddles.set(game.nb_paddles++, paddle4);
@@ -164,4 +194,12 @@ function init()
 	
 	// Lancer la boucle de jeu
 	game.gameLoop(game);
+}
+
+function checkParam()
+{
+	let nb_point = document.getElementById("Nb_point").value;
+	if (nb_point < 1 || nb_point > 50)
+		return 1;
+	return 0;
 }

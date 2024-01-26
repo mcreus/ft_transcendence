@@ -1,5 +1,3 @@
-let	PlayerSpeed = 5;
-
 // touches du clavier
 const keyState = {};
 
@@ -19,8 +17,8 @@ document.addEventListener("keyup", handleKeyup);
 
 // Mise à jour de la position du joueur manuel
 function updateManualPlayer(Player) {
-    if (keyState["ArrowUp"] && Player.PosY > 0)
-        Player.PosY -= PlayerSpeed;
-    if (keyState["ArrowDown"] && Player.PosY + Player.Height < canvas.height)
-        Player.PosY += PlayerSpeed;
+    if (keyState[Player.KeyUp] && Player.PosY > 0)
+        Player.PosY -= Player.Speed;
+    if (keyState[Player.KeyDown] && Player.PosY + Player.Height < canvas.height)
+        Player.PosY += Player.Speed;
 }

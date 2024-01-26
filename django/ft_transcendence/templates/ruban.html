@@ -10,7 +10,7 @@
 	</button></left>
 	<right id="profilContainer">
 		{% if user.is_authenticated %}
-			{{ request.user }}
+			<div class="pseudo">{{ request.user }}</div>
 			<div class="dropdown">
 				<img src="../static/images/no_image.png" id="profilImage"/>
 				<div class="dropdown-child">
@@ -20,7 +20,7 @@
 				</div>
 			</div>
 		{% else %}
-			<button onclick="goTo('login')" class="button">Connexion</button></p></span>
+			<button onclick="goTo('login')" class="buttonConnexion">Connexion</button></p></span>
 		{% endif %}
 	</right>
 </div>
