@@ -11,18 +11,37 @@
 
 function navigateTo(view) {
 	// Masquer toutes les sections
-	document.getElementById('main').innerHTML = '';
-	// Charger les autres vues
-	console.log('Navigateto', view);
-	if (view != "" && view != "logout" && view != "login")
+	let main = document.getElementById('main');
+	let div = main.getElementsByTagName('div');
+	if (view != "" && view != "logout" && view != "login" && view != "signup")
 	{
-		fetch(`/${view}`)
-			.then(response => response.text())
-			.then(data => {
-				document.getElementById('main').innerHTML = data;
-				//history.pushState({ view }, null, `#${view}`);
-				window.location.hash = view;
-			});
+		let i = 0;
+		for (; i < div.length; i++)
+		{
+			div[i].style.animation = "divout 0.3s " + i * 0.03 + "s";
+			console.log(div[i]);
+		}
+		main.style.animation = "pageout 3s";
+		main.onanimationend = () => {
+			main.innerHTML = '';
+			main.style.opacity = 0.0;
+			// Charger les autres vues
+			console.log('Navigateto', view);
+			if (view != "" && view != "logout" && view != "login")
+			{
+				fetch(`/${view}`)
+					.then(response => response.text())
+					.then(data => {
+						document.getElementById('main').innerHTML = data;
+						//history.pushState({ view }, null, `#${view}`);
+						window.location.hash = view;
+					});
+			}
+			main.style.animation = "pagein 1s";
+			main.onanimationend = () => {
+				main.style.opacity = 1.0;
+			}
+		};
 	}
 	else
 	{

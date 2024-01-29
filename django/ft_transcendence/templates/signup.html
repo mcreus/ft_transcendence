@@ -1,11 +1,12 @@
-<h2>Inscription</h2>
-{% if form.errors %}
-    {{ form.errors }}
-{% endif %}
-<form id="signupForm" method="post">
-    {{ form.as_p }}
-    {% csrf_token %}
-    <button type="button" id="signupButton" onclick="submitForm('signup')">S' inscrire</button>
-</form>
-
-
+{% include 'ruban.html' %}
+<div id="main" class="vertical-center">
+	<h2>Inscription</h2>
+	{% if form.errors %}
+	    {{ form.errors }}
+	{% endif %}
+	<form id="signupForm" method="post">
+	    {{ form.as_p }}
+	    {% csrf_token %}
+	    <button type="button" id="signupButton" onclick="submitForm('signup')">S' inscrire</button>
+	</form>
+</div>

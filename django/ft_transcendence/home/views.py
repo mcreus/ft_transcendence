@@ -41,6 +41,7 @@ def signup_view(request):
             # auto-login user
             login(request, user)
             return render(request, 'index.html')
+
     return render(request, 'signup.html', context={'form': form})
 
 def profile(request):
@@ -51,6 +52,3 @@ def salon_view(request):
 
 def local_view(request):
     return render(request, 'local.html')
-    
-def game_view(request):
-    return render(request, 'game.html')
