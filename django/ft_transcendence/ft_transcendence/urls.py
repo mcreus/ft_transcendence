@@ -29,4 +29,7 @@ urlpatterns = [
     path('local/', views.local_view, name='local'),
     path('tournaments/', views.tournaments_view, name='tournaments'),
     path('tournaments/create/', views.tournament_create, name='tournaments/create'),
+    path('profile/email/', views.update_email, name="profile/email"),
+    path('profile/username/', views.update_username, name="profile/username"),
+    path('profile/password/', views.update_password, name="profile/password"),
 ]

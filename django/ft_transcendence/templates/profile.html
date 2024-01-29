@@ -4,9 +4,15 @@
     <title>Profil Utilisateur</title>
 </head>
 <body>
-    <h1>Page de Profil</h1>
-    <p>Bienvenue, {{ user.username }}!</p>
-    <p>Email : {{ user.email }}</p>
+    <h2>Profil de {{ user.username }}</h2>
+    <p><strong>Pseudo :</strong> {{ user.username }}</p>
+    <p><strong>Email :</strong> {{ user.email|slice:":3" }}***</p>
+    <p><strong>Mot de passe :</strong> ********</p>
+
+    <button onclick="goTo('profile/username')">Modifier le pseudo</button>
+    <button onclick="goTo('profile/email')">Modifier l'email</button>
+    <button onclick="goTo('profile/password')">Modifier le mot de passe</button>
 </body>
 </html>
+
 

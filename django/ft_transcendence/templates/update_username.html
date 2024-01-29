@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Modifier Pseudo</title>
+</head>
+<body>
+    <h2>Modifier votre pseudo</h2>
+    <form id="update_usernameForm" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="button" id="update_username" onclick="submitForm('update_username')">Mettre à jour</button>
+    </form>
+    <button onclick="goTo('profile')">Retour au Profil</button>
+</body>
+</html>
