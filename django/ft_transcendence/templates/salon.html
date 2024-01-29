@@ -1,10 +1,10 @@
 <div class="centre-content">
 	{% if user.is_authenticated %}
-		<div><button onclick="goTo('')" class="buttonClassique">Partie rapide</button></div>
-		<div><button onclick="goTo('')" class="buttonClassique">Tournois</button></div>
+		<button onclick="goTo('')" class="buttonClassique">Partie rapide</button>
+		<button onclick="goTo('tournaments')" class="buttonClassique">Tournois</button>
 	{% else %}
-		<div><button class="buttonInactive" title="Nécessite d'être connecté.">Partie rapide</button></div>
-		<div><button class="buttonInactive" title="Nécessite d'être connecté.">Tournois</button></div>
+		<button class="buttonInactive" title="Nécessite d'être connecté.">Partie rapide</button>
+		<button class="buttonInactive" title="Nécessite d'être connecté.">Tournois</button>
 	{% endif %}
-	<div><button onclick="goTo('local')" class="buttonClassique">Partie local</button></div>
+	<button onclick="goTo('local')" class="buttonClassique">Partie local</button>
 </div>

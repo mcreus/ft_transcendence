@@ -27,4 +27,7 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('salon/', views.salon_view, name='salon'),
     path('local/', views.local_view, name='local'),
+    path('game/', views.game_view, name='game'),
+    path('tournaments/', views.tournaments_view, name='tournaments'),
+    path('tournaments/create/', views.tournament_create, name='tournaments/create'),
 ]

@@ -76,8 +76,10 @@ class GameManager {
 		else if (ball.PosY + ball.Radius > canvas.height)
 			ball.PosY = canvas.height - ball.Radius;
 	}
+	//SelectAI(this, this.map_paddles.get(0), 4);
 	for (let i = 1; i <= this.nb_player; i++)
 	{
+		//console.log(this.map_paddles.get(i - 1).Player);
 		if (this.map_paddles.get(i - 1).Player == 0)
 			updateManualPlayer(this.map_paddles.get(i - 1));
 		else
@@ -138,6 +140,7 @@ let	rand;
 // Initialiser une map contenant tous les paddle
 function init()
 {
+	//Generate Page
 	if (checkParam())
 		return ;
 	let nb_point = document.getElementById("Nb_point").value;
@@ -196,7 +199,7 @@ function init()
 function checkParam()
 {
 	let nb_point = document.getElementById("Nb_point").value;
-	if (nb_point < 1 || nb_point > 25)
+	if (nb_point < 1 || nb_point > 50)
 		return 1;
 	return 0;
 }

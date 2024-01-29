@@ -1,0 +1,16 @@
+{% include 'ruban.html' %}
+<div id="main" class="vertical-center">
+    <h1>Liste des tournois</h1>
+    <ul>
+        {% for tournament in tournaments %}
+        <li>
+            ID: {{ tournament.id }} <br>
+            Active: {{ tournament.active }} <br>
+            Temps pour s'inscrire: {{ tournament.time_to_subscribe }} minutes <br>
+            Nombre maximum de joueurs: {{ tournament.max_player }} <br>
+            Joueurs enregistrés: {{ tournament.players_registered }} <br>
+        </li>
+        {% endfor %}
+    </ul>
+    <button onclick="goTo('tournaments/create')">Creer un nouveau tournois</button></p>
+</div>

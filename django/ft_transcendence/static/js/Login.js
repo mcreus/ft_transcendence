@@ -4,6 +4,8 @@ function submitForm(view) {
     let formData = new FormData(document.getElementById(`${view}Form`));
 
     // Effectuer une requête AJAX pour envoyer les données du formulaire
+    if (view == 'tournament')
+        view = 'tournaments/create'
     fetch(`/${view}/`, {
         method: 'POST',
         body: formData
