@@ -6,10 +6,20 @@ body {
 	align-items: center;
 	height: 100%;
 	background-color: #f0f0f0;
-	font-family: 'Chalkduster', sans-serif;
 	color: white;
 	animation-duration: 3s;
 	animation-name: Loading;
+}
+
+canvas {
+	border: 1px solid white;
+	display: block;
+	margin: 20px auto;
+}
+
+.center {
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .vertical-center {
@@ -295,6 +305,46 @@ body {
 	background: white;
 	border-radius: 50%;
 	border: 2px solid black;
+}
+
+.versus {
+	width: 100%;
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	top: 50%;
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+}
+
+.parallelogramLeft {
+	width: 100px;
+	height: 50px;
+	transform: skew(-20deg);
+	background: grey;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: right;
+	border: 2px solid white;
+	margin-right: auto;
+	opacity: 1.0;
+}
+
+.parallelogramRight {
+	width: 100px;
+	height: 50px;
+	transform: skew(-20deg);
+	background: grey;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: left;
+	border: 2px solid white;
+	margin-left: auto;
+	opacity: 1.0;
 }
 
 @media screen and (min-width: 1200px) {

@@ -10,24 +10,41 @@
 });*/
 
 function navigateTo(view) {
-	// Masquer toutes les sections
-	document.getElementById('main').innerHTML = '';
-	// Charger les autres vues
 	console.log('Navigateto', view);
-	if (view != "" && view != "logout" && view != "login" && view != "signup" 
-		&& view != "tournaments/create" && view != "tournaments")
+	let main = document.getElementById('main');
+	let div = main.getElementsByTagName('div');
+	if (view != "" && view != "logout" && view != "login" && view != "signup" && view != "tournaments/create" && view != "tournaments")
 	{
-		fetch(`/${view}`)
-			.then(response => response.text())
-			.then(data => {
-				document.getElementById('main').innerHTML = data;
-				//history.pushState({ view }, null, `#${view}`);
-				window.location.hash = view;
-			});
+		let i = 0;
+		for (; i < div.length; i++)
+		{
+			div[i].style.animation = "divout 0.3s " + i * 0.03 + "s";
+			console.log(div[i]);
+		}
+		main.style.animation = "pageout 1s";
+		main.onanimationend = () => {
+			main.innerHTML = '';
+			main.style.opacity = 0.0;
+			// Charger les autres vues
+			console.log('Navigateto', view);
+			if (view != "" && view != "logout" && view != "login")
+			{
+				fetch(`/${view}`)
+					.then(response => response.text())
+					.then(data => {
+						document.getElementById('main').innerHTML = data;
+						//history.pushState({ view }, null, `#${view}`);
+						window.location.hash = view;
+					});
+			}
+			main.style.animation = "pagein 1s";
+			main.onanimationend = () => {
+				main.style.opacity = 1.0;
+			}
+		};
 	}
 	else
 	{
-		console.log('special');
 		document.getElementById('body').innerHTML = '';
 		fetch(`/${view}`)
 			.then(response => response.text())
@@ -49,22 +66,25 @@ function GenerateGame(game)
 		time_begin = Math.floor(minutes) + ":0" + secondes;
 	let	body = document.getElementById("main");
 	body.insertAdjacentHTML("afterbegin", '\
-	<div id="timer" height="900" style="text-align:center; font-size:300%">' + time_begin + '</div>\
-		<canvas id="pongCanvas" width="800" height="400"></canvas>\
-		<table id="scores" width="600" height="100" class="center">\
-		<thead>\
-			<tr>\
-				<th colspan="' + game.scoreWin * 2 + '" style="font-size:300%">Scores</th>\
-			</tr>\
-		</thead>\
-		<tbody>\
-			<tr>\
-				<td colspan="' + game.scoreWin + '" id="scoreLeft" width="50%" style="text-align:center; color:rgba(0,176,176,1); font-size:160%">0</td>\
-				<td colspan="' + game.scoreWin + '" id="scoreRight" width="50%" style="text-align:center; color:rgba(255,154,0,1); font-size:160%">0</td>\
-			</tr>\
-			<tr id="scoring"></tr>\
-		</tbody>\
-	</table>'
+	<div id="show" class="versus"></div>\
+	<div id="game" style="opacity:0.4">\
+		<div id="timer" height="900" style="text-align:center; font-size:300%">' + time_begin + '</div>\
+			<canvas id="pongCanvas" width="800" height="400"></canvas>\
+			<table id="scores" width="600" height="100" class="center">\
+			<thead>\
+				<tr>\
+					<th colspan="' + game.scoreWin * 2 + '" style="font-size:300%">Scores</th>\
+				</tr>\
+			</thead>\
+			<tbody>\
+				<tr>\
+					<td colspan="' + game.scoreWin + '" id="scoreLeft" width="50%" style="text-align:center; color:rgba(0,176,176,1); font-size:160%">0</td>\
+					<td colspan="' + game.scoreWin + '" id="scoreRight" width="50%" style="text-align:center; color:rgba(255,154,0,1); font-size:160%">0</td>\
+				</tr>\
+				<tr id="scoring"></tr>\
+			</tbody>\
+		</table>\
+	</div>'
 	);
 	let	scoring = document.getElementById("scoring");
 	for (let i = 1; i <= game.scoreWin; i++)
@@ -72,6 +92,16 @@ function GenerateGame(game)
 		scoring.insertAdjacentHTML("afterbegin", '<td id=scoreLeft' + i +' height="10" width="10" style="background-color:rgba(80,80,80,0.8)" ></td>');
 		scoring.insertAdjacentHTML("beforeend", '<td id=scoreRight' + i +' height="10" width="10" style="background-color:rgba(80,80,80,0.8)"></td>');
 	}
+}
+
+function GenerateShow(game)
+{
+	let div = document.getElementById("show");
+	for (let i = 0; i < game.nb_player / 2; i++)
+		div.innerHTML += '<div class="parallelogramLeft">';
+	for (let i = game.nb_player / 2; i < game.nb_player; i++)
+		div.innerHTML += '<div class="parallelogramRight">';
+	
 }
 
 function ModifParam()

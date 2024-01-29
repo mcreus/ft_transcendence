@@ -54,12 +54,10 @@ def salon_view(request):
 def local_view(request):
     return render(request, 'local.html')
 
-@login_required
 def tournaments_view(request):
     t = Tournament.objects.all()
     return render(request, 'tournaments.html', {'tournaments': t})
 
-@login_required
 def tournament_create(request):
     form = TournamentForm()
     t = Tournament.objects.all()
@@ -69,6 +67,3 @@ def tournament_create(request):
             form.save()
             return render(request, 'tournaments.html', {'tournaments': t})
     return render(request, 'create_tournament.html', {'form': form}) 
-    
-def game_view(request):
-    return render(request, 'game.html')
