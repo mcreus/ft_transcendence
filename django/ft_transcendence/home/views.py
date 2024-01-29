@@ -94,16 +94,26 @@ def salon_view(request):
 def local_view(request):
     return render(request, 'local.html')
 
+@login_required
 def tournaments_view(request):
     t = Tournament.objects.all()
     return render(request, 'tournaments.html', {'tournaments': t})
 
+@login_required
+def tournament_detail(request, id):
+    t = Tournament.objects.get(id=id)
+    return render(request, 'tournament_detail.html', {'tournament': t})
+
+@login_required
 def tournament_create(request):
     form = TournamentForm()
     t = Tournament.objects.all()
     if request.method == 'POST':
         form = TournamentForm(request.POST)
         if form.is_valid():
-            form.save()
+            tournament = form.save(commit=False)
+            tournament.owner = request.user
+            tournament.save()
+            tournament.players_registered.add(request.user)
             return render(request, 'tournaments.html', {'tournaments': t})
     return render(request, 'create_tournament.html', {'form': form}) 

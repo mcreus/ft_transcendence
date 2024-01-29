@@ -4,12 +4,11 @@
     <ul>
         {% for tournament in tournaments %}
         <li>
-            ID: {{ tournament.id }} <br>
+            <button onclick="goTo('tournaments/{{ tournament.id }}')">Name: {{ tournament.name }}</button><br>
             Active: {{ tournament.active }} <br>
             Temps pour s'inscrire: {{ tournament.time_to_subscribe }} minutes <br>
-            Nombre maximum de joueurs: {{ tournament.max_player }} <br>
-            Joueurs enregistrés: {{ tournament.players_registered }} <br>
-        </li>
+            Joueurs enregistrés: {{ tournament.number_registered }} / {{ tournament.max_player }} <br>
+        </li><br>
         {% endfor %}
     </ul>
     <button onclick="goTo('tournaments/create')">Creer un nouveau tournois</button></p>

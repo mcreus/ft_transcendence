@@ -16,7 +16,7 @@ class SignupForm(UserCreationForm):
 class TournamentForm(forms.ModelForm):
    class Meta:
      model = Tournament
-     fields = '__all__'
+     fields = ['name', 'time_to_subscribe', 'max_player']
      
 class update_usernameForm(forms.ModelForm):
     class Meta:

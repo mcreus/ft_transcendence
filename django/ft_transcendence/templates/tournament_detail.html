@@ -1,0 +1,13 @@
+<h1>tournois {{ tournament.name }}</h1>
+
+Name: {{ tournament.name }} <br>
+Active: {{ tournament.active }} <br>
+Temps pour s'inscrire: {{ tournament.time_to_subscribe }} minutes <br>
+Joueurs enregistrés: {{ tournament.number_registered }} <br>
+Nombre maximum de joueurs: {{ tournament.max_player }} <br>
+Joueurs enregistrés:
+<ul>
+    {% for player in tournament.players_registered.all %}
+    <li>{{ player.username }}</li>
+    {% endfor %}
+</ul>

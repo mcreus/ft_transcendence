@@ -28,6 +28,7 @@ urlpatterns = [
     path('salon/', views.salon_view, name='salon'),
     path('local/', views.local_view, name='local'),
     path('tournaments/', views.tournaments_view, name='tournaments'),
+    path('tournaments/<int:id>/', views.tournament_detail, name='tournament-detail'),
     path('tournaments/create/', views.tournament_create, name='tournaments/create'),
     path('profile/email/', views.update_email, name="profile/email"),
     path('profile/username/', views.update_username, name="profile/username"),
