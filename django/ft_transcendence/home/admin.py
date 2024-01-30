@@ -4,7 +4,7 @@ from home.models import User
 from home.models import Tournament
 
 class TournamentAdmin(admin.ModelAdmin):
-    list_display = ('name', 'owner', 'active', 'number_registered')
+    list_display = ('name', 'owner', 'subscribe_active', 'number_registered')
 
 # Register your models here.
 admin.site.register(User)

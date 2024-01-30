@@ -1,8 +1,12 @@
 <h1>tournois {{ tournament.name }}</h1>
 
 Name: {{ tournament.name }} <br>
-Active: {{ tournament.active }} <br>
-Temps pour s'inscrire: {{ tournament.time_to_subscribe }} minutes <br>
+{% if tournament.time_left_in_minutes > 0 %}
+    Inscription ouverte: oui<br>
+    Temps restant pour s'inscrire: {{ tournament.time_left_in_minutes }} minutes <br>
+{% else %}
+    Inscription ouverte: non<br>
+{% endif %} 
 Joueurs enregistrés: {{ tournament.number_registered }} <br>
 Nombre maximum de joueurs: {{ tournament.max_player }} <br>
 Joueurs enregistrés:
@@ -11,3 +15,17 @@ Joueurs enregistrés:
     <li>{{ player.username }}</li>
     {% endfor %}
 </ul>
+<div><button onclick="goTo('tournaments')" class="buttonClassique">Liste des tournois</button></div>
+
+
+{% if tournament.owner == request.user %}
+    <p>bouton update</p>
+{% else %}
+    {% if tournament.subscribe_active %}
+        {% if request.user not in tournament.players_registered.all %}
+            <p>bouton s'inscrire</p>
+        {% else %}
+            <p>bouton se désinscrire</p>
+        {% endif %}
+    {% endif %}
+{% endif %}

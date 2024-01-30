@@ -19,14 +19,13 @@ function navigateTo(view) {
 		for (; i < div.length; i++)
 		{
 			div[i].style.animation = "divout 0.3s " + i * 0.03 + "s";
-			console.log(div[i]);
+			//console.log(div[i]);
 		}
 		main.style.animation = "pageout 1s";
 		main.onanimationend = () => {
 			main.innerHTML = '';
 			main.style.opacity = 0.0;
 			// Charger les autres vues
-			console.log('Navigateto', view);
 			if (view != "" && view != "logout" && view != "login")
 			{
 				fetch(`/${view}`)
