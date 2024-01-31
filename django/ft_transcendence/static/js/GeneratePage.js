@@ -65,7 +65,11 @@ function GenerateGame(game)
 		time_begin = Math.floor(minutes) + ":0" + secondes;
 	let	body = document.getElementById("main");
 	body.insertAdjacentHTML("afterbegin", '\
-	<div id="show" class="versus"></div>\
+	<div id="show" class="versus">\
+		<div id="leftTeam" style="margin-bottom:5px; width: 100%; transform: translateX(-5%)"></div>\
+		<div id="versus" class="vertical-center">V.S</div>\
+		<div id="rightTeam" style="margin-top:5px; width: 100%; margin-left: auto; transform: translateX(55%)"></div>\
+	</div>\
 	<div id="game" style="opacity:0.4">\
 		<div id="timer" height="900" style="text-align:center; font-size:300%">' + time_begin + '</div>\
 			<canvas id="pongCanvas" width="800" height="400"></canvas>\
@@ -96,11 +100,24 @@ function GenerateGame(game)
 function GenerateShow(game)
 {
 	let div = document.getElementById("show");
-	for (let i = 0; i < game.nb_player / 2; i++)
-		div.innerHTML += '<div class="parallelogramLeft">';
-	for (let i = game.nb_player / 2; i < game.nb_player; i++)
-		div.innerHTML += '<div class="parallelogramRight">';
-	
+	let left = document.getElementById("leftTeam");
+	let right = document.getElementById("rightTeam");
+	let nbPlayer = 1;
+	let player;
+	for (let i = 0; i < game.nb_player; i++)
+	{
+		if (game.map_paddles.get(i).Player != 0)
+			player = "AI " + game.map_paddles.get(i).Player;
+		else
+			player = game.map_paddles.get(i).Pseudo;
+		if (player == "" || !player)
+			player = "Player " + nbPlayer++;
+		game.map_paddles.get(i).Pseudo = player;
+		if (i < game.nb_player / 2)
+			left.innerHTML += ('<div class="parallelogramLeft" style="margin-left: ' + (i * -20) + 'px">' + player + '</div>');
+		else
+			right.innerHTML += ('<div class="parallelogramRight" style="margin-left: ' + ((i - game.nb_player / 2) * -20) + 'px">' + player + '</div>');
+	}
 }
 
 function ModifParam()
@@ -108,7 +125,6 @@ function ModifParam()
 	let	div = document.getElementById("pos");
 	let	team = 1;
 	div.innerHTML= '';
-	console.log(div);
 	if (document.getElementById("Nb_player").value == 4)
 		team = 2;
 	for (let i = 1; i <= document.getElementById("Nb_player").value; i++)

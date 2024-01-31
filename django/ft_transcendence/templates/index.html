@@ -5,13 +5,10 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://unpkg.com/page/page.js"></script>
 	<title>PongHub</title>
-	<link rel="stylesheet" href="{% static 'css/mainPage.css' %}">
-	</link>
-	<link rel="stylesheet" href="{% static 'css/anim.css' %}">
-	</link>
+	<link rel="stylesheet" href="{% static 'css/mainPage.css' %}"></link>
+	<link rel="stylesheet" href="{% static 'css/anim.css' %}"></link>
 	<style>
 		@import url('https://fonts.cdnfonts.com/css/chalkduster');
 		@import url('https://fonts.cdnfonts.com/css/street');
@@ -23,14 +20,12 @@
 	{% include 'ruban.html' %}
 	<div id="main" class="vertical-center">
 		<div>
-			<img src="../static/images/mainLogo.png">
+			<img src="../static/images/mainLogo.png" class="mainImage">
 		</div>
 		<div class="centre-content">
 			<button onclick="goTo('salon')" class="buttonClassique">Pong !</button>
 		</div>
-		</img>
-	</div>
-
+	</img></div>
 	<script type="text/javascript" src="../static/js/AI.js"></script>
 	<script type="text/javascript" src="../static/js/ManualPlayer.js"></script>
 	<script type="text/javascript" src="../static/js/Collision.js"></script>
@@ -38,6 +33,7 @@
 	<script type="text/javascript" src="../static/js/GeneratePage.js"></script>
 	<script type="text/javascript" src="../static/js/Pong.js"></script>
 	<script type="text/javascript" src="../static/js/Login.js"></script>
+	<script type="text/javascript" src="../static/js/Animation.js"></script>
 
 	<script>
 		page({ hashbang: true });
@@ -50,7 +46,7 @@
 				navigateTo(adjustedHash.substring(1));
 			userNavigation = true; // Réinitialiser pour la prochaine fois
 		});
-
+		
 		function goTo(view) {
 			userNavigation = false; // navigation est déclenchée par le script
 			navigateTo(view);

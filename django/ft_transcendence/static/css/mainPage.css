@@ -9,6 +9,7 @@ body {
 	color: white;
 	animation-duration: 3s;
 	animation-name: Loading;
+	overflow-x: hidden;
 }
 
 canvas {
@@ -32,6 +33,7 @@ canvas {
 	top: 50%;
 	-ms-transform: translateY(-50%);
 	transform: translateY(-50%);
+	width: 100%;
 }
 
 .ruban {
@@ -111,16 +113,12 @@ canvas {
 }
 
 .buttonClassique {
-	font-size: 20px;
 	color: white;
 	background-color: rgba(0,176,176,1);
 	border: none;
 	border-radius: 5px;
 	cursor: pointer;
 	transition: background-color 0.3s ease;
-	width: 200px;
-	Height: 50px;
-	margin: 10px;
 }
 
 .buttonClassique:hover {
@@ -134,14 +132,10 @@ canvas {
 }
 
 .buttonInactive {
-	font-size: 20px;
 	color: white;
 	background-color: rgba(50,50,50,1);
 	border: none;
 	border-radius: 5px;
-	width: 200px;
-	Height: 50px;
-	margin: 10px;
 }
 
 #titreSite {
@@ -309,86 +303,162 @@ canvas {
 
 .versus {
 	width: 100%;
+	font-size: 250%;
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	top: 50%;
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+	opacity: 1.0;
+	z-index: 1;
+}
+
+.victory {
+	margin: 0;
 	position: absolute;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	top: 50%;
+	top: 30%;
 	-ms-transform: translateY(-50%);
 	transform: translateY(-50%);
+	width: 100%;
+	font-size: 500%;
 }
 
 .parallelogramLeft {
-	width: 100px;
 	height: 50px;
 	transform: skew(-20deg);
-	background: grey;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	justify-content: right;
 	border: 2px solid white;
-	margin-right: auto;
 	opacity: 1.0;
+	margin: 2px;
+	width: 50%;
+	padding-right: 10px;
+	background: linear-gradient(90deg, rgba(50,50,50,0.8) 0%, rgba(0,176,176,0.8) 100%);
 }
 
 .parallelogramRight {
-	width: 100px;
 	height: 50px;
 	transform: skew(-20deg);
-	background: grey;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	justify-content: left;
 	border: 2px solid white;
-	margin-left: auto;
 	opacity: 1.0;
+	margin: 2px;
+	width: 50%;
+	padding-left: 10px;
+	background: linear-gradient(90deg, rgba(255,154,0,0.8) 0%, rgba(50,50,50,0.8) 100%);
 }
 
 @media screen and (min-width: 1200px) {
-
+	.mainImage {
+		width: 1200px;
+		height: 1200px;
+	}
+	
+	.buttonClassique {
+		font-size: 26px;
+		width: 220px;
+		Height: 55px;
+		margin: 12px;
+	}
+	
+	.buttonInactive {
+		font-size: 26px;
+		width: 220px;
+		Height: 55px;
+		margin: 12px;
+	}
 }
 
 @media screen and (max-width: 1199px) and (min-width: 992px){
-
-
+	.mainImage {
+		width: 800px;
+		height: 800px;
+	}
+	
+	.buttonClassique {
+		font-size: 18px;
+		width: 180px;
+		Height: 45px;
+		margin: 9px;
+	}
+	
+	.buttonInactive {
+		font-size: 18px;
+		width: 180px;
+		Height: 45px;
+		margin: 9px;
+	}
 }
 
 @media screen and (max-width: 991px) and (min-width: 768px){
-
-
+	.mainImage {
+		width: 650px;
+		height: 650px;
+	}
+	
+	.buttonClassique {
+		font-size: 16px;
+		width: 160px;
+		Height: 40px;
+		margin: 8px;
+	}
+	
+	.buttonInactive {
+		font-size: 16px;
+		width: 160px;
+		Height: 40px;
+		margin: 8px;
+	}
 }
 
 @media screen and (max-width: 767px) and (min-width: 576px){
-
-
+	.mainImage {
+		width: 500px;
+		height: 500px;
+	}
+	
+	.buttonClassique {
+		font-size: 14px;
+		width: 140px;
+		Height: 35px;
+		margin: 7px;
+	}
+	
+	.buttonInactive {
+		font-size: 14px;
+		width: 140px;
+		Height: 35px;
+		margin: 7px;
+	}
 }
 
 @media screen and (max-width: 575px){
-
-}
-
-
-/* Media query for tablets */
-@media (max-width: 768px) {
-    body {
-        font-size: 14px;
-    }
-    canvas {
-        max-width: 95%;
-        margin: 10px auto;
-    }
-}
-
-/* Media query for smaller screens (mobile devices) */
-@media (max-width: 480px) {
-    body {
-        font-size: 12px;
-    }
-    canvas {
-        max-width: 90%;
-        margin: 5px auto;
-    }
+	.mainImage {
+		width: 450px;
+		height: 450px;
+	}
+	
+	.buttonClassique {
+		font-size: 18px;
+		width: 120px;
+		Height: 30px;
+		margin: 6px;
+	}
+	
+	.buttonInactive {
+		font-size: 18px;
+		width: 120px;
+		Height: 30px;
+		margin: 6px;
+	}
 }

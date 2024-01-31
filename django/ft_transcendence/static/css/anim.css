@@ -122,3 +122,107 @@
 		transform: translateX(0px);
 	}
 }
+
+@keyframes teamShow {
+	0% {
+		opacity: 0.0;
+		width: 20%;
+	}
+	10% {
+		opacity: 1.0;
+		width: 90%;
+	}
+	100% {
+		opacity: 1.0;
+		width: 100%;
+	}
+}
+
+@keyframes out {
+	0% {
+		opacity: 1.0;
+	}
+	100% {
+		opacity: 0.0;
+	}
+}
+
+@keyframes out20 {
+	0% {
+		opacity: 1.0;
+	}
+	100% {
+		opacity: 0.2;
+	}
+}
+
+@keyframes in {
+	0% {
+		opacity: 0.0;
+	}
+	100% {
+		opacity: 1.0;
+	}
+}
+
+@keyframes in50 {
+	0% {
+		opacity: 0.5;
+	}
+	100% {
+		opacity: 1.0;
+	}
+}
+
+@keyframes decount {
+	0% {
+		opacity: 1.0;
+	}
+	100% {
+		opacity: 0.1;
+	}
+}
+
+@keyframes goalR {
+	0% {
+		background: linear-gradient(to left, rgba(80,80,80,0.8) 50%, rgba(255,154,0,1) 50%) right;
+		background-size: 200% 100%;
+		transform: rotate(0deg);
+	}
+	25% {
+		transform: rotate(-10deg);
+	}
+	50% {
+		transform: rotate(0deg);
+	}
+	75% {
+		transform: rotate(10deg);
+	}
+	100% {
+		background: linear-gradient(to left, rgba(80,80,80,0.8) 50%, rgba(255,154,0,1) 50%) left;
+		background-size: 200% 100%;
+		transform: rotate(0deg);
+	}
+}
+
+@keyframes goalL {
+	0% {
+		background: linear-gradient(to right, rgba(80,80,80,0.8) 50%, rgba(0,176,176,1) 50%) left;
+		background-size: 200% 100%;
+		transform: rotate(0deg);
+	}
+	25% {
+		transform: rotate(10deg);
+	}
+	50% {
+		transform: rotate(0deg);
+	}
+	75% {
+		transform: rotate(-10deg);
+	}
+	100% {
+		background: linear-gradient(to right, rgba(80,80,80,0.8) 50%, rgba(0,176,176,1) 50%) right;
+		background-size: 200% 100%;
+		transform: rotate(0deg);
+	}
+}
