@@ -103,7 +103,15 @@ def tournaments_view(request):
 def tournament_detail(request, id):
     t = Tournament.objects.get(id=id)
     if request.method == 'POST':
-        t.players_registered.add(request.user)
+        if request.user in t.players_registered.all():
+            t.players_registered.remove(request.user)
+            t.number_registered -= 1
+        else:
+            t.players_registered.add(request.user)
+            t.number_registered += 1
+            if t.number_registered == t.max_player:
+                t.subscribe_active = False
+        t.save()
     return render(request, 'tournament_detail.html', {'tournament': t})
 
 @login_required
@@ -119,3 +127,10 @@ def tournament_create(request):
             tournament.players_registered.add(request.user)
             return render(request, 'tournament_detail.html', {'tournament': tournament})
     return render(request, 'create_tournament.html', {'form': form}) 
+
+@login_required
+def tournament_update(request, id):
+    t = Tournament.objects.get(id=id)
+    if request.method == 'POST':
+        t.launch_tournament()
+    return render(request, 'tournament_update.html', {'tournament': t})

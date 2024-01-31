@@ -30,6 +30,7 @@ urlpatterns = [
     path('tournaments/', views.tournaments_view, name='tournaments'),
     path('tournaments/<int:id>/', views.tournament_detail, name='tournament_detail'),
     path('tournaments/create/', views.tournament_create, name='tournaments/create'),
+    path('tournaments/<int:id>/update/', views.tournament_update),
     path('profile/email/', views.update_email, name="profile/email"),
     path('profile/username/', views.update_username, name="profile/username"),
     path('profile/password/', views.update_password, name="profile/password"),

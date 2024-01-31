@@ -9,6 +9,9 @@
     {% else %}
     Inscription ouverte: non<br>
     {% endif %}
+    {% if tournament.running %}
+    Tournoi en cours<br>
+    {% endif %}
     Joueurs enregistrés: {{ tournament.number_registered }} <br>
     Nombre maximum de joueurs: {{ tournament.max_player }} <br>
     Joueurs enregistrés:
@@ -20,7 +23,7 @@
     <div><button onclick="goTo('tournaments')" class="buttonClassique">Liste des tournois</button></div>
 
     {% if tournament.owner == request.user %}
-        <p>bouton update</p>
+    <div><button onclick="goTo('tournaments/{{ tournament.id }}/update')" class="buttonClassique">Update</button></div>
     {% else %}
         {% if tournament.subscribe_active %}
             {% if request.user not in tournament.players_registered.all %}
@@ -29,7 +32,10 @@
                 <button type="button" onclick="registerUser('{{ tournament.id }}')">S'inscrire</button>
                 </form>
             {% else %}
-                <p>bouton se désinscrire</p>
+                <form id="subscribeForm" method="post">
+                {% csrf_token %}
+                <button type="button" onclick="registerUser('{{ tournament.id }}')">Se desinscrire</button>
+                </form>
             {% endif %}
         {% endif %}
     {% endif %}

@@ -29,6 +29,7 @@ class Tournament(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.fields.CharField(max_length=100)
     subscribe_active = models.fields.BooleanField(default=True)
+    running = models.fields.BooleanField(default=False)
     time_to_subscribe = models.fields.IntegerField(choices=TIME_CHOICES, default=15)
     max_player = models.fields.IntegerField(choices=PLAYERS_CHOICES, default=4)
     number_registered = models.fields.IntegerField(default=1)
@@ -42,3 +43,9 @@ class Tournament(models.Model):
             self.subscribe_active = False
             self.save()
         return max(0, int(time_left))
+    
+    def launch_tournament(self):
+        self.running = True
+        self.subscribe_active = False
+        self.save()
+        return

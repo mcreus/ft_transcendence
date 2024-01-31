@@ -1,4 +1,4 @@
-function submitForm(formId) {
+function submitForm(formId, num) {
     let formData = new FormData(document.getElementById(`${formId}Form`));
 
     // Définir l'URL en fonction de l'ID du formulaire
@@ -21,6 +21,9 @@ function submitForm(formId) {
             break;
         case 'tournament':
         	url = '/tournaments/create/'
+        	break;
+        case 'launch':
+        	url = '/tournaments/' + num + '/update/';
         	break;
         // Vous pouvez ajouter autant que vous le voulez
     }
