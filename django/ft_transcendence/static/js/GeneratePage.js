@@ -13,7 +13,7 @@ function navigateTo(view) {
 	console.log('Navigateto', view);
 	let main = document.getElementById('main');
 	let div = main.getElementsByTagName('div');
-	if (view != "" && view != "logout" && view != "login" && view != "signup" && view != "tournaments/create" && view != "tournaments")
+	if (view == 'salon' || view == 'local' || view == 'tournaments')
 	{
 		let i = 0;
 		for (; i < div.length; i++)

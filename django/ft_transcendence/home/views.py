@@ -102,6 +102,8 @@ def tournaments_view(request):
 @login_required
 def tournament_detail(request, id):
     t = Tournament.objects.get(id=id)
+    if request.method == 'POST':
+        t.players_registered.add(request.user)
     return render(request, 'tournament_detail.html', {'tournament': t})
 
 @login_required
@@ -115,5 +117,5 @@ def tournament_create(request):
             tournament.owner = request.user
             tournament.save()
             tournament.players_registered.add(request.user)
-            return render(request, 'tournaments.html', {'tournaments': t})
+            return render(request, 'tournament_detail.html', {'tournament': tournament})
     return render(request, 'create_tournament.html', {'form': form}) 
