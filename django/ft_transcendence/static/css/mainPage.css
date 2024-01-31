@@ -369,3 +369,26 @@ canvas {
 @media screen and (max-width: 575px){
 
 }
+
+
+/* Media query for tablets */
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+    canvas {
+        max-width: 95%;
+        margin: 10px auto;
+    }
+}
+
+/* Media query for smaller screens (mobile devices) */
+@media (max-width: 480px) {
+    body {
+        font-size: 12px;
+    }
+    canvas {
+        max-width: 90%;
+        margin: 5px auto;
+    }
+}
