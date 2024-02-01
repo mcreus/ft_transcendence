@@ -25,13 +25,13 @@ function AIlvl3(game, AI)
 		side = 1;
 	else
 		side = -1;
-	if ((side < 0 && ball.PosX < canvas.width - canvas.width / 4) || (side > 0 && ball.PosX > canvas.width / 4))
+	if ((side < 0 && ball.PosX < canvas.width - canvas.width / 4 && ball.ballSpeedX < 0) || (side > 0 && ball.PosX > canvas.width / 4 && ball.ballSpeedX > 0))
 	{
 		let	nextX = ball.PosX;
 		let	nextY = ball.PosY;
 		let	nextSpeedY = ball.ballSpeedY;
 		let	nextSpeedX = ball.ballSpeedX;
-		while (nextX > 0 && nextX < canvas.width)
+		while ((nextX > AI.PosX + game.paddleWidth && side < 0) || (nextX < AI.PosX && side > 0))
 		{
 			if (nextY <= 0 + ball.Radius || nextY >= canvas.height - ball.Radius)
 				nextSpeedY = -nextSpeedY;
@@ -41,6 +41,7 @@ function AIlvl3(game, AI)
 			let ratio = ball.speed / dist;
 			nextY += nextSpeedY * ball.speed * ratio;
 			nextX += nextSpeedX * ball.speed * ratio;
+			console.log(nextX);
 		}
 		AI.ObjY = nextY;
 	}
@@ -62,7 +63,7 @@ function AIlvlCheat(game, AI)
 		let	nextY = ball.PosY;
 		let	nextSpeedY = ball.ballSpeedY;
 		let	nextSpeedX = ball.ballSpeedX;
-		while (nextX > 0 && nextX < canvas.width)
+		while ((nextX > AI.PosX + game.paddleWidth && side < 0) || (nextX < AI.PosX && side > 0))
 		{
 			if (nextY <= 0 + ball.Radius || nextY >= canvas.height - ball.Radius)
 				nextSpeedY = -nextSpeedY;

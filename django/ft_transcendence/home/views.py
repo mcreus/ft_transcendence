@@ -105,6 +105,23 @@ def salon_view(request):
     return render(request, 'salon.html')
 
 def local_view(request):
+    if request.method == 'POST':
+        play1 = request.POST.get('player1')
+        play2 = request.POST.get('player2')
+        score1 = request.POST.get('score1')
+        score2 = request.POST.get('score2')
+        win = request.POST.get('winner')
+
+        match = Match.objects.create(
+            player1_name=play1,
+            player2_name=play2,
+            player1_score = score1,
+            player2_score = score2,
+            winner = win
+        )
+        request.user.historic.add(match)
+        return  render(request, 'index.html')
+
     return render(request, 'local.html')
 
 @login_required
@@ -146,6 +163,11 @@ def tournament_update(request, id):
     if request.method == 'POST':
         t.launch_tournament()
     return render(request, 'tournament_update.html', {'tournament': t})
+
+@login_required
+def historic(request):
+    m = request.user.historic.all()
+    return render(request, 'historic.html', {'matchs': m})
 
 def fast_game(request):
     if request.method == 'POST':

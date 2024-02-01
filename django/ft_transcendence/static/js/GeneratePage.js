@@ -13,7 +13,7 @@ function navigateTo(view) {
 	console.log('Navigateto', view);
 	let main = document.getElementById('main');
 	let div = main.getElementsByTagName('div');
-	if (view == 'salon' || view == 'local' || view == 'tournaments' || view == 'profile' || view == 'fast_game' || view == 'profile/username' || view == "profile/email" || view == 'profile/password' || view == 'profile/image')
+	if (view == 'salon' || view == 'local' || view == 'tournaments' || view == 'profile' || view == 'fast_game' || view == 'profile/username' || view == "profile/email" || view == 'profile/password' || view == 'profile/image' || view == 'historic')
 	{
 		let i = 0;
 		for (; i < div.length; i++)
@@ -22,7 +22,6 @@ function navigateTo(view) {
 			//console.log(div[i]);
 		}
 		main.style.animation = "pageout 1s";
-		console.log('fdfd');
 		main.onanimationend = () => {
 			main.innerHTML = '';
 			main.style.opacity = 0.0;

@@ -94,8 +94,14 @@ function SendResult(game)
 {
 	if (game.nb_player > 2)
 		return ;
-	let formData = new FormData(document.getElementById(`testForm`));
+	let formData = new FormData(document.getElementById('resultForm'));
 	formData.append('player1', game.map_paddles.get(0).Pseudo);
 	formData.append('player2', game.map_paddles.get(1).Pseudo);
-	fetchForm('/local', formData);
+	formData.append('score1', game.scoreL);
+	formData.append('score2', game.scoreR);
+	if (game.scoreL > game.scoreR)
+		formData.append('winner', game.map_paddles.get(0).Pseudo);
+	else
+		formData.append('winner', game.map_paddles.get(1).Pseudo);
+	fetchForm('/local/', formData);
 }

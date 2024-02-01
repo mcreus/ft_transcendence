@@ -20,12 +20,13 @@
 	{% include 'ruban.html' %}
 	<div id="main" class="vertical-center">
 		<div>
-			<img src="../static/images/mainLogo.png" class="mainImage">
+			<img src="../static/images/mainLogo.png" class="mainImage"></img>
 		</div>
 		<div class="centre-content">
 			<button onclick="goTo('salon')" class="buttonClassique">Pong !</button>
 		</div>
-	</img></div>
+	</div>
+	<form id="resultForm" method="post" style="hidden:true">{% csrf_token %}</form>
 	<script type="text/javascript" src="../static/js/AI.js"></script>
 	<script type="text/javascript" src="../static/js/ManualPlayer.js"></script>
 	<script type="text/javascript" src="../static/js/Collision.js"></script>

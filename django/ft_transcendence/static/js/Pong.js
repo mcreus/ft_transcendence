@@ -84,6 +84,8 @@ class GameManager {
 			else
 				MoveAI(this.map_paddles.get(i));
 		}
+		if (this.time <= 0 && this.scoreL != this.scoreR)
+			this.finished = true;
 	}
 	updateBySec()
 	{
