@@ -12,7 +12,7 @@
 		{% if user.is_authenticated %}
 			<div class="pseudo">{{ request.user }}</div>
 			<div class="dropdown">
-				<img src="../static/images/no_image.png" id="profilImage"/>
+				<img src="{{ request.user.profile_photo.url }}" id="profilImage" alt="Profil"/>
 				<div class="dropdown-child">
 					<button onclick="goTo('profile')">Profil</button>
 					<button>Historique</button>

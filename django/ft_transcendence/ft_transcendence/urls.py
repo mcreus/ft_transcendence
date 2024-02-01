@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from home import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -35,4 +37,8 @@ urlpatterns = [
     path('profile/email/', views.update_email, name="profile/email"),
     path('profile/username/', views.update_username, name="profile/username"),
     path('profile/password/', views.update_password, name="profile/password"),
+    path('profile/image/', views.update_image, name="profile/image"),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

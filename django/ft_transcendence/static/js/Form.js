@@ -19,6 +19,9 @@ function submitForm(formId, num) {
         case 'update_password':
             url = '/profile/password/';
             break;
+        case 'update_image':
+        	url = '/profile/image/';
+        	break
         case 'tournament':
         	url = '/tournaments/create/'
         	break;

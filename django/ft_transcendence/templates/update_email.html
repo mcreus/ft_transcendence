@@ -8,8 +8,8 @@
     <form id="update_emailForm" method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="button" id="update_email" onclick="submitForm('update_email')">Mettre à jour</button>
+        <button class="buttonClassique" type="button" id="update_email" onclick="submitForm('update_email')">Mettre à jour</button>
     </form>
-    <button onclick="goTo('profile')">Retour au Profil</button>
+    <button class="buttonClassique" onclick="goTo('profile')">Retour au Profil</button>
 </body>
 </html>

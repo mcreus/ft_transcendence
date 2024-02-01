@@ -2,17 +2,25 @@
 <html>
 <head>
     <title>Profil Utilisateur</title>
+    <style>
+        .profile-photo {
+            width: 200px;
+            height: auto;
+            border-radius: 50%;
+            border: 3px solid #333;
+        }
+    </style>
 </head>
 <body>
     <h2>Profil de {{ user.username }}</h2>
+    <img src="{{ user.profile_photo.url }}" alt="Photo de profil" class="profile-photo">
     <p><strong>Pseudo :</strong> {{ user.username }}</p>
-    <p><strong>Email :</strong> {{ user.email|slice:":3" }}***</p>
-    <p><strong>Mot de passe :</strong> ********</p>
+    <p><strong>Email :</strong> {{ user.email|slice:":3" }}****{{ user.email|slice:"-10:" }}</p>
 
-    <button onclick="goTo('profile/username')">Modifier le pseudo</button>
-    <button onclick="goTo('profile/email')">Modifier l'email</button>
-    <button onclick="goTo('profile/password')">Modifier le mot de passe</button>
+    <button class="buttonClassique" onclick="goTo('profile/username')">Modifier le pseudo</button>
+    <button class="buttonClassique" onclick="goTo('profile/email')">Modifier l'email</button>
+    <button class="buttonClassique" onclick="goTo('profile/password')">Modifier le mot de passe</button>
+    <button class="buttonClassique" onclick="goTo('profile/image')">Modifier la photo de profil</button>
+
 </body>
 </html>
-
-

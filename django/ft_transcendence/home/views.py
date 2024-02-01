@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from .forms import LoginForm, TournamentForm, SignupForm, update_usernameForm, update_emailForm
+from .forms import LoginForm, TournamentForm, SignupForm, update_usernameForm, update_emailForm, update_imageForm
 from django.http import JsonResponse
 from home.models import Tournament
 from home.models import Match
@@ -88,6 +88,18 @@ def update_password(request):
         form = PasswordChangeForm(request.user)
 
     return render(request, 'update_password.html', {'form': form})
+    
+@login_required
+def update_image(request):
+    if request.method == 'POST':
+        form = update_imageForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            user = form.save()
+            return render(request, "index.html")
+    else:
+        form = update_imageForm(instance=request.user)
+
+    return render(request, 'update_image.html', {'form': form})
 
 def salon_view(request):
     return render(request, 'salon.html')

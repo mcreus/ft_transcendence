@@ -105,7 +105,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGES = [
+    ('fr', 'Français'),
+]
+
+LANGUAGE_CODE = 'fr'
 
 TIME_ZONE = 'UTC'
 
@@ -142,3 +146,6 @@ CSRF_COOKIE_SECURE = True
 ALLOWED_HOSTS = ['*']
 
 LOGIN_URL = '/login/'
+
+MEDIA_ROOT =os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

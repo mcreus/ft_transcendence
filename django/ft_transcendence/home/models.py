@@ -4,9 +4,21 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils import timezone
 from datetime import timedelta
+from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+import os
 
-class User(AbstractUser):   
-    profile_photo = models.ImageField(verbose_name='Photo de profil')
+class User(AbstractUser):
+    profile_photo = models.ImageField(
+        verbose_name='Photo de profil',
+    )
+
+@receiver(post_save, sender=User)
+def assign_default_profile_photo(sender, instance, created, **kwargs):
+    if created and not instance.profile_photo:
+        instance.profile_photo = 'no_image.png'
+        instance.save()
 
 class Tournament(models.Model):
 
