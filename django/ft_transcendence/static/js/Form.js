@@ -22,36 +22,18 @@ function submitForm(formId, num) {
         case 'tournament':
         	url = '/tournaments/create/'
         	break;
+        case 'subscribe':
+        	url = '/tournaments/' + num + '/'
+        	break;
         case 'launch':
         	url = '/tournaments/' + num + '/update/';
         	break;
         // Vous pouvez ajouter autant que vous le voulez
     }
-
-    fetch(url, {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network error');
-        }
-        return response.text();
-    })
-    .then(data => {
-        // Gérez la réponse ici, par exemple mettre à jour l'interface utilisateur
-        document.getElementById('body').innerHTML = data;
-    })
-    .catch(error => {
-        console.error('Probleme avec le fetch:', error);
-    });
+    fetchForm(url, formData);
 }
 
-function registerUser(num) {
-    let formData = new FormData(document.getElementById(`subscribeForm`));
-    //formData.append('tournament_id', '{{ tournament.id }}'); // Remplacez par l'id du tournoi
-    let url = '';
-    url = '/tournaments/' + num + '/';
+function fetchForm(url, formData) {
     fetch(url, {
         method: 'POST',
         body: formData,
@@ -69,4 +51,38 @@ function registerUser(num) {
     .catch(error => {
         console.error('Error:', error);
     });
+}
+
+function testForm() {
+    let url = '/fast_game/'
+    let formData = new FormData(document.getElementById(`testForm`));
+    var p1Select = document.getElementById("player_1");
+    var p2Select = document.getElementById("player_2");
+    var p1Choice = p1Select.value;
+    var p2Choice = p2Select.value;
+    var username = p1Select.dataset.username;
+
+    var p1Name = "";
+    if (p1Choice === "custom") {
+        var p1Custom = document.getElementById("player_1_custom");
+        p1Name = p1Custom.value;
+    }
+    else if(p1Choice === "username")
+        p1Name = username;
+    else
+        p1Name = "Player 1";
+
+    var p2Name = "";
+    if (p2Choice === "custom") {
+        var p2Custom = document.getElementById("player_2_custom");
+        p2Name = p2Custom.value;
+    }
+    else if(p2Choice === "username")
+        p2Name = username;
+    else
+        p2Name = "Player 2";
+
+    formData.append('player1', p1Name);
+    formData.append('player2', p2Name);
+    fetchForm(url, formData);
 }

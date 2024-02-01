@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import LoginForm, TournamentForm, SignupForm, update_usernameForm, update_emailForm
 from django.http import JsonResponse
 from home.models import Tournament
+from home.models import Match
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
@@ -117,7 +118,6 @@ def tournament_detail(request, id):
 @login_required
 def tournament_create(request):
     form = TournamentForm()
-    t = Tournament.objects.all()
     if request.method == 'POST':
         form = TournamentForm(request.POST)
         if form.is_valid():
@@ -134,3 +134,17 @@ def tournament_update(request, id):
     if request.method == 'POST':
         t.launch_tournament()
     return render(request, 'tournament_update.html', {'tournament': t})
+
+def fast_game(request):
+    if request.method == 'POST':
+        play1 = request.POST.get('player1')
+        play2 = request.POST.get('player2')
+
+        match = Match.objects.create(
+            host=request.user,
+            player1_name=play1,
+            player2_name=play2
+        )
+        return  render(request, 'start_game.html')
+
+    return render(request, 'fast_game.html')

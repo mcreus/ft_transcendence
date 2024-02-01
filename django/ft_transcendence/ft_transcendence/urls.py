@@ -27,6 +27,7 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('salon/', views.salon_view, name='salon'),
     path('local/', views.local_view, name='local'),
+    path('fast_game/', views.fast_game, name='fast_game'),
     path('tournaments/', views.tournaments_view, name='tournaments'),
     path('tournaments/<int:id>/', views.tournament_detail, name='tournament_detail'),
     path('tournaments/create/', views.tournament_create, name='tournaments/create'),

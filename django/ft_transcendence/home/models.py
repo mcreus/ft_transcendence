@@ -49,3 +49,18 @@ class Tournament(models.Model):
         self.subscribe_active = False
         self.save()
         return
+
+class   Match(models.Model):
+    host = models.ForeignKey(User, on_delete=models.CASCADE)
+    player1_name = models.fields.CharField(max_length=100, default='player 1')
+    player1_score = models.fields.IntegerField(default=0)
+    player2_name = models.fields.CharField(max_length=100, default='player 2')
+    player2_score = models.fields.IntegerField(default=0)
+    played = models.fields.BooleanField(default=False)
+    winner = models.fields.CharField(max_length=100, default='')
+
+
+    #def create_local_match(self):
+    
+
+    #def create_tournament_match(self):

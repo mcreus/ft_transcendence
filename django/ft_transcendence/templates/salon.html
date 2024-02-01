@@ -1,6 +1,6 @@
 <div class="centre-content">
 	{% if user.is_authenticated %}
-		<div><button onclick="goTo('')" class="buttonClassique">Partie rapide</button></div>
+		<div><button onclick="goTo('fast_game')" class="buttonClassique">Partie rapide</button></div>
 		<div><button onclick="goTo('tournaments')" class="buttonClassique">Tournois</button></div>
 	{% else %}
 		<div><button class="buttonInactive" title="Nécessite d'être connecté.">Partie rapide</button></div>

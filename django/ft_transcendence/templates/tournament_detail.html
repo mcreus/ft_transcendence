@@ -29,12 +29,12 @@
             {% if request.user not in tournament.players_registered.all %}
                 <form id="subscribeForm" method="post">
                 {% csrf_token %}
-                <button type="button" onclick="registerUser('{{ tournament.id }}')">S'inscrire</button>
+                <button type="button" onclick="submitForm('subscribe', '{{ tournament.id }}')">S'inscrire</button>
                 </form>
             {% else %}
                 <form id="subscribeForm" method="post">
                 {% csrf_token %}
-                <button type="button" onclick="registerUser('{{ tournament.id }}')">Se desinscrire</button>
+                <button type="button" onclick="submitForm('subscribe', '{{ tournament.id }}')">Se desinscrire</button>
                 </form>
             {% endif %}
         {% endif %}
