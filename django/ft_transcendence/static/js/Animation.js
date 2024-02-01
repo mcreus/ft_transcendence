@@ -22,7 +22,7 @@ function AnimShow(game)
 			document.getElementById("rightTeam").innerHTML = '';
 			document.getElementById("leftTeam").innerHTML = '';
 			document.getElementById("versus").innerHTML = '3';
-			document.getElementById("versus").style.animation = "1s ease 0s 3 normal none running decount";
+			document.getElementById("versus").style.animation = "0.5s ease 0s 3 normal none running decount";
 			let iterationCount = 0;
 			document.getElementById("versus").addEventListener("animationiteration", () => {
 				iterationCount++;

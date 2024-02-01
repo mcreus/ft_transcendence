@@ -54,7 +54,7 @@ function fetchForm(url, formData) {
 }
 
 function testForm() {
-    let url = '/fast_game/'
+    let url = '/fast_game/';
     let formData = new FormData(document.getElementById(`testForm`));
     var p1Select = document.getElementById("player_1");
     var p2Select = document.getElementById("player_2");
@@ -85,4 +85,14 @@ function testForm() {
     formData.append('player1', p1Name);
     formData.append('player2', p2Name);
     fetchForm(url, formData);
+}
+
+function SendResult(game)
+{
+	if (game.nb_player > 2)
+		return ;
+	let formData = new FormData(document.getElementById(`testForm`));
+	formData.append('player1', game.map_paddles.get(0).Pseudo);
+	formData.append('player2', game.map_paddles.get(1).Pseudo);
+	fetchForm('/local', formData);
 }

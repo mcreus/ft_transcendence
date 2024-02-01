@@ -4,12 +4,13 @@ let	ctx;
 
 // Class
 class Paddle {
-	constructor(PosX, PosY, Color, Player, Pseudo) {
+	constructor(PosX, PosY, Color, Player, Pseudo, Height) {
 		this.PosX = PosX;
 		this.PosY = PosY;
+		this.ObjY = 0;
 		this.Color = Color;
 		this.Player = Player;
-		this.Height = 80;
+		this.Height = Height;
 		this.Speed = 5;
 		this.KeyUp = "ArrowUp";
 		this.KeyDown = "ArrowDown";
@@ -23,8 +24,8 @@ class Ball {
 		this.PosY = PosY;
 		this.Color = Color;
 		this.Radius = Radius;
-		this.ballSpeedX = 1;
-		this.ballSpeedY = 1;
+		this.ballSpeedX = Math.random() * 2 - 1;
+		this.ballSpeedY = Math.random() * 2 - 1;
 		this.speed = Speed;
 	}
 	NextPos() {
@@ -61,8 +62,7 @@ class GameManager {
 		for (let i = 0; i < this.map_balls.size; i++)
 		{
 			let ball = this.map_balls.get(i);
-			PosAI3 = ball.PosY + rand;
-			
+
 			// Rebondir sur les bords verticaux
 			if (ball.PosY <= 0 + ball.Radius || ball.PosY >= canvas.height - ball.Radius)
 				ball.ballSpeedY = -ball.ballSpeedY;
@@ -77,18 +77,16 @@ class GameManager {
 			else if (ball.PosY + ball.Radius > canvas.height)
 				ball.PosY = canvas.height - ball.Radius;
 		}
-		for (let i = 1; i <= this.nb_player; i++)
+		for (let i = 0; i < this.nb_player; i++)
 		{
-			if (this.map_paddles.get(i - 1).Player == 0)
-				updateManualPlayer(this.map_paddles.get(i - 1));
+			if (this.map_paddles.get(i).Player == 0)
+				updateManualPlayer(this.map_paddles.get(i));
 			else
-				SelectAI(this, this.map_paddles.get(i - 1), this.map_paddles.get(i - 1).Player);
+				MoveAI(this.map_paddles.get(i));
 		}
 	}
 	updateBySec()
 	{
-		if (this.finished)
-			return ;
 		this.time--;
 		if (this.time % 30 == 0 && this.multyBalls)
 			this.map_balls.set(this.nb_balls++, new Ball(canvas.width / 2, canvas.height / 2, "white", this.ballRadius, this.ballSpeedInit));
@@ -107,6 +105,11 @@ class GameManager {
 			if (secondes < 10)
 				timer.innerText = Math.floor(minutes) + ":0" + secondes;
 		}
+		for (let i = 0; i < this.nb_player; i++)
+		{
+			if (this.map_paddles.get(i).Player != 0)
+				SelectAI(this, this.map_paddles.get(i), this.map_paddles.get(i).Player);
+		}
 	}
 	gameLoop(game) {
 		game.updateGame();
@@ -123,18 +126,9 @@ class GameManager {
 			game.updateBySec();
 		}
 		requestAnimationFrame(function() {game.gameLoop(game)});
-		for (let i = 0; i < game.map_paddles.size; i++)
-		{
-			if (this.map_paddles.get(i).Player)
-				updateManualPlayer(game.map_paddles.get(i));
-		}
 	}
 };
-// Initialiser les positions et vitesses des raquettes et de la balle
-let	PosAI3;
-let	rand;
 
-// Initialiser une map contenant tous les paddle
 function init()
 {
 	if (checkParam())
@@ -158,21 +152,20 @@ function init()
 		player3 = document.getElementById("player_3").value;
 		player4 = document.getElementById("player_4").value;
 	}
-	rand = Math.random() * (game.paddleHeight + 20) - ((game.paddleHeight + 20) / 2);
 	GenerateGame(game);
 	canvas = document.getElementById("pongCanvas");
 	ctx = canvas.getContext("2d");
 	if (game.nb_player > 2)
 	{
-		paddle1 = new Paddle(0, (canvas.height - game.paddleHeight) / 2, "rgba(0,176,176,1)", player1, "");
-		paddle2 = new Paddle(150, (canvas.height - game.paddleHeight) / 2, "rgba(0,176,176,1)", player2, "");
-		paddle3 = new Paddle(canvas.width - game.paddleWidth, (canvas.height - game.paddleHeight) / 2, "rgba(255,154,0,1)", player3, "");
-		paddle4 = new Paddle(canvas.width - game.paddleWidth - 150, (canvas.height - game.paddleHeight) / 2, "rgba(255,154,0,1)", player4, "");
+		paddle1 = new Paddle(0, (canvas.height - game.paddleHeight) / 2, "rgba(0,176,176,1)", player1, "", game.paddleHeight);
+		paddle2 = new Paddle(150, (canvas.height - game.paddleHeight) / 2, "rgba(0,176,176,1)", player2, "", game.paddleHeight);
+		paddle3 = new Paddle(canvas.width - game.paddleWidth, (canvas.height - game.paddleHeight) / 2, "rgba(255,154,0,1)", player3, "", game.paddleHeight);
+		paddle4 = new Paddle(canvas.width - game.paddleWidth - 150, (canvas.height - game.paddleHeight) / 2, "rgba(255,154,0,1)", player4, "", game.paddleHeight);
 	}
 	else
 	{
-		paddle1 = new Paddle(0, (canvas.height - game.paddleHeight) / 2, "rgba(0,176,176,1)", player1);
-		paddle2 = new Paddle(canvas.width - game.paddleWidth, (canvas.height - game.paddleHeight) / 2, "rgba(255,154,0,1)", player2);
+		paddle1 = new Paddle(0, (canvas.height - game.paddleHeight) / 2, "rgba(0,176,176,1)", player1, "", game.paddleHeight);
+		paddle2 = new Paddle(canvas.width - game.paddleWidth, (canvas.height - game.paddleHeight) / 2, "rgba(255,154,0,1)", player2, "", game.paddleHeight);
 	}
 	let	ball1 = new Ball(canvas.width / 2, canvas.height / 2, "white", game.ballRadius, game.ballSpeedInit);
 
