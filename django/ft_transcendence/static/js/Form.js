@@ -1,6 +1,5 @@
-function submitForm(formId, num) {
+function submitForm(formId, num, player) {
     let formData = new FormData(document.getElementById(`${formId}Form`));
-
     // Définir l'URL en fonction de l'ID du formulaire
     let url = '';
     switch (formId) {
@@ -37,12 +36,17 @@ function submitForm(formId, num) {
             var new_p = document.getElementById("new_player");
             formData.append('new_player', new_p.value);
             break;
+        case `removeLocal${player}`:
+            url = '/tournaments/' + num + '/update/';
+            formData.append('remove', player);
+            break;
         // Vous pouvez ajouter autant que vous le voulez
     }
     fetchForm(url, formData);
 }
 
 function fetchForm(url, formData) {
+    console.log(url);
     fetch(url, {
         method: 'POST',
         body: formData,
