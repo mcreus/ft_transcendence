@@ -30,7 +30,13 @@ function submitForm(formId, num) {
         	break;
         case 'launch':
         	url = '/tournaments/' + num + '/update/';
+            formData.append('launch', 1);
         	break;
+        case 'addLocal':
+            url = '/tournaments/' + num + '/update/';
+            var new_p = document.getElementById("new_player");
+            formData.append('new_player', new_p.value);
+            break;
         // Vous pouvez ajouter autant que vous le voulez
     }
     fetchForm(url, formData);

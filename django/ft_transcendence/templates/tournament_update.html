@@ -1,11 +1,16 @@
 {% include 'ruban.html' %}
 <div id="main" class="vertical-center">
     <h1>Update du tounoi {{ tournament.name }}</h2>
-        {% if not tournament.running %}
-        <form id="launchForm" method="post">
-            {% csrf_token %}
-            <button type="button" onclick="submitForm('launch', '{{ tournament.id }}')">Lancer le tournoi</button>
-        </form>
-        {% endif %}
+    {% if not tournament.running %}
+    <form id="launchForm" method="post">
+        {% csrf_token %}
+        <button type="button" onclick="submitForm('launch', '{{ tournament.id }}')">Lancer le tournoi</button>
+    </form>
+    <form id="addLocalForm" method="post">
+        {% csrf_token %}
+        <input type="text" id="new_player" placeholder="new_player">
+        <button type="button" onclick="submitForm('addLocal', '{{ tournament.id }}')">Ajouter un joueur localment</button>
+    </form>
+    {% endif %}
     <div><button onclick="goTo('tournaments/{{ tournament.id }}')" class="buttonClassique">Retour</button></div>
 </div>

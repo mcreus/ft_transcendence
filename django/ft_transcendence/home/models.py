@@ -54,7 +54,7 @@ class Tournament(models.Model):
     time_to_subscribe = models.fields.IntegerField(choices=TIME_CHOICES, default=15)
     max_player = models.fields.IntegerField(choices=PLAYERS_CHOICES, default=4)
     number_registered = models.fields.IntegerField(default=1)
-    players_registered = models.ManyToManyField(User, related_name='tournaments_registered', blank=True)
+    players_registered = models.TextField(blank=True)
     start_date = models.DateTimeField(default=timezone.now)
 
     def time_left_in_minutes(self):
@@ -64,6 +64,21 @@ class Tournament(models.Model):
             self.subscribe_active = False
             self.save()
         return max(0, int(time_left))
+    
+    def add_player(self, player_name):
+            self.players_registered += f',{player_name}'  # Ajout du nom du joueur à la liste
+
+    def remove_player(self, player_name):
+        players = self.players_registered.split(',')
+        if player_name in players:
+            players.remove(player_name)
+            self.players_registered = ','.join(players)  # Mise à jour de la liste des joueurs
+
+    def get_registered_players(self):
+        if self.players_registered:
+            return self.players_registered.split(',')
+        else:
+            return []
     
     def launch_tournament(self):
         self.running = True

@@ -16,8 +16,8 @@
     Nombre maximum de joueurs: {{ tournament.max_player }} <br>
     Joueurs enregistrés:
     <ul>
-        {% for player in tournament.players_registered.all %}
-        <li>{{ player.username }}</li>
+        {% for player in tournament.get_registered_players %}
+            <li>{{ player }}</li>
         {% endfor %}
     </ul>
     <div><button onclick="goTo('tournaments')" class="buttonClassique">Liste des tournois</button></div>

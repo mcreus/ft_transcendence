@@ -112,14 +112,16 @@ def local_view(request):
         score2 = request.POST.get('score2')
         win = request.POST.get('winner')
 
-        match = Match.objects.create(
-            player1_name=play1,
-            player2_name=play2,
-            player1_score = score1,
-            player2_score = score2,
-            winner = win
-        )
-        request.user.historic.add(match)
+        if request.user.is_authenticated:
+            match = Match.objects.create(
+                player1_name=play1,
+                player2_name=play2,
+                player1_score = score1,
+                player2_score = score2,
+                played = True,
+                winner = win
+            )
+            request.user.historic.add(match)
         return  render(request, 'index.html')
 
     return render(request, 'local.html')
@@ -133,11 +135,11 @@ def tournaments_view(request):
 def tournament_detail(request, id):
     t = Tournament.objects.get(id=id)
     if request.method == 'POST':
-        if request.user in t.players_registered.all():
-            t.players_registered.remove(request.user)
+        if request.user.username in t.get_registered_players():
+            t.remove_player(request.user.username)
             t.number_registered -= 1
         else:
-            t.players_registered.add(request.user)
+            t.add_player(request.user.username)
             t.number_registered += 1
             if t.number_registered == t.max_player:
                 t.subscribe_active = False
@@ -152,8 +154,8 @@ def tournament_create(request):
         if form.is_valid():
             tournament = form.save(commit=False)
             tournament.owner = request.user
+            tournament.players_registered = request.user.username
             tournament.save()
-            tournament.players_registered.add(request.user)
             return render(request, 'tournament_detail.html', {'tournament': tournament})
     return render(request, 'create_tournament.html', {'form': form}) 
 
@@ -161,7 +163,14 @@ def tournament_create(request):
 def tournament_update(request, id):
     t = Tournament.objects.get(id=id)
     if request.method == 'POST':
-        t.launch_tournament()
+        new_p = request.POST.get('new_player')
+        launch = request.POST.get('launch')
+        if new_p:
+            t.add_player(new_p)
+            t.number_registered += 1
+        elif launch == '1':
+            t.launch_tournament()
+        t.save()
     return render(request, 'tournament_update.html', {'tournament': t})
 
 @login_required
