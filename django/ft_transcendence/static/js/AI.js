@@ -10,7 +10,6 @@ function AIlvl2(game, AI)
 {
 	let	ball = game.map_balls.get(0);
 	AI.ObjY = ball.PosY - game.paddleHeight / 2;
-	//console.log(ball.ballSpeedY);
 	if (ball.ballSpeedY > 0)
 		AI.ObjY += game.paddleHeight;
 	else
@@ -41,7 +40,6 @@ function AIlvl3(game, AI)
 			let ratio = ball.speed / dist;
 			nextY += nextSpeedY * ball.speed * ratio;
 			nextX += nextSpeedX * ball.speed * ratio;
-			console.log(nextX);
 		}
 		AI.ObjY = nextY;
 	}

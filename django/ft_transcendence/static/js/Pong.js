@@ -4,7 +4,7 @@ let	ctx;
 
 // Class
 class Paddle {
-	constructor(PosX, PosY, Color, Player, Pseudo, Height) {
+	constructor(PosX, PosY, Color, Player, Pseudo, Height, Up, Down) {
 		this.PosX = PosX;
 		this.PosY = PosY;
 		this.ObjY = 0;
@@ -12,8 +12,8 @@ class Paddle {
 		this.Player = Player;
 		this.Height = Height;
 		this.Speed = 5;
-		this.KeyUp = "ArrowUp";
-		this.KeyDown = "ArrowDown";
+		this.KeyUp = Up;
+		this.KeyDown = Down;
 		this.Pseudo = Pseudo;
 	}
 };
@@ -159,15 +159,15 @@ function init()
 	ctx = canvas.getContext("2d");
 	if (game.nb_player > 2)
 	{
-		paddle1 = new Paddle(0, (canvas.height - game.paddleHeight) / 2, "rgba(0,176,176,1)", player1, "", game.paddleHeight);
-		paddle2 = new Paddle(150, (canvas.height - game.paddleHeight) / 2, "rgba(0,176,176,1)", player2, "", game.paddleHeight);
-		paddle3 = new Paddle(canvas.width - game.paddleWidth, (canvas.height - game.paddleHeight) / 2, "rgba(255,154,0,1)", player3, "", game.paddleHeight);
-		paddle4 = new Paddle(canvas.width - game.paddleWidth - 150, (canvas.height - game.paddleHeight) / 2, "rgba(255,154,0,1)", player4, "", game.paddleHeight);
+		paddle1 = new Paddle(0, (canvas.height - game.paddleHeight) / 2, "rgba(0,176,176,1)", player1, "", game.paddleHeight, "w", "s");
+		paddle2 = new Paddle(150, (canvas.height - game.paddleHeight) / 2, "rgba(0,176,176,1)", player2, "", game.paddleHeight, "y", "h");
+		paddle3 = new Paddle(canvas.width - game.paddleWidth, (canvas.height - game.paddleHeight) / 2, "rgba(255,154,0,1)", player3, "", game.paddleHeight, "5", "2");
+		paddle4 = new Paddle(canvas.width - game.paddleWidth - 150, (canvas.height - game.paddleHeight) / 2, "rgba(255,154,0,1)", player4, "", game.paddleHeight, "ArrowUp", "ArrowDown");
 	}
 	else
 	{
-		paddle1 = new Paddle(0, (canvas.height - game.paddleHeight) / 2, "rgba(0,176,176,1)", player1, "", game.paddleHeight);
-		paddle2 = new Paddle(canvas.width - game.paddleWidth, (canvas.height - game.paddleHeight) / 2, "rgba(255,154,0,1)", player2, "", game.paddleHeight);
+		paddle1 = new Paddle(0, (canvas.height - game.paddleHeight) / 2, "rgba(0,176,176,1)", player1, "", game.paddleHeight, "w", "s");
+		paddle2 = new Paddle(canvas.width - game.paddleWidth, (canvas.height - game.paddleHeight) / 2, "rgba(255,154,0,1)", player2, "", game.paddleHeight, "ArrowUp", "ArrowDown");
 	}
 	let	ball1 = new Ball(canvas.width / 2, canvas.height / 2, "white", game.ballRadius, game.ballSpeedInit);
 

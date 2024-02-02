@@ -328,6 +328,23 @@ canvas {
 	font-size: 500%;
 }
 
+.historicResult {
+	display: flex;
+	flex-direction: column;
+	margin-left: auto;
+	margin-right: auto;
+	align-items: center;
+	justify-content: center;
+	height: auto;
+	border: 2px solid white;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-right: 10px;
+	padding-left: 10px;
+	border-radius: 10%;
+	margin-top: 15px;
+}
+
 .parallelogramLeft {
 	height: 50px;
 	transform: skew(-20deg);

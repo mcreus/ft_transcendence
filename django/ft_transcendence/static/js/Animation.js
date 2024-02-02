@@ -56,8 +56,7 @@ function AnimVictory(game)
 	div.onanimationend = () => {
 		//body.insertAdjacentHTML("beforeend", '<form id="resultForm" method="post">' + {% csrf_token %} + '</form>');
 		div.style.opacity = 1;
-		body.style.opacity = 1;
-		//goTo('endGame');
 		SendResult(game);
+		goTo('');
 	};
 }

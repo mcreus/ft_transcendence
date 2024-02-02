@@ -27,7 +27,6 @@ function goal(game, ball)
 			game.scoreR++;
 			if (game.scoreR <= game.scoreWin && game.scoreR != 0)
 			{
-				//document.getElementById("scoreRight" + game.scoreR).style.backgroundColor = "rgba(255,154,0,1)";
 				document.getElementById("scoreRight" + game.scoreR).style.animation = "goalR 0.2s";
 				document.getElementById("scoreRight" + game.scoreR).onanimationend = () => {
 					document.getElementById("scoreRight" + game.scoreR).style.backgroundColor = "rgba(255,154,0,1)";
@@ -39,7 +38,6 @@ function goal(game, ball)
 			game.scoreL++;
 			if (game.scoreL <= game.scoreWin && game.scoreL != 0)
 			{
-				//document.getElementById("scoreLeft" + game.scoreL).style.backgroundColor = "rgba(0,176,176,1)";
 				document.getElementById("scoreLeft" + game.scoreL).style.animation = "goalL 0.2s";
 				document.getElementById("scoreLeft" + game.scoreL).onanimationend = () => {
 					document.getElementById("scoreLeft" + game.scoreL).style.backgroundColor = "rgba(0,176,176,1)";
@@ -51,6 +49,7 @@ function goal(game, ball)
 		ball.PosX = canvas.width / 2;
 		ball.PosY = canvas.height / 2;
 		ball.ballSpeedX = -ball.ballSpeedX;
+		ball.ballSpeedY = Math.random() * 2 - 1;
 		ball.speed = game.ballSpeedInit;
 		document.getElementById('scoreLeft').textContent = game.scoreL;
 		document.getElementById('scoreRight').textContent = game.scoreR;
