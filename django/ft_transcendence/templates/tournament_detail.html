@@ -3,7 +3,7 @@
     <h1>tournois {{ tournament.name }}</h1>
 
     Name: {{ tournament.name }} <br>
-    {% if tournament.time_left_in_minutes > 0 %}
+    {% if tournament.time_left_in_minutes > 0 and subscribe_active %}
     Inscription ouverte: oui<br>
     Temps restant pour s'inscrire: {{ tournament.time_left_in_minutes }} minutes <br>
     {% else %}

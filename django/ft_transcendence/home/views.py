@@ -118,6 +118,7 @@ def local_view(request):
                 player2_name=play2,
                 player1_score = score1,
                 player2_score = score2,
+                from_tournament = False,
                 played = True,
                 winner = win
             )
@@ -125,6 +126,9 @@ def local_view(request):
         return  render(request, 'index.html')
 
     return render(request, 'local.html')
+
+
+
 
 @login_required
 def tournaments_view(request):
@@ -157,21 +161,35 @@ def tournament_create(request):
             tournament.players_registered = request.user.username
             tournament.save()
             return render(request, 'tournament_detail.html', {'tournament': tournament})
-    return render(request, 'create_tournament.html', {'form': form}) 
+    return render(request, 'tournament_create.html', {'form': form}) 
 
 @login_required
 def tournament_update(request, id):
+    message = ''
     t = Tournament.objects.get(id=id)
     if request.method == 'POST':
         new_p = request.POST.get('new_player')
         launch = request.POST.get('launch')
+        remove = request.POST.get('remove')
         if new_p:
-            t.add_player(new_p)
-            t.number_registered += 1
+            if '@' + new_p not in t.get_registered_players():
+                t.add_player('@' + new_p)
+                t.number_registered += 1
+                if t.number_registered == t.max_player:
+                    t.subscribe_active = False
+            else:
+                message = 'Ce joueur est deja inscrit !'
         elif launch == '1':
             t.launch_tournament()
+        elif remove:
+            t.remove_player(remove)
+            t.number_registered -= 1
         t.save()
-    return render(request, 'tournament_update.html', {'tournament': t})
+    return render(request, 'tournament_update.html', {'tournament': t, 'message': message})
+
+
+
+
 
 @login_required
 def historic(request):

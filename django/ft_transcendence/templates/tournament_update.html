@@ -1,16 +1,29 @@
 {% include 'ruban.html' %}
 <div id="main" class="vertical-center">
-    <h1>Update du tounoi {{ tournament.name }}</h2>
-    {% if not tournament.running %}
-    <form id="launchForm" method="post">
-        {% csrf_token %}
-        <button type="button" onclick="submitForm('launch', '{{ tournament.id }}')">Lancer le tournoi</button>
-    </form>
-    <form id="addLocalForm" method="post">
-        {% csrf_token %}
-        <input type="text" id="new_player" placeholder="new_player">
-        <button type="button" onclick="submitForm('addLocal', '{{ tournament.id }}')">Ajouter un joueur localment</button>
-    </form>
-    {% endif %}
-    <div><button onclick="goTo('tournaments/{{ tournament.id }}')" class="buttonClassique">Retour</button></div>
+    <h1>Update du tounoi {{ tournament.name }}</h1>
+        Joueurs enregistrés: {{ tournament.number_registered }} / {{ tournament.max_player }}
+        <ul>
+            {% for player in tournament.get_registered_players %}  
+            <form id="removeLocal{{ player }}Form" method="post">
+            {% csrf_token %}          
+                <li>{{ player }}</li><button type="button" onclick="submitForm('removeLocal{{ player }}', '{{ tournament.id }}', '{{ player }}')">Cross</button>
+            </form>
+            {% endfor %}
+        </ul>
+        {% if not tournament.running %}
+        <form id="launchForm" method="post">
+            {% csrf_token %}
+            <button type="button" onclick="submitForm('launch', '{{ tournament.id }}')">Lancer le tournoi</button>
+        </form>
+        {% if tournament.subscribe_active %}
+        <p>{{ message }}</p>
+        <form id="addLocalForm" method="post">
+            {% csrf_token %}
+            <input type="text" id="new_player" placeholder="new_player">
+            <button type="button" onclick="submitForm('addLocal', '{{ tournament.id }}')">Ajouter un joueur
+                localment</button>
+        </form>
+        {% endif %}
+        {% endif %}
+        <div><button onclick="goTo('tournaments/{{ tournament.id }}')" class="buttonClassique">Retour</button></div>
 </div>

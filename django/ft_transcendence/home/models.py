@@ -14,6 +14,7 @@ class   Match(models.Model):
     player1_score = models.fields.IntegerField(default=0)
     player2_name = models.fields.CharField(max_length=100, default='player 2')
     player2_score = models.fields.IntegerField(default=0)
+    from_tournament = models.fields.BooleanField(default=True)
     played = models.fields.BooleanField(default=False)
     winner = models.fields.CharField(max_length=100, default='')
 
@@ -55,6 +56,8 @@ class Tournament(models.Model):
     max_player = models.fields.IntegerField(choices=PLAYERS_CHOICES, default=4)
     number_registered = models.fields.IntegerField(default=1)
     players_registered = models.TextField(blank=True)
+    remaining_players = models.TextField(blank=True)
+    remaining_match = models.ManyToManyField(Match)
     start_date = models.DateTimeField(default=timezone.now)
 
     def time_left_in_minutes(self):
@@ -83,11 +86,25 @@ class Tournament(models.Model):
     def launch_tournament(self):
         self.running = True
         self.subscribe_active = False
+        self.remaining_players = self.players_registered
+        self.matchmaking_tournament()
         self.save()
         return
 
+    def matchmaking_tournament(self):
+        listing = self.remaining_players.split(',')
 
-    #def create_local_match(self):
-    
+        if len(listing) == 1:
+            return
 
-    #def create_tournament_match(self):
+        if len(listing) % 2 != 0:
+            last_player = listing.pop()
+            self.remaining_players = last_player
+        
+        i = 0
+        while i < len(listing) - 1:
+            p1 = listing[i]
+            p2 = listing[i + 1]
+            m = Match.objects.create(player1_name=p1, player2_name=p2)
+            self.remaining_match.add(m)
+            i += 2
