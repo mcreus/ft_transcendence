@@ -6,7 +6,7 @@
         <li>
             <button onclick="goTo('tournaments/{{ tournament.id }}')" class="buttonClassique">{{ tournament.name}}</button><br>
             Proprietaire du tounoi: {{ tournament.owner.username }}<br>
-            {% if tournament.time_left_in_minutes > 0 %}
+            {% if tournament.time_left_in_minutes > 0 and subscribe_active %}
             Inscription ouverte: oui<br>
             Temps restant pour s'inscrire: {{ tournament.time_left_in_minutes }} minutes <br>
             {% else %}
