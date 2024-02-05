@@ -68,6 +68,7 @@ class Tournament(models.Model):
             self.save()
         return max(0, int(time_left))
     
+    
     def add_player(self, player_name):
             self.players_registered += f',{player_name}'  # Ajout du nom du joueur à la liste
 

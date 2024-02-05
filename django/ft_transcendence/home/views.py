@@ -171,6 +171,7 @@ def tournament_update(request, id):
         new_p = request.POST.get('new_player')
         launch = request.POST.get('launch')
         remove = request.POST.get('remove')
+        delete = request.POST.get('delete')
         if new_p:
             if '@' + new_p not in t.get_registered_players():
                 t.add_player('@' + new_p)
@@ -184,6 +185,10 @@ def tournament_update(request, id):
         elif remove:
             t.remove_player(remove)
             t.number_registered -= 1
+        elif delete == '1':
+            t.delete()
+            ts = Tournament.objects.all()
+            return render(request, 'tournaments.html', {'tournaments': ts})
         t.save()
     return render(request, 'tournament_update.html', {'tournament': t, 'message': message})
 

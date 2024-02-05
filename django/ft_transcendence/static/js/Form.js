@@ -40,6 +40,10 @@ function submitForm(formId, num, player) {
             url = '/tournaments/' + num + '/update/';
             formData.append('remove', player);
             break;
+        case `delete`:
+            url = '/tournaments/' + num + '/update/';
+            formData.append('delete', 1);
+            break;
         // Vous pouvez ajouter autant que vous le voulez
     }
     fetchForm(url, formData);
