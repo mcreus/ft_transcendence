@@ -13,6 +13,8 @@ from django.contrib.auth.models import User
 def main(request):
     return render(request, 'index.html')
 
+def lobby(request):
+    return render(request, 'lobby.html')
 
 def login_view(request):
     form = LoginForm()
@@ -127,9 +129,6 @@ def local_view(request):
 
     return render(request, 'local.html')
 
-
-
-
 @login_required
 def tournaments_view(request):
     t = Tournament.objects.all()
@@ -191,10 +190,6 @@ def tournament_update(request, id):
             return render(request, 'tournaments.html', {'tournaments': ts})
         t.save()
     return render(request, 'tournament_update.html', {'tournament': t, 'message': message})
-
-
-
-
 
 @login_required
 def historic(request):

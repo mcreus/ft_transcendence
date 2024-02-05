@@ -1,4 +1,6 @@
 # home/models.py
+import os
+import json
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
@@ -7,7 +9,8 @@ from datetime import timedelta
 from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-import os
+from channels.generic.websocket import WebsocketConsumer
+from asgiref.sync import async_to_sync
 
 class   Match(models.Model):
     player1_name = models.fields.CharField(max_length=100, default='player 1')
@@ -23,7 +26,35 @@ class User(AbstractUser):
     profile_photo = models.ImageField(
         verbose_name='Photo de profil',
     )
-
+    
+class ChatConsumer(WebsocketConsumer):
+    def connect(self):
+        self.room_group_name ='test'
+        async_to_sync(self.channel_layer.group_add)(
+            self.room_group_name,
+            self.channel_name
+    	)
+        self.accept()
+    def disconnect(self, close_code):
+        pass
+    def receive(self, text_data):
+        text_data_json = json.loads(text_data)
+        message = text_data_json['message']
+        async_to_sync(self.channel_layer.group_send)(
+            self.room_group_name,
+            {
+                'type':'chat_message',
+                'message':message
+            }
+        )
+    def chat_message(self, event):
+        message = event['message']
+        self.send(text_data = json.dumps({
+            'type':'chat',
+            'message':message
+        }))
+        
+    
 @receiver(post_save, sender=User)
 def assign_default_profile_photo(sender, instance, created, **kwargs):
     if created and not instance.profile_photo:
@@ -33,21 +64,20 @@ def assign_default_profile_photo(sender, instance, created, **kwargs):
 class Tournament(models.Model):
 
     TIME_CHOICES = [
-        (5, '5m'),
-        (10, '10m'),
-        (15, '15m'),
-        (20, '20m'),
-        (25, '25m'),
-        (30, '30m'),
+        	(5, '5m'),
+        	(10, '10m'),
+        	(15, '15m'),
+       	(20, '20m'),
+		(25, '25m'),
+		(30, '30m'),
     ]
     PLAYERS_CHOICES = [
-    (4, '4'),
-    (8, '8'),
-    (16, '16'),
-    (32, '32'),
+		(4, '4'),
+		(8, '8'),
+		(16, '16'),
+		(32, '32'),
     ]
 
-    
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.fields.CharField(max_length=100)
     subscribe_active = models.fields.BooleanField(default=True)
