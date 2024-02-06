@@ -87,7 +87,8 @@ class Tournament(models.Model):
     number_registered = models.fields.IntegerField(default=1)
     players_registered = models.TextField(blank=True)
     remaining_players = models.TextField(blank=True)
-    remaining_match = models.ManyToManyField(Match)
+    all_match = models.ManyToManyField(Match, related_name='all_match')
+    remaining_match = models.ManyToManyField(Match, related_name='remaining_match')
     start_date = models.DateTimeField(default=timezone.now)
 
     def time_left_in_minutes(self):
@@ -137,5 +138,6 @@ class Tournament(models.Model):
             p1 = listing[i]
             p2 = listing[i + 1]
             m = Match.objects.create(player1_name=p1, player2_name=p2)
+            self.all_match.add(m)
             self.remaining_match.add(m)
             i += 2

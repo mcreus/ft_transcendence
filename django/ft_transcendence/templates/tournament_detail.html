@@ -20,6 +20,18 @@
             <li>{{ player }}</li>
         {% endfor %}
     </ul>
+
+    {% if tournament.running %}
+    Liste des matchs
+    <ul>
+        {% for match in tournament.all_match.all %}
+            <li>{{ match.player1_name }} vs {{ match.player2_name }}
+                <div><button onclick="goTo('')">Voir</button></div>
+            </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
     <div><button onclick="goTo('tournaments')" class="buttonClassique">Liste des tournois</button></div>
 
     {% if tournament.owner == request.user %}
