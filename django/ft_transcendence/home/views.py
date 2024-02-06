@@ -191,6 +191,10 @@ def tournament_update(request, id):
         t.save()
     return render(request, 'tournament_update.html', {'tournament': t, 'message': message})
 
+def match_details(request, id):
+    m = Match.objects.get(id=id)
+    return render(request, 'match_details.html', {'match': m})
+
 @login_required
 def historic(request):
     m = request.user.historic.all()
@@ -202,7 +206,7 @@ def fast_game(request):
         play2 = request.POST.get('player2')
 
         match = Match.objects.create(
-            host=request.user,
+            #host=request.user,
             player1_name=play1,
             player2_name=play2
         )

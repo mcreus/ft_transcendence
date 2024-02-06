@@ -1,0 +1,8 @@
+{% include 'ruban.html' %}
+<div id="main" class="vertical-center">
+    <h1>{{ match.player1_name }} vs {{ match.player2_name }}</h1>
+
+    {% if not match.played %}
+    <div><button onclick="goTo('')">Jouer le match</button></div>
+    {% endif %}
+</div>
