@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.3'
 services:
   modsecurity:
     image: vshn/modsecurity:latest
@@ -12,9 +12,12 @@ services:
   nginx:
     image: nginx:latest
     ports:
-      - "8080:80"
+      - "443:443"  # Port pour HTTPS
+      - "80:80"    # Port pour HTTP (redirection vers HTTPS)
     volumes:
       - ./configurations/nginx.conf:/etc/nginx/nginx.conf:ro
+      - /home/mcreus/pong/ponghub.app_ssl_certificate.cer:/etc/nginx/ssl/ponghub.app_ssl_certificate.cer
+      - /home/mcreus/pong/ponghub.app_private_key.key:/etc/nginx/ssl/ponghub.app_private_key.key
     depends_on:
       - modsecurity
       - django
@@ -40,18 +43,6 @@ services:
       VAULT_DEV_ROOT_TOKEN_ID: ${ROOT_ID}
       VAULT_DEV_LISTEN_ADDRESS: ${LISTEN_ADDR}
       VAULT_ADDR: ${VAULT_ADDR}
-    networks:
-      - webnet
-
-  ngrok:
-    image: ngrok/ngrok
-    environment:
-      NGROK_AUTHTOKEN: ${NGROK_TOKEN}
-    command: ["http", "nginx:80"]
-    ports:
-      - "4040:4040"
-    depends_on:
-      - nginx
     networks:
       - webnet
 
