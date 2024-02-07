@@ -193,6 +193,30 @@ def tournament_update(request, id):
 
 def match_details(request, id):
     m = Match.objects.get(id=id)
+    if request.method == 'POST':
+        play1 = request.POST.get('player1')
+        play2 = request.POST.get('player2')
+        score1 = request.POST.get('score1')
+        score2 = request.POST.get('score2')
+        win = request.POST.get('winner')
+
+        m.player1_score = score1
+        m.player2_score = score2
+        m.played = True
+        m.winner = win
+        m.save()
+        if request.user.username == play1 or request.user.username == play2:
+            request.user.historic.add(m)
+        m.origin.remaining_match.remove(m)
+        if len(m.origin.remaining_players) == 0:
+            print('winner = ', win)
+            m.origin.remaining_players = win
+        else:
+            m.origin.remaining_players += f',{win}'
+        m.save()
+        if m.origin.remaining_match.count() == 0:
+            m.origin.matchmaking_tournament()
+        return render(request, 'tournament_detail.html', {'tournament': m.origin})
     return render(request, 'match_details.html', {'match': m})
 
 @login_required

@@ -57,6 +57,7 @@ function AnimVictory(game)
 		//body.insertAdjacentHTML("beforeend", '<form id="resultForm" method="post">' + {% csrf_token %} + '</form>');
 		div.style.opacity = 1;
 		SendResult(game);
-		goTo('');
+		if (!game.tournament)
+			goTo('');
 	};
 }

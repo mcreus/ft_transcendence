@@ -1,6 +1,7 @@
 // Récupérer le canevas et son contexte
 let	canvas;
 let	ctx;
+let game;
 
 // Class
 class Paddle {
@@ -39,7 +40,7 @@ class Ball {
 };
 
 class GameManager {
-	constructor(n_time, n_point, n_player, multy_ball) {
+	constructor(n_time, n_point, n_player, multy_ball, is_tournament) {
 		this.map_paddles = new Map();
 		this.map_balls = new Map();
 		this.scoreWin = n_point;
@@ -56,6 +57,7 @@ class GameManager {
 		this.ballSpeedMax = 10;
 		this.multyBalls = multy_ball;
 		this.interval = new Date().getTime() / 1000;
+		this.tournament = is_tournament;
 	}
 	updateGame() {
 	//Each balls
@@ -131,16 +133,28 @@ class GameManager {
 	}
 };
 
-function init()
+function init(type)
+{
+	if (type == 'tournament')
+		gameTournament();
+	else
+		gameLocal();
+	let	ball1 = new Ball(canvas.width / 2, canvas.height / 2, "white", game.ballRadius, game.ballSpeedInit);
+	game.map_balls.set(game.nb_balls++, ball1);
+	
+	GenerateShow(game);
+	AnimShow(game);
+}
+
+function gameLocal()
 {
 	if (checkParam())
 		return ;
 	let nb_point = document.getElementById("Nb_point").value;
 	let nb_player = document.getElementById("Nb_player").value;
 	let time = document.getElementById("time-select").value;
-	console.log(document.getElementById("Multy_ball").checked);
 	let multy_ball = document.getElementById("Multy_ball").checked;
-	let game = new GameManager(time, nb_point, nb_player, multy_ball);
+	game = new GameManager(time, nb_point, nb_player, multy_ball, false);
 	let player1 = document.getElementById("player_1").value;
 	let player2 = document.getElementById("player_2").value;
 	let player3 = 1;
@@ -169,9 +183,6 @@ function init()
 		paddle1 = new Paddle(0, (canvas.height - game.paddleHeight) / 2, "rgba(0,176,176,1)", player1, "", game.paddleHeight, "w", "s");
 		paddle2 = new Paddle(canvas.width - game.paddleWidth, (canvas.height - game.paddleHeight) / 2, "rgba(255,154,0,1)", player2, "", game.paddleHeight, "ArrowUp", "ArrowDown");
 	}
-	let	ball1 = new Ball(canvas.width / 2, canvas.height / 2, "white", game.ballRadius, game.ballSpeedInit);
-
-	//Paddles
 	game.map_paddles.set(game.nb_paddles++, paddle1);
 	game.map_paddles.set(game.nb_paddles++, paddle2);
 	if (game.nb_player > 2)
@@ -179,14 +190,21 @@ function init()
 		game.map_paddles.set(game.nb_paddles++, paddle3);
 		game.map_paddles.set(game.nb_paddles++, paddle4);
 	}
-
-	//Balls
-	game.map_balls.set(game.nb_balls++, ball1);
-	
-	GenerateShow(game);
-	AnimShow(game);
 }
 
+function gameTournament()
+{
+	game = new GameManager(2, 1, 2, false, true);
+	let player1 = document.getElementById("player_1").innerHTML;
+	let player2 = document.getElementById("player_2").innerHTML;
+	GenerateGame(game);
+	canvas = document.getElementById("pongCanvas");
+	ctx = canvas.getContext("2d");
+	let paddle1 = new Paddle(0, (canvas.height - game.paddleHeight) / 2, "rgba(0,176,176,1)", 0, player1, game.paddleHeight, "w", "s");
+	let	paddle2 = new Paddle(canvas.width - game.paddleWidth, (canvas.height - game.paddleHeight) / 2, "rgba(255,154,0,1)", 0, player2, game.paddleHeight, "ArrowUp", "ArrowDown");
+	game.map_paddles.set(game.nb_paddles++, paddle1);
+	game.map_paddles.set(game.nb_paddles++, paddle2);
+}
 function checkParam()
 {
 	let nb_point = document.getElementById("Nb_point").value;

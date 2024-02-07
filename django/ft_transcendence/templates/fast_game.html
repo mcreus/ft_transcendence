@@ -1,7 +1,7 @@
 
 <div id="pos" class="player-content">
     <div class="sous-player-blue">Player 1
-        <select id="player_1" data-username="{{ request.user.username }}">
+        <select id="player_1" data-username="{{ match.origin }}">
             <option value="username">{{ request.user.username }}</option>
             <option value="default">Player 1</option>
             <option value="custom">Nom personnalisé</option>

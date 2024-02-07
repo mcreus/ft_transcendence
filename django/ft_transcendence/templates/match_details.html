@@ -1,8 +1,13 @@
 {% include 'ruban.html' %}
-<div id="main" class="vertical-center">
-    <h1>{{ match.player1_name }} vs {{ match.player2_name }}</h1>
+<div id="main" class="vertical-center" data-num="{{ match.id }}">
+    <div id="player_1">{{ match.player1_name }}</div>
+    <div>vs</div>
+    <div id="player_2">{{ match.player2_name }}</div>
 
     {% if not match.played %}
-    <div><button onclick="goTo('')">Jouer le match</button></div>
+    <div><button onclick="init('tournament')">Jouer le match</button></div>
     {% endif %}
+
+    <div><button onclick="goTo('tournaments/{{ match.origin.id }}')" class="buttonClassique">Retour au tournoi</button></div>
 </div>
+<form id="resultForm" method="post" style="hidden:true">{% csrf_token %}</form>

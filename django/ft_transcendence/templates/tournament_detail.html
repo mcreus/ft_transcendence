@@ -3,7 +3,7 @@
     <h1>tournois {{ tournament.name }}</h1>
 
     Name: {{ tournament.name }} <br>
-    {% if tournament.time_left_in_minutes > 0 and subscribe_active %}
+    {% if tournament.time_left_in_minutes > 0 and tournament.subscribe_active %}
     Inscription ouverte: oui<br>
     Temps restant pour s'inscrire: {{ tournament.time_left_in_minutes }} minutes <br>
     {% else %}
@@ -34,7 +34,10 @@
         {% endfor %}
     </ul>
     {% endif %}
-
+    {% if tournament.winner %}
+        Grand vainqueur : {{ tournament.winner }}
+    {% endif %}
+    
     <div><button onclick="goTo('tournaments')" class="buttonClassique">Liste des tournois</button></div>
 
     {% if tournament.owner == request.user %}
