@@ -14,7 +14,6 @@ COPY . /app/
 # Exposer le port utilisé par l'application
 EXPOSE 8000
 
-
 RUN python3 -m pip install -U 'channels[daphne]'
 
 # Commande pour lancer l'application

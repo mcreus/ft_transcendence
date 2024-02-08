@@ -26,6 +26,12 @@ services:
 
   django:
     build: ./django/ft_transcendence
+    environment:
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_HOST=${DATABASE_HOST}
+      - DATABASE_PORT=${DATABASE_PORT}
     ports:
       - "8000:8000"
     volumes:
@@ -39,12 +45,19 @@ services:
       - "8200:8200"
     cap_add:
       - IPC_LOCK
+    volumes:
+      - vault_data:/vault/file
+      - ./configurations/config.hcl:/vault/config/config.hcl
     environment:
-      VAULT_DEV_ROOT_TOKEN_ID: ${ROOT_ID}
-      VAULT_DEV_LISTEN_ADDRESS: ${LISTEN_ADDR}
+      #VAULT_DEV_ROOT_TOKEN_ID: ${ROOT_ID}
+      #VAULT_DEV_LISTEN_ADDRESS: ${LISTEN_ADDR}
       VAULT_ADDR: ${VAULT_ADDR}
+    entrypoint: vault server -config=/vault/config/config.hcl
     networks:
       - webnet
 
 networks:
   webnet:
+
+volumes:
+  vault_data:
