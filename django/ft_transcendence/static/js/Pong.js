@@ -135,18 +135,24 @@ class GameManager {
 
 function init(type)
 {
-	if (type == 'tournament')
+	if (type == 'online')
+	{
+		if (!document.getElementById("player_1"))
+			return ;
+		onlineGame();
+		return ;
+	}
+	else if (type == 'tournament')
 		gameTournament();
 	else
-		gameLocal();
+		localGame();
 	let	ball1 = new Ball(canvas.width / 2, canvas.height / 2, "white", game.ballRadius, game.ballSpeedInit);
 	game.map_balls.set(game.nb_balls++, ball1);
-	
 	GenerateShow(game);
 	AnimShow(game);
 }
 
-function gameLocal()
+function localGame()
 {
 	if (checkParam())
 		return ;
@@ -190,6 +196,29 @@ function gameLocal()
 		game.map_paddles.set(game.nb_paddles++, paddle3);
 		game.map_paddles.set(game.nb_paddles++, paddle4);
 	}
+}
+
+function onlineGame()
+{
+	let player1 = document.getElementById("player_1").innerHTML;
+	let player2 = document.getElementById("player_2").innerHTML;
+	sendMatch(player1, player2);
+}
+
+function startOnlineGame(player1, player2)
+{
+	game = new GameManager(2, 5, 2, false, false);
+	GenerateGame(game);
+	canvas = document.getElementById("pongCanvas");
+	ctx = canvas.getContext("2d");
+	paddle1 = new Paddle(0, (canvas.height - game.paddleHeight) / 2, "rgba(0,176,176,1)", 0, player1, game.paddleHeight, "w", "s");
+	paddle2 = new Paddle(canvas.width - game.paddleWidth, (canvas.height - game.paddleHeight) / 2, "rgba(255,154,0,1)", 0, player2, game.paddleHeight, "ArrowUp", "ArrowDown");
+	game.map_paddles.set(game.nb_paddles++, paddle1);
+	game.map_paddles.set(game.nb_paddles++, paddle2);
+	let	ball1 = new Ball(canvas.width / 2, canvas.height / 2, "white", game.ballRadius, game.ballSpeedInit);
+	game.map_balls.set(game.nb_balls++, ball1);
+	GenerateShow(game);
+	AnimShow(game);
 }
 
 function gameTournament()

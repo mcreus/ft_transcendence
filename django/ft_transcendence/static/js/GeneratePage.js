@@ -39,6 +39,8 @@ function navigateTo(view) {
 			main.style.animation = "pagein 1s";
 			main.onanimationend = () => {
 				main.style.opacity = 1.0;
+				if (view == 'fast_game')
+					init('online');
 			}
 		};
 	}

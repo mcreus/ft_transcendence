@@ -25,13 +25,6 @@
 		<div class="centre-content">
 			<button onclick="goTo('salon')" class="buttonClassique">Pong !</button>
 		</div>
-		<div class="centre-content">
-			<button onclick="goTo('lobby')" class="buttonClassique">Lobby</button>
-			<form id="lobbyForm">
-				<input type="text" name="message"></input>
-			</form>
-			<div id='chat'></div>
-		</div>
 	</div>
 	<form id="resultForm" method="post" style="hidden:true">{% csrf_token %}</form>
 	<script type="text/javascript" src="../static/js/AI.js"></script>
@@ -43,7 +36,6 @@
 	<script type="text/javascript" src="../static/js/Form.js"></script>
 	<script type="text/javascript" src="../static/js/Animation.js"></script>
 	<script type="text/javascript" src="../static/js/WebSocket.js"></script>
-
 	<script>
 		page({ hashbang: true });
 		var userNavigation = true;

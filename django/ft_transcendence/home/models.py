@@ -11,6 +11,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 
 class   Match(models.Model):
     player1_name = models.fields.CharField(max_length=100, default='player 1')
@@ -30,7 +31,8 @@ class User(AbstractUser):
     
 class ChatConsumer(WebsocketConsumer):
     def connect(self):
-        self.room_group_name ='test'
+        self.user = self.scope["user"]
+        self.room_group_name = 'test'
         async_to_sync(self.channel_layer.group_add)(
             self.room_group_name,
             self.channel_name
@@ -40,20 +42,65 @@ class ChatConsumer(WebsocketConsumer):
         pass
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        message = text_data_json['message']
-        async_to_sync(self.channel_layer.group_send)(
-            self.room_group_name,
-            {
-                'type':'chat_message',
-                'message':message
-            }
-        )
+        if (text_data_json['type'] == 'chat'):
+            message = text_data_json['message']
+            print('Message:', message)
+            async_to_sync(self.channel_layer.group_send)(
+                self.room_group_name,
+                {
+                    'type':'chat_message',
+                    'message':message
+                }
+            )
+        if (text_data_json['type'] == 'player_pos'):
+            player = text_data_json['player']
+            nb = text_data_json['id']
+            async_to_sync(self.channel_layer.group_send)(
+                self.room_group_name,
+                {
+                    'type':'player_pos_message',
+                    'id':nb,
+                    'player':player
+                }
+            )
+        if (text_data_json['type'] == 'start_match'):
+            player1 = text_data_json['player1']
+            player2 = text_data_json['player2']
+            async_to_sync(self.channel_layer.group_send)(
+                 self.room_group_name,
+                 {
+                     'type':'start_match_message',
+                     'player1':player1,
+                     'player2':player2
+                 }
+            )
     def chat_message(self, event):
         message = event['message']
         self.send(text_data = json.dumps({
             'type':'chat',
             'message':message
         }))
+    def player_pos_message(self, event):
+        player = event['player']
+        nb = event['id']
+        self.send(text_data = json.dumps({
+            'type':'player_pos',
+            'id':nb,
+            'player':player
+        }))
+    def start_match_message(self, event):
+        player1 = event['player1']
+        player2 = event['player2']
+        print('player1', player1, '.')
+        print('player2', player2, '.')
+        print('user', self.user, '.')
+        if (self.user == player1 and self.user == player2):
+            print('Send match')
+            self.send(text_data = json.dumps({
+                 'type':'start_match',
+                 'player1':player1,
+                 'player2':player2
+            }))
         
     
 @receiver(post_save, sender=User)
@@ -148,3 +195,38 @@ class Tournament(models.Model):
             self.remaining_match.add(m)
             i += 2
         self.save()
+
+class WaitingList(models.Model):
+
+    players = models.TextField(blank=True)
+    
+    def add_player(self, player_name):
+        listing = self.players.split(',')
+        if player_name in listing:
+            return
+        if len(self.players) > 0:
+            self.players += f',{player_name}'  # Ajout du nom du joueur à la liste
+        else:
+            self.players = player_name
+        self.save()
+
+    def remove_player(self, player_name):
+        listing = self.players.split(',')
+        if player_name in listing:
+            listing.remove(player_name)
+            if len(listing) > 0:
+                self.players = ','.join(listing)  # Mise à jour de la liste des joueurs
+            else:
+                self.players = ''
+            self.save()
+
+    def matchmaking(self):
+        listing = self.players.split(',')
+        if len(listing) <= 1:
+            return
+        p1 = listing[0]
+        p2 = listing[1]
+        m = Match.objects.create(player1_name=p1, player2_name=p2)
+        self.remove_player(p1)
+        self.remove_player(p2)
+        return m

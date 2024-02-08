@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import LoginForm, TournamentForm, SignupForm, update_usernameForm, update_emailForm, update_imageForm
 from django.http import JsonResponse
 from home.models import Tournament
-from home.models import Match
+from home.models import Match, WaitingList
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
@@ -224,14 +224,10 @@ def historic(request):
     return render(request, 'historic.html', {'matchs': m})
 
 def fast_game(request):
-    if request.method == 'POST':
-        play1 = request.POST.get('player1')
-        play2 = request.POST.get('player2')
-
-        match = Match.objects.create(
-            player1_name=play1,
-            player2_name=play2
-        )
-        return  render(request, 'start_game.html')
-
-    return render(request, 'fast_game.html')
+    if not WaitingList.objects.all():
+       WaitingList.objects.create()
+    waiting = WaitingList.objects.all().first()
+    waiting.add_player(request.user.username)
+    result = waiting.matchmaking()
+    print(result)
+    return render(request, 'fast_game.html', {'result': result})

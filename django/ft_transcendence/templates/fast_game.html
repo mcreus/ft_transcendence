@@ -1,24 +1,5 @@
-
-<div id="pos" class="player-content">
-    <div class="sous-player-blue">Player 1
-        <select id="player_1" data-username="{{ match.origin }}">
-            <option value="username">{{ request.user.username }}</option>
-            <option value="default">Player 1</option>
-            <option value="custom">Nom personnalisé</option>
-        </select>
-        <input type="text" id="player_1_custom" placeholder="Nom personnalisé">
-    </div>
-    <div class="sous-player-orange">Player 2
-        <select id="player_2">
-            <option value="username">{{ request.user.username }}</option>
-            <option value="default">Player 2</option>
-            <option value="custom">Nom personnalisé</option>
-        </select>
-        <input type="text" id="player_2_custom" placeholder="Nom personnalisé">
-    </div>
-</div>
-<form id="testForm" method="post">
-    {% csrf_token %}
-    <button type="button" onclick="testForm()">Creer le match</button>
-</form>
-
+<div>En attente</div>
+{% if result != None %}
+	<div id="player_1">{{ result.player1_name }}</div>
+	<div id="player_2">{{ result.player2_name }}</div>
+{% endif %}
