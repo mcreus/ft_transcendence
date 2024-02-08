@@ -209,11 +209,10 @@ def match_details(request, id):
             request.user.historic.add(m)
         m.origin.remaining_match.remove(m)
         if len(m.origin.remaining_players) == 0:
-            print('winner = ', win)
             m.origin.remaining_players = win
         else:
             m.origin.remaining_players += f',{win}'
-        m.save()
+        m.origin.save()
         if m.origin.remaining_match.count() == 0:
             m.origin.matchmaking_tournament()
         return render(request, 'tournament_detail.html', {'tournament': m.origin})
@@ -230,7 +229,6 @@ def fast_game(request):
         play2 = request.POST.get('player2')
 
         match = Match.objects.create(
-            #host=request.user,
             player1_name=play1,
             player2_name=play2
         )
