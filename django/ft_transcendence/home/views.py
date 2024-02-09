@@ -2,13 +2,12 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from .forms import LoginForm, TournamentForm, SignupForm, update_usernameForm, update_emailForm, update_imageForm
+from .forms import LoginForm, TournamentForm, SignupForm, update_usernameForm, update_emailForm, update_imageForm, add_friendForm
 from django.http import JsonResponse
-from home.models import Tournament
-from home.models import Match, WaitingList
+from home.models import Tournament, Match, WaitingList
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib.auth.models import User
+from home.models import User
 
 def main(request):
     return render(request, 'index.html')
@@ -102,6 +101,25 @@ def update_image(request):
         form = update_imageForm(instance=request.user)
 
     return render(request, 'update_image.html', {'form': form})
+
+def add_friend(request):
+	amis_actuels = request.user.amis.all()
+	message = ""
+	if request.method == 'POST':
+		form = add_friendForm(request.POST, user=request.user)
+		if form.is_valid():
+			pseudo_ami = form.cleaned_data['pseudo_ami']
+			try:
+				ami = User.objects.get(username=pseudo_ami)
+				if ami != request.user and ami not in request.user.amis.all():
+					request.user.amis.add(ami)
+			except User.DoesNotExist:
+				message = "L'utilisateur spécifié n'existe pas."
+			form = add_friendForm(user=request.user)
+			return render(request, "add_friend.html", {'form': form, 'amis':amis_actuels, 'error': message})
+	else:
+		form = add_friendForm(user=request.user)
+	return render(request, 'add_friend.html', {'form': form, 'amis':amis_actuels, 'error': message})
 
 def salon_view(request):
     return render(request, 'salon.html')

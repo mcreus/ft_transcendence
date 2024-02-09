@@ -38,6 +38,14 @@ class TournamentForm(forms.ModelForm):
    class Meta:
      model = Tournament
      fields = ['name', 'time_to_subscribe', 'max_player']
+
+class add_friendForm(forms.Form):
+    pseudo_ami = forms.CharField(label="Pseudo de l'ami à ajouter")
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user')
+        super(add_friendForm, self).__init__(*args, **kwargs)
+        self.fields['pseudo_ami'].queryset = User.objects.exclude(pk=user.pk)
      
 class update_usernameForm(forms.ModelForm):
 	username = forms.CharField(

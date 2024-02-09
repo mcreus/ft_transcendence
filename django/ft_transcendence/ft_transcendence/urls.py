@@ -40,6 +40,7 @@ urlpatterns = [
     path('profile/username/', views.update_username, name="profile/username"),
     path('profile/password/', views.update_password, name="profile/password"),
     path('profile/image/', views.update_image, name="profile/image"),
+    path('add_friend/', views.add_friend, name="add_friend"),
 ]
 
 if settings.DEBUG:

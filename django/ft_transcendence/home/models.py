@@ -25,6 +25,7 @@ class   Match(models.Model):
 
 class User(AbstractUser):
     historic = models.ManyToManyField(Match, blank=True)
+    amis = models.ManyToManyField('User', blank=True)
     profile_photo = models.ImageField(
         verbose_name='Photo de profil',
     )
