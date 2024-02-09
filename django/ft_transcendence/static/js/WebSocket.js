@@ -6,7 +6,7 @@ function webSocketFunctions(chatSocket)
 {
 	chatSocket.onmessage = function(e) {
 	    const data = JSON.parse(e.data);
-	    console.log('Data', data);
+	    //console.log('Data', data);
 	    if (data.type == 'chat')
 	    {
 	    	let div = document.getElementById('chat');
@@ -18,7 +18,7 @@ function webSocketFunctions(chatSocket)
 	    {
 	    	let user = document.getElementById('user').innerHTML;
 	    	let side = 0;
-	    	if (suer != data.player1)
+	    	if (user != data.player1)
 	    		side = 1;
 	    	startOnlineGame(data.player1, data.player2, side);
 	    }
@@ -36,13 +36,14 @@ function sendMessage(message) {
     console.log(message);
 }
 
-function sendPos(player, id) {
+function sendPos(player, id, pseudo) {
     if (!isOpen(chatSocket))
     	return;
     chatSocket.send(JSON.stringify({
     	'type':'player_pos',
         'id':id,
-        'player':player
+        'player':player,
+        'target':pseudo
     }));
 }
 
@@ -55,14 +56,6 @@ function sendMatch(player1, player2) {
         'player2':player2
     }));
 }
-
-/*let form = document.getElementById('lobbyForm')
-
-form.addEventListener('submit', (e) => {
-	e.preventDefault()
-	sendMessage(e.target.message.value)
-	form.reset()
-})*/
 
 function isOpen(ws) {
 	return ws.readyState === ws.OPEN;

@@ -17,6 +17,18 @@ class Paddle {
 		this.KeyDown = Down;
 		this.Pseudo = Pseudo;
 	}
+	copy(player) {
+		this.PosX = player.PosX;
+		this.PosY = player.PosY;
+		this.ObjY = player.ObjY;
+		this.Color = player.Color;
+		this.Player = player.Player
+		this.Height = player.Height;
+		this.Speed = player.Speed;
+		this.KeyUp = player.KeyUp;
+		this.KeyDown = player.KeyDown;
+		this.Pseudo = player.Pseudo;
+	}
 };
 
 class Ball {
@@ -89,11 +101,12 @@ class GameManager {
 		}
 		if (this.time <= 0 && this.scoreL != this.scoreR)
 			this.finished = true;
-		if (is_online)
+		if (this.online)
 		{
-			for (let i = 0; i < this.nb_player; i++)
-				if (this.map_paddles.get(i).Player == 0)
-					sendPos(this.map_paddles.get(i).Player, i);
+			if (this.map_paddles.get(0).Player == 0)
+				sendPos(this.map_paddles.get(0), 0, this.map_paddles.get(1).Pseudo);
+			else
+				sendPos(this.map_paddles.get(1), 1, this.map_paddles.get(0).Pseudo);
 		}
 	}
 	updateBySec()
@@ -167,7 +180,7 @@ function localGame()
 	let nb_player = document.getElementById("Nb_player").value;
 	let time = document.getElementById("time-select").value;
 	let multy_ball = document.getElementById("Multy_ball").checked;
-	game = new GameManager(time, nb_point, nb_player, multy_ball, false);
+	game = new GameManager(time, nb_point, nb_player, multy_ball, false, false);
 	let player1 = document.getElementById("player_1").value;
 	let player2 = document.getElementById("player_2").value;
 	let player3 = 1;
@@ -214,7 +227,7 @@ function onlineGame()
 
 function startOnlineGame(player1, player2, side)
 {
-	game = new GameManager(2, 5, 2, false, false);
+	game = new GameManager(2, 5, 2, false, false, true);
 	GenerateGame(game);
 	canvas = document.getElementById("pongCanvas");
 	ctx = canvas.getContext("2d");
@@ -240,7 +253,7 @@ function startOnlineGame(player1, player2, side)
 
 function gameTournament()
 {
-	game = new GameManager(2, 1, 2, false, true);
+	game = new GameManager(2, 1, 2, false, true, false);
 	let player1 = document.getElementById("player_1").innerHTML;
 	let player2 = document.getElementById("player_2").innerHTML;
 	GenerateGame(game);

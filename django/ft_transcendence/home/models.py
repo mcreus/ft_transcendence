@@ -57,12 +57,14 @@ class ChatConsumer(WebsocketConsumer):
         if (text_data_json['type'] == 'player_pos'):
             player = text_data_json['player']
             nb = text_data_json['id']
+            pseudo = text_data_json['target']
             async_to_sync(self.channel_layer.group_send)(
                 self.room_group_name,
                 {
                     'type':'player_pos_message',
                     'id':nb,
-                    'player':player
+                    'player':player,
+                    'target':pseudo
                 }
             )
         if (text_data_json['type'] == 'start_match'):
@@ -85,11 +87,12 @@ class ChatConsumer(WebsocketConsumer):
     def player_pos_message(self, event):
         player = event['player']
         nb = event['id']
-        self.send(text_data = json.dumps({
-            'type':'player_pos',
-            'id':nb,
-            'player':player
-        }))
+        if (self.user == event['target']):
+            self.send(text_data = json.dumps({
+                'type':'player_pos',
+                'id':nb,
+                'player':player
+            }))
     def start_match_message(self, event):
         player1 = event['player1']
         player2 = event['player2']

@@ -114,7 +114,7 @@ function GenerateShow(game)
 	let player;
 	for (let i = 0; i < game.nb_player; i++)
 	{
-		if (game.map_paddles.get(i).Player != 0)
+		if (game.map_paddles.get(i).Player > 0)
 			player = "AI " + game.map_paddles.get(i).Player;
 		else
 			player = game.map_paddles.get(i).Pseudo;

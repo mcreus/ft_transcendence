@@ -88,8 +88,6 @@ function SelectAI(game, AI, lvl)
 		AIlvl3(game, AI);
 	else if (lvl == 4)
 		AIlvlCheat(game, AI);
-	else
-		console.log("invalid difficulty");
 }
 
 function MoveAI(AI)
