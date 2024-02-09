@@ -67,6 +67,19 @@ class ChatConsumer(WebsocketConsumer):
                     'target':pseudo
                 }
             )
+        if (text_data_json['type'] == 'ball_pos'):
+            ball = text_data_json['ball']
+            nb = text_data_json['id']
+            pseudo = text_data_json['target']
+            async_to_sync(self.channel_layer.group_send)(
+                self.room_group_name,
+                {
+                    'type':'ball_pos_message',
+                    'id':nb,
+                    'ball':ball,
+                    'target':pseudo
+                }
+            )
         if (text_data_json['type'] == 'start_match'):
             player1 = text_data_json['player1']
             player2 = text_data_json['player2']
@@ -92,6 +105,15 @@ class ChatConsumer(WebsocketConsumer):
                 'type':'player_pos',
                 'id':nb,
                 'player':player
+            }))
+    def ball_pos_message(self, event):
+        ball = event['ball']
+        nb = event['id']
+        if (self.user == event['target']):
+            self.send(text_data = json.dumps({
+                'type':'ball_pos',
+                'id':nb,
+                'ball':ball
             }))
     def start_match_message(self, event):
         player1 = event['player1']

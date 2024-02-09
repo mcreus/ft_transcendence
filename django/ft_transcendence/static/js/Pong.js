@@ -22,7 +22,6 @@ class Paddle {
 		this.PosY = player.PosY;
 		this.ObjY = player.ObjY;
 		this.Color = player.Color;
-		this.Player = player.Player
 		this.Height = player.Height;
 		this.Speed = player.Speed;
 		this.KeyUp = player.KeyUp;
@@ -48,6 +47,13 @@ class Ball {
 		let ratio = this.speed / dist;
 		this.PosY += this.ballSpeedY * this.speed * ratio;
 		this.PosX += this.ballSpeedX * this.speed * ratio;
+	}
+	copy(ball) {
+		this.PosX = ball.PosX;
+		this.PosY = ball.PosY;
+		this.ballSpeedX = ball.ballSpeedX;
+		this.ballSpeedY = ball.ballSpeedY;
+		this.speed = ball.speed;
 	}
 };
 
@@ -86,7 +92,8 @@ class GameManager {
 			collisionPaddles(this, ball);
 			// Si la balle atteint l'extrémité gauche ou droite, réinitialiser sa position
 			goal(this, ball);
-			ball.NextPos();
+			if (this.online && this.map_paddles.get(0).Player == 0)
+				ball.NextPos();
 			if (ball.PosY - ball.Radius < 0)
 				ball.PosY = ball.Radius;
 			else if (ball.PosY + ball.Radius > canvas.height)
@@ -104,7 +111,11 @@ class GameManager {
 		if (this.online)
 		{
 			if (this.map_paddles.get(0).Player == 0)
+			{
 				sendPos(this.map_paddles.get(0), 0, this.map_paddles.get(1).Pseudo);
+				for (let i = 0; i < this.map_balls.size; i++)
+					sendBall(this.map_balls.get(i), i, this.map_paddles.get(1).Pseudo);
+			}
 			else
 				sendPos(this.map_paddles.get(1), 1, this.map_paddles.get(0).Pseudo);
 		}
