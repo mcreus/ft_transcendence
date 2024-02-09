@@ -31,8 +31,9 @@ class User(AbstractUser):
     
 class ChatConsumer(WebsocketConsumer):
     def connect(self):
-        self.user = self.scope["user"]
+        self.user = self.scope["user"].username
         self.room_group_name = 'test'
+        print('name', self.user)
         async_to_sync(self.channel_layer.group_add)(
             self.room_group_name,
             self.channel_name
@@ -91,11 +92,7 @@ class ChatConsumer(WebsocketConsumer):
     def start_match_message(self, event):
         player1 = event['player1']
         player2 = event['player2']
-        print('player1', player1, '.')
-        print('player2', player2, '.')
-        print('user', self.user, '.')
-        if (self.user == player1 and self.user == player2):
-            print('Send match')
+        if (self.user == player1 or self.user == player2):
             self.send(text_data = json.dumps({
                  'type':'start_match',
                  'player1':player1,

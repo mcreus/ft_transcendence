@@ -10,7 +10,7 @@
 	</button></left>
 	<right id="profilContainer">
 		{% if user.is_authenticated %}
-			<div class="pseudo">{{ request.user }}</div>
+			<div id="user" class="pseudo">{{ request.user }}</div>
 			<div class="dropdown">
 				<img src="{{ request.user.profile_photo.url }}" id="profilImage" alt="Profil"/>
 				<div class="dropdown-child">

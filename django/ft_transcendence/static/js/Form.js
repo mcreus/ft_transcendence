@@ -120,5 +120,5 @@ function SendResult(game)
 		formData.append('winner', game.map_paddles.get(1).Pseudo);
     if (game.tournament)
         url = `/match/${document.getElementById("main").dataset.num}/`;
-	fetchForm(url, formData);
+    fetchForm(url, formData);
 }

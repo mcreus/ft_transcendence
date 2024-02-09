@@ -199,7 +199,6 @@ def match_details(request, id):
         score1 = request.POST.get('score1')
         score2 = request.POST.get('score2')
         win = request.POST.get('winner')
-
         m.player1_score = score1
         m.player2_score = score2
         m.played = True
@@ -229,5 +228,4 @@ def fast_game(request):
     waiting = WaitingList.objects.all().first()
     waiting.add_player(request.user.username)
     result = waiting.matchmaking()
-    print(result)
     return render(request, 'fast_game.html', {'result': result})

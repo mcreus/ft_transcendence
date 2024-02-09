@@ -55,6 +55,12 @@ function navigateTo(view) {
 				window.location.hash = view;
 			});
 	}
+	if (view == 'logout' || view == 'fast_game')
+	{
+		chatSocket.close();
+		chatSocket = new WebSocket(`ws://${window.location.host}/ws/socket-server/`);
+		webSocketFunctions(chatSocket);
+	}
 }
 
 function GenerateGame(game)
