@@ -5,9 +5,13 @@
     <div id="player_2">{{ match.player2_name }}</div>
 
     {% if not match.played %}
-    <div><button onclick="init('tournament')">Jouer le match</button></div>
+    {% if type == 'not_mine' %}
+    {% elif type == "local" %}
+    <div><button onclick="init('tournament')" class="boutonPlay">Jouer le match</button></div>
+    {% else %}
     {% endif %}
-
-    <div><button onclick="goTo('tournaments/{{ match.origin.id }}')" class="buttonClassique">Retour au tournoi</button></div>
+    {% endif %}
+    <div><button onclick="goTo('tournaments/{{ match.origin.id }}')" class="buttonClassique">Retour au tournoi</button>
+    </div>
 </div>
 <form id="resultForm" method="post" style="hidden:true">{% csrf_token %}</form>

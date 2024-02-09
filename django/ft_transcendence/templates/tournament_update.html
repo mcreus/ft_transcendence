@@ -9,16 +9,12 @@
             {% csrf_token %}          
                 <li>{{ player }}</li>
                 {% if player != request.user.username %}
-                <button type="button" onclick="submitForm('removeLocal{{ player }}', '{{ tournament.id }}', '{{ player }}')">Cross</button>
+                <button type="button" onclick="submitForm('removeLocal{{ player }}', '{{ tournament.id }}', '{{ player }}')" class="boutonPlay">Retirer</button>
                 {% endif %}                
             </form>
             {% endfor %}
         </ul>
         {% if not tournament.running %}
-        <form id="launchForm" method="post">
-            {% csrf_token %}
-            <button type="button" onclick="submitForm('launch', '{{ tournament.id }}')">Lancer le tournoi</button>
-        </form>
         {% if tournament.subscribe_active %}
         <p>{{ message }}</p>
         <form id="addLocalForm" method="post">
@@ -28,10 +24,14 @@
                 localment</button>
         </form>
         {% endif %}
+        <form id="launchForm" method="post">
+            {% csrf_token %}
+            <button type="button" onclick="submitForm('launch', '{{ tournament.id }}')" class="buttonClassique">Lancer le tournoi</button>
+        </form>
         {% endif %}
         <form id="deleteForm" method="post">
             {% csrf_token %}
-            <button type="button" onclick="submitForm('delete', '{{ tournament.id }}')">Supprimer le tournoi</button>
+            <button type="button" onclick="submitForm('delete', '{{ tournament.id }}')" class="buttonClassique">Supprimer le tournoi</button>
         </form>
         <div><button onclick="goTo('tournaments/{{ tournament.id }}')" class="buttonClassique">Retour</button></div>
 </div>

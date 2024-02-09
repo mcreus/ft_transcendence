@@ -29,6 +29,7 @@ class User(AbstractUser):
     profile_photo = models.ImageField(
         verbose_name='Photo de profil',
     )
+
     
 class ChatConsumer(WebsocketConsumer):
     def connect(self):
