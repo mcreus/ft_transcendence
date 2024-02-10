@@ -10,7 +10,9 @@ function webSocketFunctions(chatSocket)
 	    if (data.type == 'chat')
 	    {
 	    	let div = document.getElementById('chat');
-	    	div.insertAdjacentHTML('beforeend', `<div>${data.message}</div>`);
+	    	div.insertAdjacentHTML('afterbegin', `<div class='message'>${data.pseudo}: ${data.message}</div>`);
+	    	if (div.getElementsByTagName('*').length > 100)
+	    		div.lastElementChild.remove();
 	    }
 	    if (data.type == 'player_pos')
 	    	game.map_paddles.get(data.id).copy(data.player);
@@ -37,7 +39,6 @@ function sendMessage(message) {
     	'type':'chat',
         'message': message
     }));
-    console.log(message);
 }
 
 function sendPos(player, id, pseudo) {

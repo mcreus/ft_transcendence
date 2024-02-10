@@ -92,7 +92,7 @@ class GameManager {
 			collisionPaddles(this, ball);
 			// Si la balle atteint l'extrémité gauche ou droite, réinitialiser sa position
 			goal(this, ball);
-			if (this.online && this.map_paddles.get(0).Player == 0)
+			if (this.online && this.map_paddles.get(0).Player == 0 || !this.online)
 				ball.NextPos();
 			if (ball.PosY - ball.Radius < 0)
 				ball.PosY = ball.Radius;

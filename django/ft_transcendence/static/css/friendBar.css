@@ -52,11 +52,6 @@
 	z-index: 1;
 }
 
-.drawer {
-    padding: 20px;
-    display: none;
-}
-
 .drawer .friend {
     margin-bottom: 10px;
 }
