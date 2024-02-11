@@ -462,6 +462,23 @@ canvas {
 	transform: rotate(45deg);
 }
 
+.notif {
+	position: static;
+	border: 5px solid rgba(200,200,0,0);
+	border-radius: 50%;
+	text-align: center;
+	color: rgba(200,200,0,1);
+	font-weight: normal;
+	width: 0px;
+	height: 0px;
+	transform: translateY(-20px);
+	transition: border 0.3s ease;
+}
+
+.notif.active {
+	border: 5px solid rgba(200,200,0,1);
+}
+
 @media screen and (min-width: 1200px) {
 	.mainImage {
 		width: 1200px;

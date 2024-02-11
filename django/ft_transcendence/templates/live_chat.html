@@ -3,7 +3,10 @@
 	<div class="chatArrow" style="width:100%">
 		<input id="chatDrawer" class="showChat" type="checkbox">
 			<div style="display:flex; justify-content:center">
-				<label for="chatDrawer"><div id="arrow" class="arrow"></div></label>
+				<label for="chatDrawer">
+					<div id="arrow" class="arrow"></div>
+				</label>
+				<div id="notif" class="notif"></div>
 			</div>
 		</input>
 	</div>
@@ -27,6 +30,8 @@
 			if (event.currentTarget.checked) {
 				chat.classList.add('show');
 				arrow.classList.add('down');
+				if (document.getElementById('notif').classList.contains('active'))
+					document.getElementById('notif').classList.remove('active');
 			} else {
 				chat.classList.remove('show');
 				arrow.classList.remove('down');

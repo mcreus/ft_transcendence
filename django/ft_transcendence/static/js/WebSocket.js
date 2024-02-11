@@ -13,6 +13,8 @@ function webSocketFunctions(chatSocket)
 	    	div.insertAdjacentHTML('afterbegin', `<div class='message'>${data.pseudo}: ${data.message}</div>`);
 	    	if (div.getElementsByTagName('*').length > 100)
 	    		div.lastElementChild.remove();
+	    	if (!document.getElementById('chatDrawer').checked)
+	    		document.getElementById('notif').classList.add('active');
 	    }
 	    if (data.type == 'player_pos')
 	    	game.map_paddles.get(data.id).copy(data.player);
