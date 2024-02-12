@@ -64,6 +64,10 @@ function fetchForm(url, formData) {
     .then(data => {
         // Gérez la réponse ici, par exemple mettre à jour l'interface utilisateur
         document.getElementById('body').innerHTML = data;
+        checkbox = document.getElementById('chatDrawer');
+	setChatCheckBox(checkbox);
+	chatMessage = document.getElementById('formMessage');
+	setChatMessage(chatMessage);
     })
     .catch(error => {
         console.error('Error:', error);

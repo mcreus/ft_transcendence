@@ -52,10 +52,6 @@ function navigateTo(view) {
 			.then(data => {
 				document.getElementById('body').innerHTML = data;
 				window.location.hash = view;
-				let checkbox = document.getElementById('chatDrawer');
-				setChatCheckBox(checkbox);
-				let chatMessage = document.getElementById('formMessage');
-				setChatMessage(chatMessage);
 			});
 	}
 	if (view == 'logout' || view == 'fast_game')
