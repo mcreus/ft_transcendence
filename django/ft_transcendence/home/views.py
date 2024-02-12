@@ -11,7 +11,10 @@ from home.models import User
 from django.contrib import messages
 
 def main(request):
-    return render(request, 'index.html')
+	amis = None
+	if request.user.is_authenticated:
+		amis = request.user.amis.all();
+	return render(request, 'index.html', {'amis': amis})
 
 def lobby(request):
     return render(request, 'lobby.html')

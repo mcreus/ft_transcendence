@@ -1,0 +1,12 @@
+{% if amis %}
+<div class="sidebar" id="sidebar">
+    <div class="friend-list" id="friendList">
+        {% for ami in amis %}
+                <div class="friend">
+                	<span class="friend-name"> {{ ami.username }}</span>
+                    <img src="{{ ami.profile_photo.url }}" alt="{{ ami.username }}">
+                </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}

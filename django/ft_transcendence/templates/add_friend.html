@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% include 'ruban.html' %}
+{% include 'friendBar.html' %}
 <div id="main" class="vertical-center">
 	<h1>Ajouter un ami</h1>
 	<h2>Liste de vos amis actuels :</h2>
@@ -15,15 +16,4 @@
 		<button class="buttonClassique" type="button" id="add_friend" onclick="submitForm('add_friend')">Ajouter</button>
 	</form>
 	<button class="buttonClassique" onclick="goTo('')">Retour au Profil</button>
-</div>
-
-<div class="sidebar" id="sidebar">
-    <div class="friend-list" id="friendList">
-        {% for ami in amis %}
-                <div class="friend">
-                	<span class="friend-name"> {{ ami.username }}</span>
-                    <img src="{{ ami.profile_photo.url }}" alt="{{ ami.username }}">
-                </div>
-        {% endfor %}
-    </div>
 </div>
