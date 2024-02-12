@@ -5,7 +5,7 @@
 	<h2>Liste de vos amis actuels :</h2>
 		<div class="amis">
 			{% for ami in amis %}
-		    	<div class="ami"> <img src="{{ ami.profile_photo.url }}" id="profilFriend" alt="Profil"> {{ ami.username }}</div>
+		    	<div class="ami"> <img src="{{ ami.profile_photo.url }}" class="profilFriend" alt="Profil"> {{ ami.username }}</div>
 			{% endfor %}
 		</div>
 	<form id="add_friendForm" method="post">
@@ -22,7 +22,7 @@
         {% for ami in amis %}
                 <div class="friend">
                 	<span class="friend-name"> {{ ami.username }}</span>
-                    <img src="{{ ami.profile_photo.url }}" id="profilFriend" alt="{{ ami.username }}">
+                    <img src="{{ ami.profile_photo.url }}" alt="{{ ami.username }}">
                 </div>
         {% endfor %}
     </div>

@@ -21,6 +21,9 @@ function submitForm(formId, num, player) {
         case 'update_image':
         	url = '/profile/image/';
         	break
+		case 'add_friend':
+			url = '/add_friend/';
+			break;
         case 'tournament':
         	url = '/tournaments/create/'
         	break;

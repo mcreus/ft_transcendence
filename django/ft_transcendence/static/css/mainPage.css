@@ -191,6 +191,13 @@ canvas {
 	border-radius: 50%;
 }
 
+.profilFriend {
+	top: 50%;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+}
+
 #pseudoJoueur {
 	font-family: Arial, sans-serif;
 }

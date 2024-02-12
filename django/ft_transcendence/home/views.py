@@ -8,6 +8,7 @@ from home.models import Tournament, Match, WaitingList
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from home.models import User
+from django.contrib import messages
 
 def main(request):
     return render(request, 'index.html')
