@@ -19,17 +19,13 @@ def main(request):
             WaitingList.objects.all().first().remove_player(request.user.username)
     return render(request, 'index.html', {'amis': amis})
 
-def lobby(request):
-    if WaitingList.objects.all():
-        WaitingList.objects.all().first().remove_player(request.user.username)
-    return render(request, 'lobby.html')
-
 def login_view(request):
     form = LoginForm()
     message = ''
-    request.user.exit_match()
-    if WaitingList.objects.all():
-        WaitingList.objects.all().first().remove_player(request.user.username)
+    if request.user.is_authenticated:
+    	request.user.exit_match()
+    	if WaitingList.objects.all():
+        	WaitingList.objects.all().first().remove_player(request.user.username)
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -46,16 +42,18 @@ def login_view(request):
     return render(request, 'login.html', context={'form': form, 'message': message})
 
 def logout_view(request):
-    request.user.exit_match()
-    if WaitingList.objects.all():
-        WaitingList.objects.all().first().remove_player(request.user.username)
+    if request.user.is_authenticated:
+        request.user.exit_match()
+        if WaitingList.objects.all():
+            WaitingList.objects.all().first().remove_player(request.user.username)
     logout(request)
     return render(request, 'index.html')
 
 def signup_view(request):
-    request.user.exit_match()
-    if WaitingList.objects.all():
-        WaitingList.objects.all().first().remove_player(request.user.username)
+    if request.user.is_authenticated:
+        request.user.exit_match()
+        if WaitingList.objects.all():
+            WaitingList.objects.all().first().remove_player(request.user.username)
     form = SignupForm()
     if request.method == 'POST':
         form = SignupForm(request.POST)
@@ -134,6 +132,7 @@ def update_image(request):
 
     return render(request, 'update_image.html', {'form': form})
 
+@login_required
 def add_friend(request):
     request.user.exit_match()
     if WaitingList.objects.all():
@@ -157,15 +156,17 @@ def add_friend(request):
     return render(request, 'add_friend.html', {'form': form, 'amis':amis_actuels, 'error': message})
 
 def salon_view(request):
-    request.user.exit_match()
-    if WaitingList.objects.all():
-        WaitingList.objects.all().first().remove_player(request.user.username)
+    if request.user.is_authenticated:
+        request.user.exit_match()
+        if WaitingList.objects.all():
+            WaitingList.objects.all().first().remove_player(request.user.username)
     return render(request, 'salon.html')
 
 def local_view(request):
-    request.user.exit_match()
-    if WaitingList.objects.all():
-        WaitingList.objects.all().first().remove_player(request.user.username)
+    if request.user.is_authenticated:
+        request.user.exit_match()
+        if WaitingList.objects.all():
+            WaitingList.objects.all().first().remove_player(request.user.username)
     if request.method == 'POST':
         play1 = request.POST.get('player1')
         play2 = request.POST.get('player2')
@@ -267,6 +268,7 @@ def tournament_update(request, id):
         t.save()
     return render(request, 'tournament_update.html', {'tournament': t, 'message': message})
 
+@login_required
 def match_details(request, id):
     request.user.exit_match()
     if WaitingList.objects.all():
@@ -318,6 +320,7 @@ def historic(request):
     m = request.user.historic.all()
     return render(request, 'historic.html', {'matchs': m})
 
+@login_required
 def fast_game(request):
     request.user.exit_match()
     request.user.waiting_match.objects.all().delete()
@@ -328,6 +331,7 @@ def fast_game(request):
     result = waiting.matchmaking()
     return render(request, 'fast_game.html', {'result': result})
 
+@login_required
 def tournament_online(request, id):
     if WaitingList.objects.all():
         WaitingList.objects.all().first().remove_player(request.user.username)
