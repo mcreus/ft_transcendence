@@ -1,7 +1,7 @@
-{% if amis %}
+{% if user.amis.all %}
 <div class="sidebar" id="sidebar">
     <div class="friend-list" id="friendList">
-        {% for ami in amis %}
+        {% for ami in user.amis.all %}
                 <div class="friend">
                 	<span class="friend-name"> {{ ami.username }}</span>
                     <img src="{{ ami.profile_photo.url }}" alt="{{ ami.username }}">

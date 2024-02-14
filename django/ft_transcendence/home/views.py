@@ -11,13 +11,11 @@ from home.models import User
 from django.contrib import messages
 
 def main(request):
-    amis = None
     if request.user.is_authenticated:
-        amis = request.user.amis.all()
         request.user.exit_match()
         if WaitingList.objects.all():
             WaitingList.objects.all().first().remove_player(request.user.username)
-    return render(request, 'index.html', {'amis': amis})
+    return render(request, 'index.html')
 
 def login_view(request):
     form = LoginForm()
@@ -140,9 +138,13 @@ def add_friend(request):
     amis_actuels = request.user.amis.all()
     message = ""
     if request.method == 'POST':
+        message = "Cet utilisateur est deja dans la liste d'amis"
         form = add_friendForm(request.POST, user=request.user)
         if form.is_valid():
             pseudo_ami = form.cleaned_data['pseudo_ami']
+            if pseudo_ami == request.user.username:
+                message = "Mais, c'est vous"
+                return render(request, "add_friend.html", {'form': form, 'amis':amis_actuels, 'error': message})
             try:
                 ami = User.objects.get(username=pseudo_ami)
                 if ami != request.user and ami not in request.user.amis.all():
@@ -151,6 +153,8 @@ def add_friend(request):
                 message = "L'utilisateur spécifié n'existe pas."
             form = add_friendForm(user=request.user)
             return render(request, "add_friend.html", {'form': form, 'amis':amis_actuels, 'error': message})
+        else:
+            return render(request, 'add_friend.html', {'form': form, 'amis':amis_actuels, 'error': ""})
     else:
         form = add_friendForm(user=request.user)
     return render(request, 'add_friend.html', {'form': form, 'amis':amis_actuels, 'error': message})
