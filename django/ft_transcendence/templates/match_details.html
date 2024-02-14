@@ -9,6 +9,7 @@
     {% elif type == "local" %}
     <div><button onclick="init('tournament')" class="boutonPlay">Jouer le match</button></div>
     {% else %}
+    <div><button onclick="goTo('tournament_online/{{ match.id }}')" class="buttonClassique">Jouer le match</button></div>
     {% endif %}
     {% endif %}
     <div><button onclick="goTo('tournaments/{{ match.origin.id }}')" class="buttonClassique">Retour au tournoi</button>

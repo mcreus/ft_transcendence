@@ -23,14 +23,47 @@ class   Match(models.Model):
     origin = models.ForeignKey('Tournament', on_delete=models.SET_NULL, null=True)
     played = models.fields.BooleanField(default=False)
     winner = models.fields.CharField(max_length=100, default='')
+    players = models.TextField(blank=True)
+    
+    def add_player(self, player_name):
+        listing = self.players.split(',')
+        if player_name in listing:
+            return
+        if len(self.players) > 0:
+            self.players += f',{player_name}'  # Ajout du nom du joueur à la liste
+        else:
+            self.players = player_name
+        self.save()
+
+    def remove_player(self, player_name):
+        listing = self.players.split(',')
+        if player_name in listing:
+            listing.remove(player_name)
+            if len(listing) > 0:
+                self.players = ','.join(listing)  # Mise à jour de la liste des joueurs
+            else:
+                self.players = ''
+            self.save()
+
+    def matchmaking(self):
+        listing = self.players.split(',')
+        if len(listing) <= 1:
+            return
+        return self
 
 class User(AbstractUser):
-    historic = models.ManyToManyField(Match, blank=True)
+    historic = models.ManyToManyField(Match, related_name='historic', blank=True)
+    waiting_match = models.ForeignKey(Match, on_delete=models.SET_NULL, null=True)
     amis = models.ManyToManyField('User', blank=True)
     profile_photo = models.ImageField(
         verbose_name='Photo de profil',
     )
 
+    def exit_match(self):
+        if self.waiting_match is not None:
+            self.waiting_match.remove_player(self.username)
+            self.waiting_match = None
+            self.save()
     
 class ChatConsumer(WebsocketConsumer):
     def connect(self):

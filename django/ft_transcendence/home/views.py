@@ -11,18 +11,25 @@ from home.models import User
 from django.contrib import messages
 
 def main(request):
-	amis = None
-	if request.user.is_authenticated:
-		amis = request.user.amis.all();
-	return render(request, 'index.html', {'amis': amis})
+    amis = None
+    if request.user.is_authenticated:
+        amis = request.user.amis.all()
+        request.user.exit_match()
+        if WaitingList.objects.all():
+            WaitingList.objects.all().first().remove_player(request.user.username)
+    return render(request, 'index.html', {'amis': amis})
 
 def lobby(request):
+    if WaitingList.objects.all():
+        WaitingList.objects.all().first().remove_player(request.user.username)
     return render(request, 'lobby.html')
 
 def login_view(request):
     form = LoginForm()
     message = ''
-
+    request.user.exit_match()
+    if WaitingList.objects.all():
+        WaitingList.objects.all().first().remove_player(request.user.username)
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -39,10 +46,16 @@ def login_view(request):
     return render(request, 'login.html', context={'form': form, 'message': message})
 
 def logout_view(request):
+    request.user.exit_match()
+    if WaitingList.objects.all():
+        WaitingList.objects.all().first().remove_player(request.user.username)
     logout(request)
     return render(request, 'index.html')
 
 def signup_view(request):
+    request.user.exit_match()
+    if WaitingList.objects.all():
+        WaitingList.objects.all().first().remove_player(request.user.username)
     form = SignupForm()
     if request.method == 'POST':
         form = SignupForm(request.POST)
@@ -55,10 +68,16 @@ def signup_view(request):
     
 @login_required
 def profile(request):
+    request.user.exit_match()
+    if WaitingList.objects.all():
+        WaitingList.objects.all().first().remove_player(request.user.username)
     return render(request, 'profile.html')
     
 @login_required
 def update_username(request):
+    request.user.exit_match()
+    if WaitingList.objects.all():
+        WaitingList.objects.all().first().remove_player(request.user.username)
     if request.method == 'POST':
         form = update_usernameForm(request.POST, instance=request.user)
         if form.is_valid():
@@ -71,6 +90,9 @@ def update_username(request):
 
 @login_required
 def update_email(request):
+    request.user.exit_match()
+    if WaitingList.objects.all():
+        WaitingList.objects.all().first().remove_player(request.user.username)
     if request.method == 'POST':
         form = update_emailForm(request.POST, instance=request.user)
         if form.is_valid():
@@ -83,6 +105,9 @@ def update_email(request):
     
 @login_required
 def update_password(request):
+    request.user.exit_match()
+    if WaitingList.objects.all():
+        WaitingList.objects.all().first().remove_player(request.user.username)
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
@@ -96,6 +121,9 @@ def update_password(request):
     
 @login_required
 def update_image(request):
+    request.user.exit_match()
+    if WaitingList.objects.all():
+        WaitingList.objects.all().first().remove_player(request.user.username)
     if request.method == 'POST':
         form = update_imageForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
@@ -107,28 +135,37 @@ def update_image(request):
     return render(request, 'update_image.html', {'form': form})
 
 def add_friend(request):
-	amis_actuels = request.user.amis.all()
-	message = ""
-	if request.method == 'POST':
-		form = add_friendForm(request.POST, user=request.user)
-		if form.is_valid():
-			pseudo_ami = form.cleaned_data['pseudo_ami']
-			try:
-				ami = User.objects.get(username=pseudo_ami)
-				if ami != request.user and ami not in request.user.amis.all():
-					request.user.amis.add(ami)
-			except User.DoesNotExist:
-				message = "L'utilisateur spécifié n'existe pas."
-			form = add_friendForm(user=request.user)
-			return render(request, "add_friend.html", {'form': form, 'amis':amis_actuels, 'error': message})
-	else:
-		form = add_friendForm(user=request.user)
-	return render(request, 'add_friend.html', {'form': form, 'amis':amis_actuels, 'error': message})
+    request.user.exit_match()
+    if WaitingList.objects.all():
+        WaitingList.objects.all().first().remove_player(request.user.username)
+    amis_actuels = request.user.amis.all()
+    message = ""
+    if request.method == 'POST':
+        form = add_friendForm(request.POST, user=request.user)
+        if form.is_valid():
+            pseudo_ami = form.cleaned_data['pseudo_ami']
+            try:
+                ami = User.objects.get(username=pseudo_ami)
+                if ami != request.user and ami not in request.user.amis.all():
+                    request.user.amis.add(ami)
+            except User.DoesNotExist:
+                message = "L'utilisateur spécifié n'existe pas."
+            form = add_friendForm(user=request.user)
+            return render(request, "add_friend.html", {'form': form, 'amis':amis_actuels, 'error': message})
+    else:
+        form = add_friendForm(user=request.user)
+    return render(request, 'add_friend.html', {'form': form, 'amis':amis_actuels, 'error': message})
 
 def salon_view(request):
+    request.user.exit_match()
+    if WaitingList.objects.all():
+        WaitingList.objects.all().first().remove_player(request.user.username)
     return render(request, 'salon.html')
 
 def local_view(request):
+    request.user.exit_match()
+    if WaitingList.objects.all():
+        WaitingList.objects.all().first().remove_player(request.user.username)
     if request.method == 'POST':
         play1 = request.POST.get('player1')
         play2 = request.POST.get('player2')
@@ -153,11 +190,17 @@ def local_view(request):
 
 @login_required
 def tournaments_view(request):
+    request.user.exit_match()
+    if WaitingList.objects.all():
+        WaitingList.objects.all().first().remove_player(request.user.username)
     t = Tournament.objects.all()
     return render(request, 'tournaments.html', {'tournaments': t})
 
 @login_required
 def tournament_detail(request, id):
+    request.user.exit_match()
+    if WaitingList.objects.all():
+        WaitingList.objects.all().first().remove_player(request.user.username)
     t = Tournament.objects.get(id=id)
     if request.method == 'POST':
         if request.user.username in t.get_registered_players():
@@ -176,6 +219,9 @@ def tournament_detail(request, id):
 
 @login_required
 def tournament_create(request):
+    request.user.exit_match()
+    if WaitingList.objects.all():
+        WaitingList.objects.all().first().remove_player(request.user.username)
     form = TournamentForm()
     if request.method == 'POST':
         form = TournamentForm(request.POST)
@@ -189,6 +235,9 @@ def tournament_create(request):
 
 @login_required
 def tournament_update(request, id):
+    request.user.exit_match()
+    if WaitingList.objects.all():
+        WaitingList.objects.all().first().remove_player(request.user.username)
     message = ''
     t = Tournament.objects.get(id=id)
     if request.method == 'POST':
@@ -219,6 +268,9 @@ def tournament_update(request, id):
     return render(request, 'tournament_update.html', {'tournament': t, 'message': message})
 
 def match_details(request, id):
+    request.user.exit_match()
+    if WaitingList.objects.all():
+        WaitingList.objects.all().first().remove_player(request.user.username)
     m = Match.objects.get(id=id)
     users = User.objects.all()
     usernames = [user.username for user in users]
@@ -260,13 +312,28 @@ def match_details(request, id):
 
 @login_required
 def historic(request):
+    request.user.exit_match()
+    if WaitingList.objects.all():
+        WaitingList.objects.all().first().remove_player(request.user.username)
     m = request.user.historic.all()
     return render(request, 'historic.html', {'matchs': m})
 
 def fast_game(request):
+    request.user.exit_match()
+    request.user.waiting_match.objects.all().delete()
     if not WaitingList.objects.all():
        WaitingList.objects.create()
     waiting = WaitingList.objects.all().first()
     waiting.add_player(request.user.username)
     result = waiting.matchmaking()
+    return render(request, 'fast_game.html', {'result': result})
+
+def tournament_online(request, id):
+    if WaitingList.objects.all():
+        WaitingList.objects.all().first().remove_player(request.user.username)
+    m = Match.objects.get(id=id)
+    m.add_player(request.user.username)
+    result = m.matchmaking()
+    request.user.waiting_match = m
+    request.user.save()
     return render(request, 'fast_game.html', {'result': result})
