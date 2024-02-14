@@ -323,7 +323,6 @@ def historic(request):
 @login_required
 def fast_game(request):
     request.user.exit_match()
-    request.user.waiting_match.objects.all().delete()
     if not WaitingList.objects.all():
        WaitingList.objects.create()
     waiting = WaitingList.objects.all().first()
