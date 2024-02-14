@@ -163,13 +163,16 @@ def tournament_detail(request, id):
         if request.user.username in t.get_registered_players():
             t.remove_player(request.user.username)
             t.number_registered -= 1
+            if t.time_left_in_minutes() > 0:
+                t.subscribe_active = True
         else:
             t.add_player(request.user.username)
             t.number_registered += 1
             if t.number_registered == t.max_player:
                 t.subscribe_active = False
         t.save()
-    return render(request, 'tournament_detail.html', {'tournament': t})
+    r = t.get_registered_players()
+    return render(request, 'tournament_detail.html', {'tournament': t, 'registered' : r})
 
 @login_required
 def tournament_create(request):
@@ -206,6 +209,8 @@ def tournament_update(request, id):
         elif remove:
             t.remove_player(remove)
             t.number_registered -= 1
+            if t.time_left_in_minutes() > 0:
+                t.subscribe_active = True
         elif delete == '1':
             t.delete()
             ts = Tournament.objects.all()

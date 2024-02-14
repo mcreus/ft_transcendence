@@ -10,16 +10,16 @@
                 <li>{{ player }}</li>
                 {% if player != request.user.username %}
                 <button type="button" onclick="submitForm('removeLocal{{ player }}', '{{ tournament.id }}', '{{ player }}')" class="boutonPlay">Retirer</button>
-                {% endif %}                
+                {% endif %}  
             </form>
             {% endfor %}
         </ul>
         {% if not tournament.running %}
         {% if tournament.subscribe_active %}
         <p>{{ message }}</p>
-        <form id="addLocalForm" method="post">
-            {% csrf_token %}
+        <form id="addLocalForm" onsubmit="submitForm('addLocal', '{{ tournament.id }}'); return false">
             <input type="text" id="new_player" placeholder="new_player">
+            {% csrf_token %}
             <button type="button" onclick="submitForm('addLocal', '{{ tournament.id }}')">Ajouter un joueur
                 localment</button>
         </form>

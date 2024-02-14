@@ -45,17 +45,18 @@
     <div><button onclick="goTo('tournaments/{{ tournament.id }}/update')" class="buttonClassique">Update</button></div>
     {% else %}
         {% if tournament.subscribe_active %}
-            {% if request.user not in tournament.players_registered.all %}
+            {% if request.user.username not in registered %}
                 <form id="subscribeForm" method="post">
                 {% csrf_token %}
                 <button type="button" onclick="submitForm('subscribe', '{{ tournament.id }}')">S'inscrire</button>
                 </form>
-            {% else %}
-                <form id="subscribeForm" method="post">
-                {% csrf_token %}
-                <button type="button" onclick="submitForm('subscribe', '{{ tournament.id }}')">Se desinscrire</button>
-                </form>
             {% endif %}
+        {% endif %}
+        {% if request.user.username in registered and not tournament.running %}
+            <form id="subscribeForm" method="post">
+            {% csrf_token %}
+            <button type="button" onclick="submitForm('subscribe', '{{ tournament.id }}')">Se desinscrire</button>
+            </form>
         {% endif %}
     {% endif %}
 </div>

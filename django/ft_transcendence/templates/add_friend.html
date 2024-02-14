@@ -9,7 +9,7 @@
 		    	<div class="ami"> <img src="{{ ami.profile_photo.url }}" class="profilFriend" alt="Profil"> {{ ami.username }}</div>
 			{% endfor %}
 		</div>
-	<form id="add_friendForm" method="post">
+	<form id="add_friendForm" method="post" onsubmit="submitForm('add_friend'); return false">
 		{% csrf_token %}
 		{{ form.as_p }}
 		<div>{{ error }}</div>

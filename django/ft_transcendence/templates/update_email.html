@@ -5,7 +5,7 @@
 </head>
 <body>
     <h2>Modifier votre email</h2>
-    <form id="update_emailForm" method="post">
+    <form id="update_emailForm" method="post" onsubmit="submitForm('update_email'); return false">
         {% csrf_token %}
         {{ form.as_p }}
         <button class="buttonClassique" type="button" id="update_email" onclick="submitForm('update_email')">Mettre à jour</button>

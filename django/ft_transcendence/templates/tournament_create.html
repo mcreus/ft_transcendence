@@ -5,7 +5,7 @@
     {% if form.errors %}
     {{ form.errors }}
     {% endif %}
-    <form id="tournamentForm" method="post">
+    <form id="tournamentForm" method="post" onsubmit="submitForm('tournament'); return false">
         {{ form.as_p }}
         {% csrf_token %}
         <button type="button" id="tournament" onclick="submitForm('tournament')" class="buttonClassique">Creer le tournois</button>
