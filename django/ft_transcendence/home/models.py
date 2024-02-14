@@ -69,13 +69,19 @@ class ChatConsumer(WebsocketConsumer):
     def connect(self):
         self.user = self.scope["user"].username
         self.room_group_name = 'test'
-        print('name', self.user)
         async_to_sync(self.channel_layer.group_add)(
             self.room_group_name,
             self.channel_name
     	)
         self.accept()
     def disconnect(self, close_code):
+        users = User.objects.all()
+        usernames = [user.username for user in users]
+        if self.user in usernames:
+            user = User.objects.get(username=self.user)
+            user.exit_match()
+            if WaitingList.objects.all():
+                WaitingList.objects.all().first().remove_player(self.user)
         pass
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
@@ -127,6 +133,7 @@ class ChatConsumer(WebsocketConsumer):
                      'player2':player2
                  }
             )
+            
     def chat_message(self, event):
         message = event['message']
         pseudo = event['pseudo']

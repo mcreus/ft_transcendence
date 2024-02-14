@@ -29,9 +29,7 @@ function webSocketFunctions(chatSocket)
 	    	startOnlineGame(data.player1, data.player2, side);
 	    }
 	};
-	chatSocket.onclose = function(e) {
-		
-	};
+	chatSocket.onclose = function(e) {};
 }
 
 function sendMessage(message) {
