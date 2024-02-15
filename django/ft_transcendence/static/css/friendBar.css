@@ -40,6 +40,19 @@
 	transform: translateX(30px);
 }
 
+.addfriendbutton {
+	position: absolute;
+	color: white;
+	background-color: rgba(0,176,176,1);
+	border: none;
+	border-radius: 100%;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+	top: 48.4%;
+	left: 5px;
+	font-weight : bold ;
+}
+
 .friend img {
     width: 25px;
     height: 25px;
@@ -58,6 +71,10 @@
 	border-radius: 5px;
 	cursor: pointer;
 	transition: background-color 0.3s ease;
+}
+
+.addfriendbutton:hover {
+	background-color: rgba(255,154,0,1);
 }
 
 .friend-name:hover {
