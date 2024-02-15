@@ -47,13 +47,7 @@ function goal(game, ball)
 		if (game.scoreL >= game.scoreWin || game.scoreR >= game.scoreWin)
 			game.finished = true;
 		ball.collision = false;
-		ball.PosX = canvas.width / 2;
-		ball.PosY = canvas.height / 2;
-		ball.ballSpeedX = -ball.ballSpeedX;
-		ball.ballSpeedY = Math.random() * 2 - 1;
-		ball.speed = game.ballSpeedInit;
 		document.getElementById('scoreLeft').textContent = game.scoreL;
 		document.getElementById('scoreRight').textContent = game.scoreR;
-		ball.collision = true;
 	}
 }

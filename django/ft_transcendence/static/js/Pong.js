@@ -40,6 +40,8 @@ class Ball {
 		this.ballSpeedY = Math.random() * 2 - 1;
 		this.speed = Speed;
 		this.collision = true;
+		this.stape = 0;
+		this.opacity = 1;
 	}
 	NextPos() {
 		let dy = Math.abs(this.ballSpeedY * this.speed);
@@ -57,6 +59,36 @@ class Ball {
 		this.speed = ball.speed;
 		this.collision = ball.collision;
 		this.Radius = ball.Radius;
+		this.Color = ball.Color;
+	}
+	animate(game) {
+		this.speed = 0;
+		if (this.stape == 0)
+		{
+			this.Radius += 0.5;
+			this.opacity -= 0.5 * (1 / 20);
+			this.Color = "rgba(255,255,255," + this.opacity + ")";
+			if (this.Radius >= 30)
+			{
+				this.PosX = canvas.width / 2;
+				this.PosY = canvas.height / 2;
+				this.stape++;
+			}
+		}
+		else if (this.stape == 1)
+		{
+			this.Radius -= 0.5;
+			this.opacity += 0.5 * (1 / 20);
+			this.Color = "rgba(255,255,255," + this.opacity + ")";
+			if (this.Radius <= game.ballRadius)
+			{
+				this.stape = 0;
+				this.speed = game.ballSpeedInit;
+				this.ballSpeedX = -this.ballSpeedX;
+				this.ballSpeedY = Math.random() * 2 - 1;
+				this.collision = true;
+			}
+		}
 	}
 };
 
@@ -104,6 +136,8 @@ class GameManager {
 				else if (ball.PosY + ball.Radius > canvas.height)
 					ball.PosY = canvas.height - ball.Radius;
 			}
+			else
+				ball.animate(this);
 		}
 		for (let i = 0; i < this.nb_player; i++)
 		{
@@ -262,7 +296,7 @@ function startOnlineGame(player1, player2, side)
 	}
 	game.map_paddles.set(game.nb_paddles++, paddle1);
 	game.map_paddles.set(game.nb_paddles++, paddle2);
-	let	ball1 = new Ball(canvas.width / 2, canvas.height / 2, "white", game.ballRadius, game.ballSpeedInit);
+	let	ball1 = new Ball(canvas.width / 2, canvas.height / 2, "rgba(255,255,255,1)", game.ballRadius, game.ballSpeedInit);
 	game.map_balls.set(game.nb_balls++, ball1);
 	GenerateShow(game);
 	AnimShow(game);
