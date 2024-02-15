@@ -41,6 +41,7 @@
 }
 
 .addfriendbutton {
+	z-index: 1;
 	position: absolute;
 	color: white;
 	background-color: rgba(0,176,176,1);
