@@ -36,8 +36,8 @@ class Ball {
 		this.PosY = PosY;
 		this.Color = Color;
 		this.Radius = Radius;
-		this.ballSpeedX = Math.random() * 2 - 1;
-		this.ballSpeedY = Math.random() * 2 - 1;
+		this.ballSpeedX = Math.random() - 0.5;
+		this.ballSpeedY = Math.random() - 0.5;
 		this.speed = Speed;
 		this.collision = true;
 		this.stape = 0;
@@ -85,7 +85,7 @@ class Ball {
 				this.stape = 0;
 				this.speed = game.ballSpeedInit;
 				this.ballSpeedX = -this.ballSpeedX;
-				this.ballSpeedY = Math.random() * 2 - 1;
+				this.ballSpeedY = Math.random() - 0.5;
 				this.collision = true;
 			}
 		}
