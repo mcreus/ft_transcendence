@@ -42,6 +42,7 @@ urlpatterns = [
     path('profile/password/', views.update_password, name="profile/password"),
     path('profile/image/', views.update_image, name="profile/image"),
     path('add_friend/', views.add_friend, name="add_friend"),
+    path('other_profile/<str:id>/', views.otherProfile, name='other_profile'),
 ]
 
 if settings.DEBUG:

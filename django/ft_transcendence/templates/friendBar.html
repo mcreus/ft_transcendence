@@ -3,7 +3,7 @@
     <div class="friend-list" id="friendList">
         {% for ami in user.amis.all %}
                 <div class="friend">
-                	<span class="friend-name"> {{ ami.username }}</span>
+                	<button class="friend-name" onclick="goTo('other_profile/{{ ami.username }}')">{{ ami.username }}</button>
                     <img src="{{ ami.profile_photo.url }}" alt="{{ ami.username }}">
                 </div>
         {% endfor %}

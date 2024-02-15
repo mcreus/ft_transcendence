@@ -13,7 +13,7 @@ function navigateTo(view) {
 	console.log('Navigateto', view);
 	let main = document.getElementById('main');
 	let div = main.getElementsByTagName('div');
-	if (view == 'salon' || view == 'local' || view == 'profile' || view == 'fast_game' || view == 'profile/username' || view == "profile/email" || view == 'profile/password' || view == 'profile/image' || view == 'historic' || view.search("tournament_online/") != -1)
+	if (view == 'salon' || view == 'local' || view == 'profile' || view == 'fast_game' || view == 'profile/username' || view == "profile/email" || view == 'profile/password' || view == 'profile/image' || view == 'historic' || view.search("other_profile/") != -1 || view.search("tournament_online/") != -1)
 	{
 		let i = 0;
 		for (; i < div.length; i++)

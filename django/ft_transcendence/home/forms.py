@@ -28,16 +28,21 @@ class SignupForm(UserCreationForm):
 	password2 = forms.CharField(
 		widget=forms.PasswordInput(attrs={'placeholder': ''}),
 		label="Confirmation du mot de passe",
-    )
+	)
 
 	class Meta:
 		model = User
 		fields = ('username', 'email')
 
 class TournamentForm(forms.ModelForm):
-   class Meta:
-     model = Tournament
-     fields = ['name', 'time_to_subscribe', 'max_player']
+	name = forms.CharField(
+		max_length=20,
+		label="Nom du tournoi"
+	)
+
+	class Meta:
+		model = Tournament
+		fields = ['name', 'time_to_subscribe', 'max_player']
 
 class add_friendForm(forms.Form):
     pseudo_ami = forms.CharField(label="Pseudo de l'ami à ajouter")
