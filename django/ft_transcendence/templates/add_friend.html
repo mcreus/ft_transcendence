@@ -6,7 +6,9 @@
 	<h2>Liste de vos amis actuels :</h2>
 		<div class="amis">
 			{% for ami in amis %}
-		    	<div class="ami"> <img src="{{ ami.profile_photo.url }}" class="profilFriend" alt="Profil"> {{ ami.username }}</div>
+		    	<div class="ami"> <img src="{{ ami.profile_photo.url }}" class="profilFriend" alt="Profil">
+		    	<button class="friend-name" onclick="goTo('other_profile/{{ ami.username }}')">{{ ami.username }}</button>
+		    	</div>
 			{% endfor %}
 		</div>
 	<form id="add_friendForm" method="post" onsubmit="submitForm('add_friend'); return false">
@@ -15,5 +17,5 @@
 		<div>{{ error }}</div>
 		<button class="buttonClassique" type="button" id="add_friend" onclick="submitForm('add_friend')">Ajouter</button>
 	</form>
-	<button class="buttonClassique" onclick="goTo('')">Retour au Profil</button>
+	<button class="buttonClassique" onclick="goTo('')">Retour écran titre</button>
 </div>
