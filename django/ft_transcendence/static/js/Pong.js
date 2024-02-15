@@ -39,6 +39,7 @@ class Ball {
 		this.ballSpeedX = Math.random() * 2 - 1;
 		this.ballSpeedY = Math.random() * 2 - 1;
 		this.speed = Speed;
+		this.collision = true;
 	}
 	NextPos() {
 		let dy = Math.abs(this.ballSpeedY * this.speed);
@@ -54,6 +55,8 @@ class Ball {
 		this.ballSpeedX = ball.ballSpeedX;
 		this.ballSpeedY = ball.ballSpeedY;
 		this.speed = ball.speed;
+		this.collision = ball.collision;
+		this.Radius = ball.Radius;
 	}
 };
 
@@ -85,19 +88,22 @@ class GameManager {
 			let ball = this.map_balls.get(i);
 
 			// Rebondir sur les bords verticaux
-			if (ball.PosY <= 0 + ball.Radius || ball.PosY >= canvas.height - ball.Radius)
-				ball.ballSpeedY = -ball.ballSpeedY;
+			if (ball.collision)
+			{
+				if (ball.PosY <= 0 + ball.Radius || ball.PosY >= canvas.height - ball.Radius)
+					ball.ballSpeedY = -ball.ballSpeedY;
 
-			// Rebondir sur toutes les raquettes
-			collisionPaddles(this, ball);
-			// Si la balle atteint l'extrémité gauche ou droite, réinitialiser sa position
-			goal(this, ball);
-			if (this.online && this.map_paddles.get(0).Player == 0 || !this.online)
-				ball.NextPos();
-			if (ball.PosY - ball.Radius < 0)
-				ball.PosY = ball.Radius;
-			else if (ball.PosY + ball.Radius > canvas.height)
-				ball.PosY = canvas.height - ball.Radius;
+				// Rebondir sur toutes les raquettes
+				collisionPaddles(this, ball);
+				// Si la balle atteint l'extrémité gauche ou droite, réinitialiser sa position
+				goal(this, ball);
+				if (this.online && this.map_paddles.get(0).Player == 0 || !this.online)
+					ball.NextPos();
+				if (ball.PosY - ball.Radius < 0)
+					ball.PosY = ball.Radius;
+				else if (ball.PosY + ball.Radius > canvas.height)
+					ball.PosY = canvas.height - ball.Radius;
+			}
 		}
 		for (let i = 0; i < this.nb_player; i++)
 		{

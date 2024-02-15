@@ -46,6 +46,7 @@ function goal(game, ball)
 		}
 		if (game.scoreL >= game.scoreWin || game.scoreR >= game.scoreWin)
 			game.finished = true;
+		ball.collision = false;
 		ball.PosX = canvas.width / 2;
 		ball.PosY = canvas.height / 2;
 		ball.ballSpeedX = -ball.ballSpeedX;
@@ -53,6 +54,6 @@ function goal(game, ball)
 		ball.speed = game.ballSpeedInit;
 		document.getElementById('scoreLeft').textContent = game.scoreL;
 		document.getElementById('scoreRight').textContent = game.scoreR;
-		rand = Math.random() * (game.paddleHeight + 20) - ((game.paddleHeight + 20) / 2);
+		ball.collision = true;
 	}
 }

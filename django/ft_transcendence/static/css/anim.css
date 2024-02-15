@@ -226,3 +226,25 @@
 		transform: rotate(0deg);
 	}
 }
+
+@keyframes goalBall1 {
+	0% {
+		size: 1;
+		opacity: 1.0;
+	}
+	100% {
+		size: 5;
+		opacity: 0.0;
+	}
+}
+
+@keyframes goalBall2 {
+	0% {
+		size: 5;
+		opacity: 0.0;
+	}
+	100% {
+		size: 1;
+		opacity: 1.0;
+	}
+}
