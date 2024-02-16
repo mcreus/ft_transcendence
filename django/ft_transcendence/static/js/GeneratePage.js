@@ -13,6 +13,11 @@ function navigateTo(view) {
 	console.log('Navigateto', view);
 	let main = document.getElementById('main');
 	let div = main.getElementsByTagName('div');
+	if (isOpen(chatSocket) && view == 'logout')
+	{
+		sendStatus('offline');
+		chatSocket.close();
+	}
 	if (view == 'salon' || view == 'local' || view == 'profile' || view == 'fast_game' || view == 'profile/username' || view == "profile/email" || view == 'profile/password' || view == 'profile/image' || view == 'historic' || view.search("other_profile/") != -1 || view.search("tournament_online/") != -1)
 	{
 		let i = 0;
@@ -40,8 +45,14 @@ function navigateTo(view) {
 			main.onanimationend = () => {
 				main.style.opacity = 1.0;
 				if (view == 'fast_game' || view.search("tournament_online/") != -1)
+				{
+					if (isOpen(chatSocket))
+						chatSocket.close();
+					chatSocket = new WebSocket(`ws://${window.location.host}/ws/socket-server/`);
+					webSocketFunctions(chatSocket);
+					sendStatus('online');
 					init('online');
-					
+				}
 			}
 		};
 	}
@@ -53,13 +64,15 @@ function navigateTo(view) {
 			.then(data => {
 				document.getElementById('body').innerHTML = data;
 				window.location.hash = view;
+				if (view == 'logout')
+				{
+					if (isOpen(chatSocket))
+						chatSocket.close();
+					chatSocket = new WebSocket(`ws://${window.location.host}/ws/socket-server/`);
+					webSocketFunctions(chatSocket);
+					sendStatus('online');
+				}
 			});
-	}
-	if (view == 'logout' || view == 'fast_game')
-	{
-		chatSocket.close();
-		chatSocket = new WebSocket(`ws://${window.location.host}/ws/socket-server/`);
-		webSocketFunctions(chatSocket);
 	}
 }
 

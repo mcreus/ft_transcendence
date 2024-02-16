@@ -24,7 +24,7 @@ class   Match(models.Model):
     played = models.fields.BooleanField(default=False)
     winner = models.fields.CharField(max_length=100, default='')
     players = models.TextField(blank=True)
-    
+
     def add_player(self, player_name):
         listing = self.players.split(',')
         if player_name in listing:
@@ -55,6 +55,7 @@ class User(AbstractUser):
     historic = models.ManyToManyField(Match, related_name='historic', blank=True)
     waiting_match = models.ForeignKey(Match, on_delete=models.SET_NULL, null=True)
     amis = models.ManyToManyField('User', blank=True)
+    status = models.TextField(blank=True, default='offline')
     profile_photo = models.ImageField(
         verbose_name='Photo de profil',
     )
@@ -64,22 +65,41 @@ class User(AbstractUser):
             self.waiting_match.remove_player(self.username)
             self.waiting_match = None
             self.save()
-    
+
 class ChatConsumer(WebsocketConsumer):
+    master = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     def connect(self):
         self.user = self.scope["user"].username
+        print('CONNECT : ', self.user)
         self.room_group_name = 'test'
         async_to_sync(self.channel_layer.group_add)(
             self.room_group_name,
             self.channel_name
-    	)
+        )
+        users = User.objects.all()
+        usernames = [user.username for user in users]
+        if self.user in usernames:
+            master = User.objects.get(username=self.user)
+            master.status = 'online'
+            master.save()
+            async_to_sync(self.channel_layer.group_send)(
+                 self.room_group_name,
+                 {
+                     'type':'status_message',
+                     'status':'online',
+                     'target':self.user
+                 }
+            )
         self.accept()
     def disconnect(self, close_code):
+        print('DISCONNECT : ', self.user)
         users = User.objects.all()
         usernames = [user.username for user in users]
         if self.user in usernames:
             user = User.objects.get(username=self.user)
             user.exit_match()
+            user.status = 'offline'
+            user.save()
             if WaitingList.objects.all():
                 WaitingList.objects.all().first().remove_player(self.user)
         pass
@@ -133,7 +153,16 @@ class ChatConsumer(WebsocketConsumer):
                      'player2':player2
                  }
             )
-            
+        if (text_data_json['type'] == 'status'):
+            async_to_sync(self.channel_layer.group_send)(
+                 self.room_group_name,
+                 {
+                     'type':'status_message',
+                     'status':text_data_json['status'],
+                     'target':text_data_json['target']
+                 }
+            )
+
     def chat_message(self, event):
         message = event['message']
         pseudo = event['pseudo']
@@ -169,8 +198,16 @@ class ChatConsumer(WebsocketConsumer):
                  'player1':player1,
                  'player2':player2
             }))
-        
-    
+    def status_message(self, event):
+        self.send(text_data = json.dumps({
+            'type':'status',
+            'status':event['status'],
+            'target':event['target']
+        }))
+        print('Target : ', event['target'])
+        print('Status : ', event['status'])
+
+
 @receiver(post_save, sender=User)
 def assign_default_profile_photo(sender, instance, created, **kwargs):
     if created and not instance.profile_photo:
@@ -180,18 +217,18 @@ def assign_default_profile_photo(sender, instance, created, **kwargs):
 class Tournament(models.Model):
 
     TIME_CHOICES = [
-        	(5, '5m'),
-        	(10, '10m'),
-        	(15, '15m'),
-       	(20, '20m'),
-		(25, '25m'),
-		(30, '30m'),
+            (5, '5m'),
+            (10, '10m'),
+            (15, '15m'),
+        (20, '20m'),
+        (25, '25m'),
+        (30, '30m'),
     ]
     PLAYERS_CHOICES = [
-		(4, '4'),
-		(8, '8'),
-		(16, '16'),
-		(32, '32'),
+        (4, '4'),
+        (8, '8'),
+        (16, '16'),
+        (32, '32'),
     ]
 
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -215,8 +252,8 @@ class Tournament(models.Model):
             self.subscribe_active = False
             self.save()
         return max(0, int(time_left))
-    
-    
+
+
     def add_player(self, player_name):
             self.players_registered += f',{player_name}'  # Ajout du nom du joueur à la liste
 
@@ -231,7 +268,7 @@ class Tournament(models.Model):
             return self.players_registered.split(',')
         else:
             return []
-    
+
     def launch_tournament(self):
         self.running = True
         self.subscribe_active = False
@@ -253,7 +290,7 @@ class Tournament(models.Model):
             self.remaining_players = last_player
         else:
             self.remaining_players = ''
-        
+
         i = 0
         while i < len(listing) - 1:
             p1 = listing[i]
@@ -267,7 +304,7 @@ class Tournament(models.Model):
 class WaitingList(models.Model):
 
     players = models.TextField(blank=True)
-    
+
     def add_player(self, player_name):
         listing = self.players.split(',')
         if player_name in listing:
@@ -298,3 +335,4 @@ class WaitingList(models.Model):
         self.remove_player(p1)
         self.remove_player(p2)
         return m
+

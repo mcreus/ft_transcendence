@@ -10,7 +10,6 @@ function collisionPaddles(game, ball)
 			else if (ball.PosX > game.map_paddles.get(i).PosX)
 				ball.ballSpeedX = 1;
 			ball.ballSpeedY = -(game.map_paddles.get(i).PosY + game.paddleHeight / 2 - ball.PosY) / (game.paddleHeight / 3);
-			rand = Math.random() * (game.paddleHeight + 20) - ((game.paddleHeight + 20) / 2);
 			ball.speed += 0.3;
 			if (ball.speed > game.ballSpeedMax)
 				ball.speed = game.ballSpeedMax;
