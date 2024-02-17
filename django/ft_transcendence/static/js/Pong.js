@@ -278,6 +278,7 @@ function onlineGame()
 
 function startOnlineGame(player1, player2, side)
 {
+	sendStatus('ingame');
 	game = new GameManager(2, 5, 2, false, false, true);
 	GenerateGame(game);
 	canvas = document.getElementById("pongCanvas");
@@ -322,3 +323,4 @@ function checkParam()
 		return 1;
 	return 0;
 }
+

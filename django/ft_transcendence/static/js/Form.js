@@ -70,14 +70,6 @@ function fetchForm(url, formData) {
     .then(data => {
         // Gérez la réponse ici, par exemple mettre à jour l'interface utilisateur
         document.getElementById('body').innerHTML = data;
-        if (url == '/login/')
-        {	
-        	if (isOpen(chatSocket))
-			chatSocket.close();
-		chatSocket = new WebSocket(`ws://${window.location.host}/ws/socket-server/`);
-		webSocketFunctions(chatSocket);
-		sendStatus('online');
-	}
     })
     .catch(error => {
         console.error('Error:', error);
@@ -137,3 +129,4 @@ function SendResult(game)
     fetchForm(url, formData);
     sendStatus('online');
 }
+

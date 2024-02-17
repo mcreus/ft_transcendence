@@ -20,39 +20,23 @@ function navigateTo(view) {
 	}
 	if (view == 'salon' || view == 'local' || view == 'profile' || view == 'fast_game' || view == 'profile/username' || view == "profile/email" || view == 'profile/password' || view == 'profile/image' || view == 'historic' || view.search("other_profile/") != -1 || view.search("tournament_online/") != -1)
 	{
-		let i = 0;
-		for (; i < div.length; i++)
-		{
+		for (let i = 0; i < div.length; i++)
 			div[i].style.animation = "divout 0.3s " + i * 0.03 + "s";
-			//console.log(div[i]);
-		}
 		main.style.animation = "pageout 1s";
 		main.onanimationend = () => {
 			main.innerHTML = '';
 			main.style.opacity = 0.0;
-			// Charger les autres vues
-			if (view != "" && view != "logout" && view != "login")
-			{
-				fetch(`/${view}`)
-					.then(response => response.text())
-					.then(data => {
-						document.getElementById('main').innerHTML = data;
-						//history.pushState({ view }, null, `#${view}`);
-						window.location.hash = view;
-					});
-			}
+			fetch(`/${view}`)
+				.then(response => response.text())
+				.then(data => {
+					document.getElementById('main').innerHTML = data;
+					window.location.hash = view;
+				});
 			main.style.animation = "pagein 1s";
 			main.onanimationend = () => {
 				main.style.opacity = 1.0;
 				if (view == 'fast_game' || view.search("tournament_online/") != -1)
-				{
-					if (isOpen(chatSocket))
-						chatSocket.close();
-					chatSocket = new WebSocket(`ws://${window.location.host}/ws/socket-server/`);
-					webSocketFunctions(chatSocket);
-					sendStatus('online');
 					init('online');
-				}
 			}
 		};
 	}
@@ -68,11 +52,17 @@ function navigateTo(view) {
 				{
 					if (isOpen(chatSocket))
 						chatSocket.close();
-					chatSocket = new WebSocket(`ws://${window.location.host}/ws/socket-server/`);
+					chatSocket = new WebSocket(`wss://${window.location.host}/ws/socket-server/`);
 					webSocketFunctions(chatSocket);
 					sendStatus('online');
 				}
 			});
+	}
+	if (view == 'fast_game')
+	{
+		chatSocket.close();
+		chatSocket = new WebSocket(`wss://${window.location.host}/ws/socket-server/`);
+		webSocketFunctions(chatSocket);
 	}
 }
 

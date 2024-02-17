@@ -336,6 +336,14 @@ canvas {
 	font-size: 500%;
 }
 
+.containerHistoric {
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	height: 700px;
+	overflow-y: auto;
+}
+
 .historicResult {
 	display: flex;
 	flex-direction: column;
@@ -590,3 +598,4 @@ canvas {
 		margin: 6px;
 	}
 }
+

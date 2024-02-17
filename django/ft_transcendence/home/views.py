@@ -21,9 +21,9 @@ def login_view(request):
     form = LoginForm()
     message = ''
     if request.user.is_authenticated:
-    	request.user.exit_match()
-    	if WaitingList.objects.all():
-        	WaitingList.objects.all().first().remove_player(request.user.username)
+        request.user.exit_match()
+        if WaitingList.objects.all():
+            WaitingList.objects.all().first().remove_player(request.user.username)
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -36,7 +36,7 @@ def login_view(request):
                 return render(request, 'index.html')
             else:
                 message = 'Identifiants invalides.'
-    
+
     return render(request, 'login.html', context={'form': form, 'message': message})
 
 def logout_view(request):
@@ -61,26 +61,26 @@ def signup_view(request):
             login(request, user)
             return render(request, 'index.html')
     return render(request, 'signup.html', context={'form': form})
-    
+
 @login_required
 def profile(request):
     request.user.exit_match()
     if WaitingList.objects.all():
         WaitingList.objects.all().first().remove_player(request.user.username)
     return render(request, 'profile.html')
-    
+
 @login_required
 def otherProfile(request, id):
-	request.user.exit_match()
-	if WaitingList.objects.all():
-		WaitingList.objects.all().first().remove_player(request.user.username)
-	if request.method == 'POST':
-		friend_delete = User.objects.get(username = id)
-		request.user.amis.remove(friend_delete)
-		return  render(request, 'index.html')
-	u = User.objects.get(username=id)
-	return render(request, 'otherProfile.html', {'u' : u})
-    
+    request.user.exit_match()
+    if WaitingList.objects.all():
+        WaitingList.objects.all().first().remove_player(request.user.username)
+    if request.method == 'POST':
+        friend_delete = User.objects.get(username = id)
+        request.user.amis.remove(friend_delete)
+        return  render(request, 'index.html')
+    u = User.objects.get(username=id)
+    return render(request, 'otherProfile.html', {'u' : u})
+
 @login_required
 def update_username(request):
     request.user.exit_match()
@@ -110,7 +110,7 @@ def update_email(request):
         form = update_emailForm(instance=request.user)
 
     return render(request, 'update_email.html', {'form': form})
-    
+
 @login_required
 def update_password(request):
     request.user.exit_match()
@@ -126,7 +126,7 @@ def update_password(request):
         form = PasswordChangeForm(request.user)
 
     return render(request, 'update_password.html', {'form': form})
-    
+
 @login_required
 def update_image(request):
     request.user.exit_match()
@@ -248,7 +248,7 @@ def tournament_create(request):
             tournament.players_registered = request.user.username
             tournament.save()
             return render(request, 'tournament_detail.html', {'tournament': tournament})
-    return render(request, 'tournament_create.html', {'form': form}) 
+    return render(request, 'tournament_create.html', {'form': form})
 
 @login_required
 def tournament_update(request, id):
@@ -314,7 +314,7 @@ def match_details(request, id):
         if m.origin.remaining_match.count() == 0:
             m.origin.matchmaking_tournament()
         return render(request, 'tournament_detail.html', {'tournament': m.origin})
-    
+
     m_type =''
     if m.player1_name == request.user.username:
         if m.player2_name not in usernames:

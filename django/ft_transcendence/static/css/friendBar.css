@@ -93,3 +93,19 @@
 .sidebar:hover {
     left: 0;
 }
+
+.status {
+    border: solid grey 5px;
+    border-radius: 50%;
+}
+
+.status.online {
+    border: solid green 5px;
+    border-radius: 50%;
+}
+
+.status.ingame {
+    border: solid yellow 5px;
+    border-radius: 50%;
+}
+

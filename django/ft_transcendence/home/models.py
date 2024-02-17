@@ -1,4 +1,4 @@
-# home/models.py
+# home/models.pyWebSocket.js:27:12
 import os
 import json
 from django.contrib.auth.models import AbstractUser
@@ -70,7 +70,6 @@ class ChatConsumer(WebsocketConsumer):
     master = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     def connect(self):
         self.user = self.scope["user"].username
-        print('CONNECT : ', self.user)
         self.room_group_name = 'test'
         async_to_sync(self.channel_layer.group_add)(
             self.room_group_name,
@@ -92,7 +91,6 @@ class ChatConsumer(WebsocketConsumer):
             )
         self.accept()
     def disconnect(self, close_code):
-        print('DISCONNECT : ', self.user)
         users = User.objects.all()
         usernames = [user.username for user in users]
         if self.user in usernames:

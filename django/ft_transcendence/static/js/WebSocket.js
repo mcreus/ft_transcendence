@@ -1,4 +1,4 @@
-let url = `ws://${window.location.host}/ws/socket-server/`;
+let url = `wss://${window.location.host}/ws/socket-server/`;
 let chatSocket = new WebSocket(url);
 webSocketFunctions(chatSocket);
 
@@ -6,7 +6,7 @@ function webSocketFunctions(chatSocket)
 {
 	chatSocket.onmessage = function(e) {
 		const data = JSON.parse(e.data);
-		console.log('Data', data);
+		//console.log('Data', data);
 		if (data.type == 'chat')
 		{
 			let div = document.getElementById('chat');
@@ -18,7 +18,7 @@ function webSocketFunctions(chatSocket)
 		}
 		if (data.type == 'status')
 		{
-			//console.log('Data', data);
+			console.log('Data', data);
 			if (!document.getElementById('user'))
 				return;
 			if (data.target == document.getElementById('user').innerHTML)
@@ -26,11 +26,20 @@ function webSocketFunctions(chatSocket)
 			let div = document.getElementById(`status_${data.target}`);
 			console.log('div ; ', div);
 			if (data.status == 'offline')
-				div.style.border = 'border: solid grey 5px';
+			{
+				div.classList.remove('ingame');
+				div.classList.remove('online');
+			}
 			else if (data.status == 'online')
-				div.style.border = 'border: solid green 5px';
+			{
+				div.classList.remove('ingame');
+				div.classList.add('online');
+			}
 			else if (data.status == 'ingame')
-			div.style.border = 'border: solid yellow 5px';
+			{
+				div.classList.remove('online');
+				div.classList.add('ingame');
+			}
 		}
 
 		if (data.type == 'player_pos')
@@ -105,3 +114,4 @@ function sendStatus(statu) {
 function isOpen(ws) {
 	return ws.readyState === ws.OPEN;
 }
+
