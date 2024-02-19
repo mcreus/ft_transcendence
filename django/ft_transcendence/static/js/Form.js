@@ -26,6 +26,11 @@ function submitForm(formId, num, player) {
 			break;
 		case 'removefriend':
 			url = '/other_profile/' + num + '/';
+			formData.append('removefriend', 1);
+			break;
+		case 'addfriend':
+			url = '/other_profile/' + num + '/';
+			formData.append('addfriend', 1);
 			break;
         case 'tournament':
         	url = '/tournaments/create/'
