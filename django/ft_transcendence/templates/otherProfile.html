@@ -21,10 +21,18 @@
 		</div>
 		{% endif %}
         {% endfor %}
-	<form id="removefriendForm" method="post">
-    	{% csrf_token %}
-    	<button class="buttonClassique" type="button" onclick="submitForm('removefriend', '{{ u.username }}')">Supprimer l'ami</button>
-	</form>
+    {% if not is_friend %}
+    	<form id="addfriendForm" method="post">
+    		{% csrf_token %}
+        	<button class="buttonClassique" type="button" onclick="submitForm('addfriend', '{{ u.username }}')">Ajouter en ami</button>
+        </form>
+    {% else %}
+    	<form id="removefriendForm" method="post">
+    		{% csrf_token %}
+        	<button class="buttonClassique" type="button" onclick="submitForm('removefriend', '{{ u.username }}')">Supprimer ami</button>
+        </form>
+    {% endif %}
+
 
 </body>
 </html>

@@ -71,15 +71,22 @@ def profile(request):
 
 @login_required
 def otherProfile(request, id):
-    request.user.exit_match()
-    if WaitingList.objects.all():
-        WaitingList.objects.all().first().remove_player(request.user.username)
-    if request.method == 'POST':
-        friend_delete = User.objects.get(username = id)
-        request.user.amis.remove(friend_delete)
-        return  render(request, 'index.html')
-    u = User.objects.get(username=id)
-    return render(request, 'otherProfile.html', {'u' : u})
+	request.user.exit_match()
+	if WaitingList.objects.all():
+		WaitingList.objects.all().first().remove_player(request.user.username)
+	u = User.objects.get(username=id)
+	is_friend = request.user.amis.filter(username=u.username).exists()
+	if request.method == 'POST':
+		add = request.POST.get('addfriend')
+		remove = request.POST.get('removefriend')
+		if add == '1':
+			friend_to_add = User.objects.get(username= id)
+			request.user.amis.add(friend_to_add)
+		elif remove == '1':
+			friend_delete = User.objects.get(username = id)
+			request.user.amis.remove(friend_delete)
+		return  render(request, 'index.html')
+	return render(request, 'otherProfile.html', {'u' : u, 'is_friend': is_friend})
 
 @login_required
 def update_username(request):
