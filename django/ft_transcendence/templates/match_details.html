@@ -1,17 +1,35 @@
 {% include 'ruban.html' %}
 {% include 'friendBar.html' %}
 <div id="main" class="vertical-center" data-num="{{ match.id }}">
+    
+    {% if not match.played %}
     <div id="player_1">{{ match.player1_name }}</div>
     <div>vs</div>
     <div id="player_2">{{ match.player2_name }}</div>
 
-    {% if not match.played %}
+    <br>
+    {% if match.origin.owner == request.user %}
+    Forcer la victoire
+    <form id="forceWinForm" method="post">
+        {% csrf_token %}        
+        <button type="button" onclick="submitForm('forceWin', '{{ match.id }}', '{{ match.player1_name }}')" 
+        title="Declarer vainqueur">Donner la victoire a {{ match.player1_name }}</button><br>
+        <button type="button" onclick="submitForm('forceWin', '{{ match.id }}', '{{ match.player2_name }}')" 
+        title="Declarer vainqueur">Donner la victoire a {{ match.player2_name }}</button><br>
+    </form>
+    <br>
+    {% endif %}
     {% if type == 'not_mine' %}
     {% elif type == "local" %}
     <div><button onclick="init('tournament')" class="boutonPlay">Jouer le match</button></div>
     {% else %}
     <div><button onclick="goTo('tournament_online/{{ match.id }}')" class="buttonClassique">Jouer le match</button></div>
     {% endif %}
+    {% else %}
+    <div id="player_1">{{ match.player1_name }} : {{ match.player1_score }}</div>
+    <div>vs</div>
+    <div id="player_2">{{ match.player2_name }} : {{ match.player2_score }}</div>
+    <p class="vainqueur">Vainqueur du match : {{ match.winner }}</p>
     {% endif %}
     <div><button onclick="goTo('tournaments/{{ match.origin.id }}')" class="buttonClassique">Retour au tournoi</button>
     </div>

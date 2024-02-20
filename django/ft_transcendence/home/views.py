@@ -298,10 +298,14 @@ def match_details(request, id):
         score1 = request.POST.get('score1')
         score2 = request.POST.get('score2')
         win = request.POST.get('winner')
-        m.player1_score = score1
-        m.player2_score = score2
-        m.played = True
+        forced = request.POST.get('forced')
+        if forced is None:
+            m.player1_score = score1
+            m.player2_score = score2
+        else:
+            win = forced
         m.winner = win
+        m.played = True
         m.save()
         if request.user.username == play1 or request.user.username == play2:
             request.user.historic.add(m)

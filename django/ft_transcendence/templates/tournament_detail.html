@@ -26,9 +26,11 @@
     Liste des matchs
     <ul>
         {% for match in tournament.all_match.all %}
-            <li><div><button onclick="goTo('match/{{ match.id }}')" class="boutonPlay">{{ match.player1_name }} vs {{ match.player2_name }}</button></div>:
-                {% if match.played %} Termine
-                {% else %} A jouer
+            <li>
+                {% if match.played %}
+                <button onclick="goTo('match/{{ match.id }}')" class="boutonWatchResult">{{ match.player1_name }} vs {{ match.player2_name }} : Vainqueur {{ match.winner }}</button>
+                {% else %}
+                <button onclick="goTo('match/{{ match.id }}')" class="boutonPlay">{{ match.player1_name }} vs {{ match.player2_name }} : A jouer</button>
                 {% endif %}
                 <br><br>   
             </li>
@@ -36,7 +38,7 @@
     </ul>
     {% endif %}
     {% if tournament.winner %}
-        Grand vainqueur : {{ tournament.winner }}
+    <p class="vainqueur">Grand vainqueur du tounoi : {{ tournament.winner }} </p>
     {% endif %}
     
     <div><button onclick="goTo('tournaments')" class="buttonClassique">Liste des tournois</button></div>

@@ -25,6 +25,7 @@ canvas {
 }
 
 .vertical-center {
+	font-size: 28px;
 	margin: 0;
 	position: absolute;
 	display: flex;
@@ -35,6 +36,7 @@ canvas {
 	-ms-transform: translateY(-50%);
 	transform: translateY(-50%);
 	width: 100%;
+	z-index: -1;
 }
 
 .ruban {
@@ -139,6 +141,7 @@ canvas {
 	border-radius: 5px;
 }
 
+
 #titreSite {
 	text-align: center;
 	margin-top: 50px;
@@ -173,6 +176,25 @@ canvas {
 .boutonPlay:hover {
 	background-color: black;
 	color: white;
+}
+
+.boutonWatchResult {
+	padding: 10px 20px;
+	font-size: 20px;
+	color: black;
+	background-color: grey;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: 0.3s ease;
+}
+
+.boutonWatchResult:hover {
+	background-color: black;
+	color: grey;
+}
+
+.vainqueur {
+	font-size: 40px;
 }
 
 .profil-container {

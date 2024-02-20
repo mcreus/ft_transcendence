@@ -7,11 +7,12 @@
             {% for player in tournament.get_registered_players %}
 
             <form id="removeLocal{{ player }}Form" method="post">
-            {% csrf_token %}          
-                <li>{{ player }}</li>
+                {% csrf_token %}          
+                <li>{{ player }}
                 {% if player != request.user.username %}
-                <button type="button" onclick="submitForm('removeLocal{{ player }}', '{{ tournament.id }}', '{{ player }}')" class="boutonPlay">Retirer</button>
-                {% endif %}  
+                <button type="button" onclick="submitForm('removeLocal{{ player }}', '{{ tournament.id }}', '{{ player }}')" class="buttonInvisible" title="Retirer le joueur">❌</button>
+                {% endif %}
+                </li>  
             </form>
             {% endfor %}
         </ul>
