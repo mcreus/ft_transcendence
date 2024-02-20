@@ -55,6 +55,7 @@ class User(AbstractUser):
     historic = models.ManyToManyField(Match, related_name='historic', blank=True)
     waiting_match = models.ForeignKey(Match, on_delete=models.SET_NULL, null=True)
     amis = models.ManyToManyField('User', blank=True)
+    banlist = models.TextField(blank=True)
     status = models.TextField(blank=True, default='offline')
     profile_photo = models.ImageField(
         verbose_name='Photo de profil',
@@ -64,6 +65,20 @@ class User(AbstractUser):
         if self.waiting_match is not None:
             self.waiting_match.remove_player(self.username)
             self.waiting_match = None
+            self.save()
+
+    def ban(self, name):
+        listing = self.banlist.split(',')
+        if name not in listing:
+            self.banlist += f'{name},'
+            self.save()
+
+    def unban(self, name):
+        print(name)
+        listing = self.banlist.split(',')
+        if name in listing:
+            listing.remove(name)
+            self.banlist = ','.join(listing)
             self.save()
 
 class ChatConsumer(WebsocketConsumer):
@@ -105,15 +120,35 @@ class ChatConsumer(WebsocketConsumer):
         text_data_json = json.loads(text_data)
         if (text_data_json['type'] == 'chat' and self.user):
             message = text_data_json['message']
-            print(message)
-            async_to_sync(self.channel_layer.group_send)(
-                self.room_group_name,
-                {
-                    'type':'chat_message',
-                    'message':message,
-                    'pseudo':self.user
-                }
-            )
+            if (message[0] == '/'):
+            	if (message.find('unban') > -1 or message.find('UNBAN') > -1):
+            	    name = message[7:]
+            	    User.objects.get(username=self.user).unban(name)
+            	elif (message.find('ban') > -1 or message.find('BAN') > -1):
+            	    name = message[5:]
+            	    User.objects.get(username=self.user).ban(name)
+            	elif (message.find('game') > -1 or message.find('Game') > -1):
+            	    name = message[6:]
+            	    m = Match.objects.create(player1_name=self.user, player2_name=name)
+            	    m.add_player(self.user)
+            	    async_to_sync(self.channel_layer.group_send)(
+                    self.room_group_name,
+                    {
+                        'type':'game_message',
+                        'target':name,
+                        'player':self.user,
+                        'id':m.id
+                    }
+                )
+            else:
+                async_to_sync(self.channel_layer.group_send)(
+                    self.room_group_name,
+                    {
+                        'type':'chat_message',
+                        'message':message,
+                        'pseudo':self.user
+                    }
+                )
         if (text_data_json['type'] == 'player_pos'):
             player = text_data_json['player']
             nb = text_data_json['id']
@@ -148,7 +183,8 @@ class ChatConsumer(WebsocketConsumer):
                  {
                      'type':'start_match_message',
                      'player1':player1,
-                     'player2':player2
+                     'player2':player2,
+                     'tournament':text_data_json['tournament']
                  }
             )
         if (text_data_json['type'] == 'status'):
@@ -160,10 +196,40 @@ class ChatConsumer(WebsocketConsumer):
                      'target':text_data_json['target']
                  }
             )
+        if (text_data_json['type'] == 'ping'):
+            async_to_sync(self.channel_layer.group_send)(
+                 self.room_group_name,
+                 {
+                     'type':'ping_message',
+                     'ping':text_data_json['ping'],
+                     'target':text_data_json['target']
+                 }
+            )
+        if (text_data_json['type'] == 'test_ping'):
+            async_to_sync(self.channel_layer.group_send)(
+                 self.room_group_name,
+                 {
+                     'type':'test_ping_message',
+                     'target':text_data_json['target']
+                 }
+            )
+        if (text_data_json['type'] == 'alert'):
+            async_to_sync(self.channel_layer.group_send)(
+                 self.room_group_name,
+                 {
+                     'type':'alert_message',
+                     'target':text_data_json['target'],
+                     'player':text_data_json['player'],
+                     'id':text_data_json['id']
+                 }
+            )
 
     def chat_message(self, event):
+        listing = User.objects.get(username=self.user).banlist.split(',')
         message = event['message']
         pseudo = event['pseudo']
+        if pseudo in listing:
+            return
         self.send(text_data = json.dumps({
             'type':'chat',
             'message':message,
@@ -194,7 +260,8 @@ class ChatConsumer(WebsocketConsumer):
             self.send(text_data = json.dumps({
                  'type':'start_match',
                  'player1':player1,
-                 'player2':player2
+                 'player2':player2,
+                 'tournament':event['tournament']
             }))
     def status_message(self, event):
         self.send(text_data = json.dumps({
@@ -202,8 +269,31 @@ class ChatConsumer(WebsocketConsumer):
             'status':event['status'],
             'target':event['target']
         }))
-        print('Target : ', event['target'])
-        print('Status : ', event['status'])
+    def ping_message(self, event):
+        if (self.user == event['target']):
+            self.send(text_data = json.dumps({
+                 'type':'ping',
+                 'ping':event['ping']
+            }))
+    def test_ping_message(self, event):
+        if (self.user == event['target']):
+            self.send(text_data = json.dumps({
+                 'type':'test_ping'
+            }))
+    def alert_message(self, event):
+        if (self.user == event['target']):
+            self.send(text_data = json.dumps({
+                 'type':'alert',
+                 'target':event['player'],
+                 'id':event['id']
+            }))
+    def game_message(self, event):
+        if (self.user == event['target']):
+            self.send(text_data = json.dumps({
+                 'type':'game',
+                 'target':event['player'],
+                 'id':event['id']
+            }))
 
 
 @receiver(post_save, sender=User)
