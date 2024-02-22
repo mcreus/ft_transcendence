@@ -367,3 +367,4 @@ def tournament_online(request, id):
     request.user.waiting_match = m
     request.user.save()
     return render(request, 'fast_game.html', {'result': result})
+

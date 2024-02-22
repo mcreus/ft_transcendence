@@ -1,14 +1,14 @@
 {% if user.is_authenticated %}
 <div id="liveChat" class="liveChat">
 	<div class="chatArrow" style="width:100%">
-		<input id="chatDrawer" class="showChat" type="checkbox">
+		<button id="chatDrawer" class="buttonInvisible" style="width: 100%" type="button">
 			<div style="display:flex; justify-content:center">
 				<label for="chatDrawer">
 					<div id="arrow" class="arrow"></div>
 				</label>
 				<div id="notif" class="notif"></div>
 			</div>
-		</input>
+		</button>
 	</div>
 	<div id="chat" class="chat">
 	</div>
@@ -24,10 +24,11 @@
 	{
 		if (!checkbox)
 			return ;
-		checkbox.addEventListener('change', (event) => {
+		checkbox.addEventListener('click', (event) => {
 			const chat = document.getElementById('liveChat');
 			const arrow = document.getElementById('arrow');
-			if (event.currentTarget.checked) {
+			if (!chat.classList.contains('show'))
+			{
 				chat.classList.add('show');
 				arrow.classList.add('down');
 				if (document.getElementById('notif').classList.contains('active'))

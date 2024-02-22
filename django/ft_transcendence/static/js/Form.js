@@ -21,17 +21,17 @@ function submitForm(formId, num, player) {
         case 'update_image':
         	url = '/profile/image/';
         	break
-		case 'add_friend':
-			url = '/add_friend/';
-			break;
-		case 'removefriend':
-			url = '/other_profile/' + num + '/';
-			formData.append('removefriend', 1);
-			break;
-		case 'addfriend':
-			url = '/other_profile/' + num + '/';
-			formData.append('addfriend', 1);
-			break;
+	case 'add_friend':
+		url = '/add_friend/';
+		break;
+	case 'removefriend':
+		url = '/other_profile/' + num + '/';
+		formData.append('removefriend', 1);
+		break;
+	case 'addfriend':
+		url = '/other_profile/' + num + '/';
+		formData.append('addfriend', 1);
+		break;
         case 'tournament':
         	url = '/tournaments/create/'
         	break;
@@ -85,40 +85,6 @@ function fetchForm(url, formData) {
     });
 }
 
-function testForm() {
-    let url = '/fast_game/';
-    let formData = new FormData(document.getElementById(`testForm`));
-    var p1Select = document.getElementById("player_1");
-    var p2Select = document.getElementById("player_2");
-    var p1Choice = p1Select.value;
-    var p2Choice = p2Select.value;
-    var username = p1Select.dataset.username;
-
-    var p1Name = "";
-    if (p1Choice === "custom") {
-        var p1Custom = document.getElementById("player_1_custom");
-        p1Name = p1Custom.value;
-    }
-    else if(p1Choice === "username")
-        p1Name = username;
-    else
-        p1Name = "Player 1";
-
-    var p2Name = "";
-    if (p2Choice === "custom") {
-        var p2Custom = document.getElementById("player_2_custom");
-        p2Name = p2Custom.value;
-    }
-    else if(p2Choice === "username")
-        p2Name = username;
-    else
-        p2Name = "Player 2";
-
-    formData.append('player1', p1Name);
-    formData.append('player2', p2Name);
-    fetchForm(url, formData);
-}
-
 function SendResult(game)
 {
     let url = '/local/';
@@ -138,4 +104,3 @@ function SendResult(game)
     fetchForm(url, formData);
     sendStatus('online');
 }
-

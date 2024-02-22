@@ -1,13 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Profil Utilisateur</title>
-</head>
-<body>
-    <h2>Profil de {{ u.username }}</h2>
+<h2>Profil de {{ u.username }}</h2>
     <img src="{{ u.profile_photo.url }}" alt="Photo de profil" class="profile-photo">
     <p><strong>Historique de {{ u.username }} :</strong></p>
-
+	<div class="containerHistoric">
         {% for match in u.historic.all %}
 		{% if match.winner == u.username %}
 		<div class="historicResult" style="background-color: rgba(0,176,176,0.5)">
@@ -21,6 +15,7 @@
 		</div>
 		{% endif %}
         {% endfor %}
+	</div>
     {% if not is_friend %}
     	<form id="addfriendForm" method="post">
     		{% csrf_token %}
@@ -32,7 +27,3 @@
         	<button class="buttonClassique" type="button" onclick="submitForm('removefriend', '{{ u.username }}')">Supprimer ami</button>
         </form>
     {% endif %}
-
-
-</body>
-</html>

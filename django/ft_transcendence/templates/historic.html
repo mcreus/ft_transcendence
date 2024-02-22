@@ -1,5 +1,5 @@
 <div id="main" class="vertical-center">
-    <h1>Parties rapides</h1>
+	<div class="containerHistoric">
         {% for match in matchs %}
 		{% if match.winner == request.user.username %}
 		<div class="historicResult" style="background-color: rgba(0,176,176,0.5)">
@@ -13,4 +13,5 @@
 		</div>
 		{% endif %}
         {% endfor %}
+        </div>
 </div>

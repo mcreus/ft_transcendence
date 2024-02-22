@@ -3,7 +3,12 @@
         {% for ami in user.amis.all %}
                 <div class="friend">
                 	<button class="friend-name" onclick="goTo('other_profile/{{ ami.username }}')">{{ ami.username }}</button>
-                    <img src="{{ ami.profile_photo.url }}" alt="{{ ami.username }}">
+			{% if ami.status == "online" %}
+				<div class="status online" id="status_{{ ami.username }}"></div>
+			{% else %}
+				<div class="status" id="status_{{ ami.username }}"></div>
+			{% endif %}
+                	<img src="{{ ami.profile_photo.url }}" alt="{{ ami.username }}">
                 </div>
         {% endfor %}
     </div>

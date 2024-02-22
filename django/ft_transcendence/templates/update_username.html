@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Modifier Pseudo</title>
-</head>
-<body>
+{% include 'ruban.html' %}
+{% include 'live_chat.html' %}
+<div id="main" class="vertical-center">
     <h2>Modifier votre pseudo</h2>
     <form id="update_usernameForm" method="post" onsubmit="submitForm('update_username'); return false">
         {% csrf_token %}
@@ -11,5 +8,4 @@
         <button class="buttonClassique" type="button" id="update_username" onclick="submitForm('update_username')">Mettre à jour</button>
     </form>
     <button class="buttonClassique" onclick="goTo('profile')">Retour au Profil</button>
-</body>
-</html>
+</div>
