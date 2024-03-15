@@ -8,6 +8,12 @@ services:
       - ./configurations/modsecurity.conf:/etc/modsecurity/modsecurity.conf:ro
     networks:
       - webnet
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
 
   nginx:
     image: nginx:latest
@@ -26,6 +32,12 @@ services:
 
   django:
     build: ./django/ft_transcendence
+    environment:
+      - DATABASE_NAME=${DATABASE_NAME}
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_HOST=${DATABASE_HOST}
+      - DATABASE_PORT=${DATABASE_PORT}
     ports:
       - "8000:8000"
     volumes:
@@ -39,12 +51,62 @@ services:
       - "8200:8200"
     cap_add:
       - IPC_LOCK
+    volumes:
+      - vault_data:/vault/file
+      - ./configurations/config.hcl:/vault/config/config.hcl
     environment:
-      VAULT_DEV_ROOT_TOKEN_ID: ${ROOT_ID}
-      VAULT_DEV_LISTEN_ADDRESS: ${LISTEN_ADDR}
       VAULT_ADDR: ${VAULT_ADDR}
+    entrypoint: vault server -config=/vault/config/config.hcl
+    networks:
+      - webnet
+
+  elasticsearch:
+    image: bitnami/elasticsearch:latest
+    environment:
+      - ELASTICSEARCH_HEAP_SIZE=1024m
+    volumes:
+      - elasticsearch_data:/bitnami/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks:
+      - webnet
+
+  logstash:
+    image: bitnami/logstash:latest
+    environment:
+      - LOGSTASH_ELASTICSEARCH_URL=elasticsearch
+      - LOGSTASH_ELASTICSEARCH_PORT_NUMBER=9200
+    volumes:
+      - ./configurations/logstash.conf:/opt/bitnami/logstash/pipeline/logstash.conf
+      - logstash_data:/bitmani
+    ports:
+      - "5000:5000"
+    depends_on:
+      - elasticsearch
+    networks:
+      - webnet
+
+  kibana:
+    image: bitnami/kibana:latest
+    environment:
+      - KIBANA_ELASTICSEARCH_URL=elasticsearch
+      - KIBANA_ELASTICSEARCH_PORT_NUMBER=9200
+        # - XPACK_SECURITY_ENCRYPTIONKEY=${KIBANA_KEY1}
+        # - XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY=${KIBANA_KEY2}
+    volumes:
+      - kibana_data:/bitnami/kibana
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
     networks:
       - webnet
 
 networks:
   webnet:
+
+volumes:
+  vault_data:
+  elasticsearch_data:
+  logstash_data:
+  kibana_data:
